@@ -33,11 +33,14 @@ export default function PreviewTemplate() {
 
   if (!template) {
     return (
-      <div className='min-h-screen bg-gray-100 p-8'>
-        <div className='max-w-7xl mx-auto'>
-          <h1 className='text-3xl font-bold text-gray-900 mb-4'>Template Not Found</h1>
-          <p className='text-gray-600 mb-6'>The template "{templateId}" could not be found.</p>
-          <Link to='/preview' className='inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors'>
+      <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
+        <div className='container mx-auto'>
+          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Template Not Found</h1>
+          <p className='text-text-secondary mb-6'>The template "{templateId}" could not be found.</p>
+          <Link
+            to='/preview'
+            className='inline-block bg-sea dark:bg-accent-blue text-white px-6 py-2 rounded-lg hover:bg-desert dark:hover:bg-desert transition-all duration-400 font-medium tracking-elegant'
+          >
             ← Back to Gallery
           </Link>
         </div>
@@ -46,31 +49,34 @@ export default function PreviewTemplate() {
   }
 
   return (
-    <div className='min-h-screen bg-gray-100 p-8'>
-      <div className='max-w-7xl mx-auto'>
+    <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
+      <div className='container mx-auto'>
         {/* Header */}
         <div className='mb-8 flex items-center justify-between'>
           <div>
-            <Link to='/preview' className='text-blue-600 hover:text-blue-700 mb-2 inline-block'>
+            <Link
+              to='/preview'
+              className='text-sea dark:text-accent-blue hover:text-desert dark:hover:text-desert mb-2 inline-block font-medium tracking-elegant transition-colors duration-400'
+            >
               ← Back to Gallery
             </Link>
-            <h1 className='text-3xl font-bold text-gray-900'>{template.name}</h1>
-            <p className='text-gray-600'>Template ID: {template.id}</p>
+            <h1 className='text-4xl font-display font-medium text-text-primary tracking-refined'>{template.name}</h1>
+            <p className='text-text-secondary'>Template ID: {template.id}</p>
           </div>
 
           <button
             onClick={handleExport}
             disabled={isExporting}
-            className='bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg'
+            className='bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
           >
             {isExporting ? 'Exporting...' : 'Export PNG (1080×1920)'}
           </button>
         </div>
 
         {/* Preview */}
-        <div className='bg-white rounded-lg shadow p-6'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-4'>Preview</h2>
-          <div className='flex justify-center bg-gray-50 p-4 rounded-lg'>
+        <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+          <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Preview</h2>
+          <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
             {/* Preview container - scaled down for display */}
             <div className='relative' style={{ width: '324px', height: '576px', overflow: 'hidden' }}>
               <div
@@ -90,14 +96,14 @@ export default function PreviewTemplate() {
         </div>
 
         {/* Template info */}
-        <div className='mt-8 bg-white rounded-lg shadow p-6'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-4'>Template Fields</h2>
+        <div className='mt-8 bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+          <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Template Fields</h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {template.fields.map((field) => (
-              <div key={field.key} className='border border-gray-200 rounded p-3'>
-                <p className='font-medium text-gray-900'>{field.label}</p>
-                <p className='text-sm text-gray-500'>Type: {field.type}</p>
-                <p className='text-sm text-gray-600 mt-1 truncate'>Default: {String(template.defaultProps[field.key])}</p>
+              <div key={field.key} className='border border-sand/30 dark:border-dark-sand rounded p-3'>
+                <p className='font-medium text-text-primary'>{field.label}</p>
+                <p className='text-sm text-text-secondary'>Type: {field.type}</p>
+                <p className='text-sm text-text-secondary mt-1 truncate'>Default: {String(template.defaultProps[field.key])}</p>
               </div>
             ))}
           </div>

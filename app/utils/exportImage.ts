@@ -15,13 +15,20 @@ async function waitForImages(node: HTMLElement): Promise<void> {
   const images = Array.from(node.querySelectorAll('img'));
 
   const imagePromises = images.map((img) => {
-    if (img.complete) {
+    if (img.complete && img.naturalHeight !== 0) {
       return Promise.resolve();
     }
 
     return new Promise<void>((resolve) => {
-      img.onload = () => resolve();
-      img.onerror = () => resolve(); // Resolve even on error to prevent hanging
+      const timeout = setTimeout(() => resolve(), 10000); // 10s timeout
+      img.onload = () => {
+        clearTimeout(timeout);
+        resolve();
+      };
+      img.onerror = () => {
+        clearTimeout(timeout);
+        resolve();
+      };
     });
   });
 
@@ -44,11 +51,19 @@ export async function exportNodeToPng(node: HTMLElement, filename: string = 'tem
     // Wait for images to load
     await waitForImages(node);
 
-    // Additional delay to ensure all rendering is complete and fonts are applied
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // CRITICAL: Do a first render pass to trigger all image loads and state updates
+    // This ensures React state (like dominant color from onLoad) is fully updated
+    await toPng(node, {
+      width: 1080,
+      height: 1920,
+      pixelRatio: 1,
+      cacheBust: false
+    });
 
-    // Capture as data URL with exact dimensions
-    // html-to-image properly handles blur, gradients, backdrop-filter, and Google Fonts
+    // Wait for React to flush all state updates
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Now capture the final render with all state updates applied
     const dataUrl = await toPng(node, {
       width: 1080,
       height: 1920,

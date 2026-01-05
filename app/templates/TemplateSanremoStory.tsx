@@ -26,7 +26,7 @@ export interface SanremoStoryProps {
 
 export const defaultProps: SanremoStoryProps = {
   artistName: 'Angelica Bove',
-  artistImageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=480&fit=crop',
+  artistImageUrl: 'https://cdn-images.dzcdn.net/images/cover/53992fc379156c33299fee1870060c14/0x1900-000000-80-0-0.jpg',
   bio1: 'Cantautora italiana nacida en Roma. Su proyecto se inscribe dentro del pop italiano contemporáneo con un enfoque autoral e íntimo.',
   bio2: 'Hace su debut en el Ariston como parte de las Nuove Proposte tras participaciones previas en Sanremo Giovani.',
   category: 'Nuove Proposte',
@@ -89,7 +89,7 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
 
   return (
     <div className='bg-gray-900' style={{ fontFamily: "'Libre Franklin', sans-serif" }}>
-      <div className='relative overflow-hidden' style={{ width: '1080px', height: '1920px' }}>
+      <div className='relative overflow-hidden pt-32' style={{ width: '1080px', height: '1920px' }}>
         {/* Background layer with artist image blurred */}
         <div className='absolute inset-0'>
           <img
@@ -131,13 +131,12 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
         </div>
 
         {/* Content layer */}
-        <div className='relative z-10 h-full flex flex-col p-16'>
+        <div className='relative z-10 h-full flex flex-col p-4'>
           {/* Header section */}
           <div className='text-center space-y-4'>
             <p className='text-white tracking-[0.3em] uppercase text-[26px] font-medium'>Artistas de la A a la Z</p>
             <div className='inline-block'>
-              <h2 className='text-6xl font-bold text-white/80 tracking-wide'>SANREMO</h2>
-              <p className='text-5xl font-bold text-white/70 -mt-1'>24</p>
+              <img src='/logo-sanremo.svg' alt='Sanremo 24' className='h-32 w-auto mx-auto' />
             </div>
           </div>
 
@@ -145,7 +144,7 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
           <div className='flex-1 flex flex-col justify-center items-center space-y-10 -mt-5'>
             {/* Artist name and handle */}
             <div className='text-center'>
-              <h3 className='text-[128px] text-white font-extralight tracking-tight leading-none' style={{ fontFamily: 'sans-serif' }}>
+              <h3 className='text-[128px] text-white tracking-tight leading-none' style={{ fontFamily: "'Encode Sans', sans-serif", fontWeight: 400 }}>
                 {artistName}
               </h3>
               <div className='flex justify-center'>
@@ -185,12 +184,7 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
 
             {/* Brand footer */}
             <div className='flex items-center justify-center gap-5 text-white/50 text-[26px] tracking-[0.3em]'>
-              <span className='font-semibold'>MODOITALIANO</span>
-              <div className='flex gap-2.5'>
-                <div className='w-4 h-4 rounded-full bg-emerald-300/50'></div>
-                <div className='w-4 h-4 rounded-sm bg-emerald-300/50'></div>
-                <div className='w-4 h-4 rounded-full bg-emerald-300/50'></div>
-              </div>
+              <img src='/logo-modoitaliano.svg' alt='ModoItaliano' className='h-32 w-auto' />
             </div>
           </div>
         </div>

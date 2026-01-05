@@ -52,30 +52,30 @@ export default function Generate() {
 
   if (!template) {
     return (
-      <div className='min-h-screen bg-gray-100 p-8'>
-        <div className='max-w-7xl mx-auto'>
-          <h1 className='text-3xl font-bold text-gray-900 mb-4'>Template Generator</h1>
-          <p className='text-gray-600'>No templates available. Please add templates to the registry.</p>
+      <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
+        <div className='container mx-auto'>
+          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Template Generator</h1>
+          <p className='text-text-secondary'>No templates available. Please add templates to the registry.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='min-h-screen bg-gray-100 p-8'>
-      <div className='max-w-7xl mx-auto'>
-        <h1 className='text-3xl font-bold text-gray-900 mb-8'>Template Generator</h1>
+    <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
+      <div className='container mx-auto'>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Generator</h1>
 
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left panel - Controls */}
           <div className='lg:col-span-1 space-y-6'>
             {/* Template selector */}
-            <div className='bg-white rounded-lg shadow p-6'>
-              <label className='block text-sm font-medium text-gray-700 mb-2'>Select Template</label>
+            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <label className='block text-sm font-medium text-text-primary mb-2 tracking-wide'>Select Template</label>
               <select
                 value={selectedTemplateId}
                 onChange={handleTemplateChange}
-                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue bg-light-sand dark:bg-dark-sand text-text-primary transition-all duration-300'
               >
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -86,19 +86,19 @@ export default function Generate() {
             </div>
 
             {/* Dynamic form */}
-            <div className='bg-white rounded-lg shadow p-6'>
-              <h2 className='text-lg font-semibold text-gray-900 mb-4'>Edit Fields</h2>
+            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Edit Fields</h2>
               <div className='space-y-4 max-h-[600px] overflow-y-auto'>
                 {template.fields.map((field) => (
                   <div key={field.key}>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>{field.label}</label>
+                    <label className='block text-sm font-medium text-text-primary mb-1 tracking-wide'>{field.label}</label>
                     {field.type === 'textarea' ? (
                       <textarea
                         defaultValue={values[field.key] || ''}
                         onBlur={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={field.rows || 3}
-                        className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 bg-white'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
                       />
                     ) : field.type === 'number' ? (
                       <input
@@ -109,7 +109,7 @@ export default function Generate() {
                         min={field.min}
                         max={field.max}
                         step={field.step}
-                        className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 bg-white'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
                       />
                     ) : (
                       <input
@@ -117,7 +117,7 @@ export default function Generate() {
                         defaultValue={values[field.key] || ''}
                         onBlur={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 bg-white'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
                       />
                     )}
                   </div>
@@ -129,7 +129,7 @@ export default function Generate() {
             <button
               onClick={handleExport}
               disabled={isExporting}
-              className='w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg'
+              className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
             >
               {isExporting ? 'Exporting...' : 'Export PNG (1080×1920)'}
             </button>
@@ -137,9 +137,9 @@ export default function Generate() {
 
           {/* Right panel - Preview */}
           <div className='lg:col-span-2'>
-            <div className='bg-white rounded-lg shadow p-6'>
-              <h2 className='text-lg font-semibold text-gray-900 mb-4'>Live Preview</h2>
-              <div className='flex justify-center bg-gray-50 p-4 rounded-lg'>
+            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Live Preview</h2>
+              <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
                 {/* Preview container - scaled down for display */}
                 <div className='relative' style={{ width: '324px', height: '576px', overflow: 'hidden' }}>
                   <div

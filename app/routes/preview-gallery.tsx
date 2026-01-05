@@ -11,24 +11,26 @@ import { templates } from '../templates';
 
 export default function PreviewGallery() {
   return (
-    <div className='min-h-screen bg-gray-100 p-8'>
-      <div className='max-w-7xl mx-auto'>
-        <h1 className='text-3xl font-bold text-gray-900 mb-8'>Template Gallery</h1>
+    <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
+      <div className='container mx-auto'>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Gallery</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {templates.map((template) => (
             <Link
               key={template.id}
               to={`/preview/${template.id}`}
-              className='bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden group'
+              className='bg-white dark:bg-sand rounded-lg shadow-sm hover:shadow-md transition-all duration-400 overflow-hidden group hover-lift border border-sand/10 dark:border-dark-sand/20'
             >
-              <div className='p-4 border-b border-gray-200'>
-                <h2 className='text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'>{template.name}</h2>
-                <p className='text-sm text-gray-500 mt-1'>ID: {template.id}</p>
+              <div className='p-4 border-b border-sand/10 dark:border-dark-sand/20'>
+                <h2 className='text-xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
+                  {template.name}
+                </h2>
+                <p className='text-sm text-text-secondary mt-1'>ID: {template.id}</p>
               </div>
 
               {/* Thumbnail preview */}
-              <div className='bg-gray-50 p-4 flex justify-center items-start overflow-hidden'>
+              <div className='bg-light-sand dark:bg-dark-sand p-4 flex justify-center items-start overflow-hidden'>
                 <div
                   className='relative'
                   style={{
@@ -50,8 +52,8 @@ export default function PreviewGallery() {
                 </div>
               </div>
 
-              <div className='p-4 bg-gray-50 border-t border-gray-200'>
-                <span className='text-sm text-blue-600 group-hover:underline'>View full preview →</span>
+              <div className='p-4 bg-light-sand dark:bg-dark-sand border-t border-sand/10 dark:border-dark-sand/20'>
+                <span className='text-sm text-sea dark:text-accent-blue group-hover:underline font-medium tracking-elegant'>View full preview →</span>
               </div>
             </Link>
           ))}
@@ -59,7 +61,7 @@ export default function PreviewGallery() {
 
         {templates.length === 0 && (
           <div className='text-center py-12'>
-            <p className='text-gray-500 text-lg'>No templates available. Add templates to the registry to see them here.</p>
+            <p className='text-text-secondary text-lg'>No templates available. Add templates to the registry to see them here.</p>
           </div>
         )}
       </div>

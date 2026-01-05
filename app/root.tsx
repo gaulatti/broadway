@@ -27,14 +27,33 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
+    <html lang='en' className='bg-light-sand text-text-primary'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const saved = localStorage.getItem("theme");
+                  const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                  const useDark = saved ? saved === "dark" : systemDark;
+                  
+                  if (useDark) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `
+          }}
+        />
       </head>
-      <body>
+      <body className='bg-light-sand text-text-primary'>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -46,11 +65,42 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      const saved = localStorage.getItem('theme');
+      if (!saved) {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+          setIsDark(true);
+        } else {
+          document.documentElement.classList.remove('dark');
+          setIsDark(false);
+        }
+      }
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  React.useEffect(() => {
+    setIsDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const toggleTheme = React.useCallback(() => {
+    const html = document.documentElement;
+    const nextDark = !html.classList.contains('dark');
+    html.classList.toggle('dark', nextDark);
+    localStorage.setItem('theme', nextDark ? 'dark' : 'light');
+    setIsDark(nextDark);
+  }, []);
 
   return (
     <>
       {/* Navigation Header - Gaulatti Style */}
-      <header className='fixed w-full top-0 z-50 bg-white/90 dark:bg-dark-sand/95 backdrop-blur-2xl border-b border-sand/5 dark:border-dark-sand shadow-[0_1px_3px_0_rgb(0,0,0,0.02)] dark:shadow-[0_1px_3px_0_rgb(0,0,0,0.3)]'>
+      <header className='fixed w-full top-0 z-50 bg-white/90 dark:bg-dark-sand/95 backdrop-blur-2xl border-b border-sand/5 dark:border-sand shadow-[0_1px_3px_0_rgb(0,0,0,0.02)] dark:shadow-[0_1px_3px_0_rgb(0,0,0,0.3)]'>
         <div className='container mx-auto px-4'>
           <nav className='flex items-center justify-between h-20'>
             {/* Logo */}
@@ -61,7 +111,7 @@ export default function App() {
                 className='h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-400 dark:invert'
               />
               <div className='h-8 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
-              <span className='text-xl font-bold tracking-tight text-text-primary'>stronzi</span>
+              <span className='text-xl font-bold tracking-tight text-text-primary dark:text-white'>stronzi</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -76,6 +126,33 @@ export default function App() {
                 Gallery
               </Link>
             </div>
+
+            {/* Theme Toggle */}
+            <button
+              type='button'
+              onClick={toggleTheme}
+              className='hidden md:inline-flex items-center justify-center rounded-full p-2.5 border border-sand/10 dark:border-sand/40 bg-white/20 dark:bg-sand/10 backdrop-blur-md hover:scale-105 transition-transform duration-400 focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue'
+              aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+              title={isDark ? 'Light theme' : 'Dark theme'}
+            >
+              {isDark ? (
+                <svg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='stroke-gray-600 dark:stroke-gray-300'>
+                  <path d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
+                </svg>
+              ) : (
+                <svg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='stroke-gray-600 dark:stroke-gray-300'>
+                  <path d='M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
+                  <path d='M12 2v2' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M12 20v2' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M4.93 4.93l1.41 1.41' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M17.66 17.66l1.41 1.41' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M2 12h2' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M20 12h2' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M4.93 19.07l1.41-1.41' strokeWidth='1.8' strokeLinecap='round' />
+                  <path d='M17.66 6.34l1.41-1.41' strokeWidth='1.8' strokeLinecap='round' />
+                </svg>
+              )}
+            </button>
 
             {/* Mobile Menu Button */}
             <button className='md:hidden group' aria-label='Toggle menu' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -128,7 +205,7 @@ export default function App() {
       </div>
 
       {/* Footer - Gaulatti Style */}
-      <footer className='bg-deep-sea dark:bg-sand text-white'>
+      <footer className='bg-light-sand dark:bg-sand text-text-primary dark:text-white border-t border-sand/10'>
         {/* Natural Decorative Element */}
         <div className='h-[1px] w-full bg-gradient-to-r from-transparent via-sunset/30 to-transparent'></div>
 
@@ -137,31 +214,31 @@ export default function App() {
             {/* Brand Column */}
             <div className='lg:col-span-2'>
               <div className='flex items-center gap-4 mb-8'>
-                <img src='/logo.svg' alt='Template Studio' className='h-12 w-auto fill-current text-white opacity-90 invert' />
+                <img src='/logo.svg' alt='Template Studio' className='h-12 w-auto fill-current opacity-90 dark:invert' />
                 <div className='h-12 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
-                <span className='text-3xl font-bold tracking-tight text-white'>stronzi</span>
+                <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>stronzi</span>
               </div>
-              <p className='text-sand/90 max-w-md leading-relaxed tracking-refined'>
+              <p className='text-text-secondary dark:text-sand/90 max-w-md leading-relaxed tracking-refined'>
                 Crafting beautiful story templates for social media. Design, customize, and export perfect 1080×1920 images with ease.
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h3 className='font-medium tracking-elegant text-sm text-sand dark:text-desert mb-8 uppercase'>Navigation</h3>
+              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>Navigation</h3>
               <ul className='space-y-4'>
                 <li>
-                  <Link to='/' className='text-sand/80 dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
+                  <Link to='/' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to='/generate' className='text-sand/80 dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
+                  <Link to='/generate' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
                     Generate
                   </Link>
                 </li>
                 <li>
-                  <Link to='/preview' className='text-sand/80 dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
+                  <Link to='/preview' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
                     Gallery
                   </Link>
                 </li>
@@ -170,8 +247,8 @@ export default function App() {
 
             {/* Info */}
             <div>
-              <h3 className='font-medium tracking-elegant text-sm text-sand dark:text-desert mb-8 uppercase'>Features</h3>
-              <ul className='space-y-4 text-sand/80 dark:text-text-secondary'>
+              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>Features</h3>
+              <ul className='space-y-4 text-text-secondary dark:text-text-secondary'>
                 <li className='tracking-refined'>1080×1920 Templates</li>
                 <li className='tracking-refined'>Live Preview</li>
                 <li className='tracking-refined'>PNG Export</li>
@@ -182,7 +259,9 @@ export default function App() {
 
           {/* Bottom Bar */}
           <div className='border-t border-sand/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center'>
-            <div className='text-sm text-sand/60 tracking-refined'>© {new Date().getFullYear()} Template Studio. All rights reserved.</div>
+            <div className='text-sm text-text-secondary/60 dark:text-sand/60 tracking-refined'>
+              © {new Date().getFullYear()} Template Studio. All rights reserved.
+            </div>
           </div>
         </div>
 

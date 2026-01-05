@@ -70,12 +70,12 @@ export default function Generate() {
           {/* Left panel - Controls */}
           <div className='lg:col-span-1 space-y-6'>
             {/* Template selector */}
-            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <label className='block text-sm font-medium text-text-primary mb-2 tracking-wide'>Select Template</label>
+            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <label className='block text-sm font-medium text-text-primary dark:text-white mb-2 tracking-wide'>Select Template</label>
               <select
                 value={selectedTemplateId}
                 onChange={handleTemplateChange}
-                className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue bg-light-sand dark:bg-dark-sand text-text-primary transition-all duration-300'
+                className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue bg-white dark:bg-sand text-text-primary dark:text-white transition-all duration-300'
               >
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -86,19 +86,19 @@ export default function Generate() {
             </div>
 
             {/* Dynamic form */}
-            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Edit Fields</h2>
+            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Edit Fields</h2>
               <div className='space-y-4 max-h-[600px] overflow-y-auto'>
                 {template.fields.map((field) => (
                   <div key={field.key}>
-                    <label className='block text-sm font-medium text-text-primary mb-1 tracking-wide'>{field.label}</label>
+                    <label className='block text-sm font-medium text-text-primary dark:text-white mb-1 tracking-wide'>{field.label}</label>
                     {field.type === 'textarea' ? (
                       <textarea
                         defaultValue={values[field.key] || ''}
                         onBlur={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={field.rows || 3}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
                       />
                     ) : field.type === 'number' ? (
                       <input
@@ -109,7 +109,7 @@ export default function Generate() {
                         min={field.min}
                         max={field.max}
                         step={field.step}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
                       />
                     ) : (
                       <input
@@ -117,7 +117,7 @@ export default function Generate() {
                         defaultValue={values[field.key] || ''}
                         onBlur={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-dark-sand rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary bg-light-sand dark:bg-dark-sand transition-all duration-300'
+                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
                       />
                     )}
                   </div>
@@ -137,8 +137,8 @@ export default function Generate() {
 
           {/* Right panel - Preview */}
           <div className='lg:col-span-2'>
-            <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Live Preview</h2>
+            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Live Preview</h2>
               <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
                 {/* Preview container - scaled down for display */}
                 <div className='relative' style={{ width: '324px', height: '576px', overflow: 'hidden' }}>

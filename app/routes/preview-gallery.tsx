@@ -20,7 +20,7 @@ export default function PreviewGallery() {
             <Link
               key={template.id}
               to={`/preview/${template.id}`}
-              className='bg-white dark:bg-sand rounded-lg shadow-sm hover:shadow-md transition-all duration-400 overflow-hidden group hover-lift border border-sand/10 dark:border-dark-sand/20'
+              className='bg-white dark:bg-dark-sand rounded-lg shadow-sm hover:shadow-md transition-all duration-400 overflow-hidden group hover-lift border border-sand/10 dark:border-dark-sand/20'
             >
               <div className='p-4 border-b border-sand/10 dark:border-dark-sand/20'>
                 <h2 className='text-xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>

@@ -74,7 +74,7 @@ export default function PreviewTemplate() {
         </div>
 
         {/* Preview */}
-        <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+        <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
           <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Preview</h2>
           <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
             {/* Preview container - scaled down for display */}
@@ -96,7 +96,7 @@ export default function PreviewTemplate() {
         </div>
 
         {/* Template info */}
-        <div className='mt-8 bg-white dark:bg-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
+        <div className='mt-8 bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
           <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Template Fields</h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {template.fields.map((field) => (

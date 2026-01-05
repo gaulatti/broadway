@@ -1,26 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
-  darkMode: 'media', // Enable automatic dark mode based on system preference
+  darkMode: 'selector',
   theme: {
     extend: {
-      colors: {
-        'accent-gold': 'var(--color-accent-gold)',
-        'accent-oxblood': 'var(--color-accent-oxblood)',
-        'accent-bronze': 'var(--color-accent-bronze)',
-        sand: 'var(--color-sand)',
-        desert: 'var(--color-desert)',
-        terracotta: 'var(--color-terracotta)',
-        dusk: 'var(--color-dusk)',
-        sea: 'var(--color-sea)',
-        'deep-sea': 'var(--color-deep-sea)',
-        'light-sand': 'var(--color-light-sand)',
-        'dark-sand': 'var(--color-dark-sand)',
-        sunset: 'var(--color-sunset)',
-        'text-primary': 'var(--color-text-primary)',
-        'text-secondary': 'var(--color-text-secondary)',
-        'accent-blue': 'var(--color-sea)'
-      },
       fontFamily: {
         display: ['Cabinet Grotesk', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']

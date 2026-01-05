@@ -22,7 +22,7 @@ export default function Home() {
         <div className='container relative'>
           <div className='max-w-4xl mx-auto text-center'>
             {/* Main Heading */}
-            <h1 className='font-display text-6xl md:text-7xl font-medium mb-8 tracking-tight leading-tight'>
+            <h1 className='font-display text-6xl md:text-7xl font-medium mb-8 tracking-tight leading-tight text-text-primary dark:text-white'>
               <span className='block text-fade-in'>Template Studio</span>
             </h1>
 
@@ -55,11 +55,11 @@ export default function Home() {
 
       <div className='container mx-auto px-4 sm:px-6 lg:px-8 pb-16'>
         {/* Stats */}
-        <div className='bg-white dark:bg-sand rounded-lg shadow-sm p-8 mb-16 max-w-5xl mx-auto border border-sand/10 dark:border-dark-sand/20'>
+        <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-8 mb-16 max-w-5xl mx-auto border border-sand/10 dark:border-dark-sand/20'>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-center'>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>{templates.length}</p>
-              <p className='text-text-secondary font-medium tracking-wide'>Available Templates</p>
+              <p className='text-text-secondary dark:text-text-secondary font-medium tracking-wide'>Available Templates</p>
             </div>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>1080×1920</p>
@@ -76,7 +76,7 @@ export default function Home() {
         <div className='grid md:grid-cols-2 gap-8 mb-16 max-w-5xl mx-auto'>
           <Link
             to='/generate'
-            className='bg-white dark:bg-sand rounded-lg shadow-sm hover:shadow-md p-8 transition-all duration-400 hover-lift group border border-sand/10 dark:border-dark-sand/20'
+            className='bg-white dark:bg-dark-sand rounded-lg shadow-sm hover:shadow-md p-8 transition-all duration-400 hover-lift group border border-sand/10 dark:border-dark-sand/20'
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-3xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
@@ -107,7 +107,7 @@ export default function Home() {
 
           <Link
             to='/preview'
-            className='bg-white dark:bg-sand rounded-lg shadow-sm hover:shadow-md p-8 transition-all duration-400 hover-lift group border border-sand/10 dark:border-dark-sand/20'
+            className='bg-white dark:bg-dark-sand rounded-lg shadow-sm hover:shadow-md p-8 transition-all duration-400 hover-lift group border border-sand/10 dark:border-dark-sand/20'
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-3xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
@@ -139,34 +139,34 @@ export default function Home() {
 
         {/* How it works */}
         <div className='mt-16 text-center max-w-6xl mx-auto'>
-          <h2 className='text-4xl font-display font-medium text-text-primary mb-12 tracking-refined'>How It Works</h2>
+          <h2 className='text-4xl font-display font-medium text-text-primary dark:text-white mb-12 tracking-refined'>How It Works</h2>
           <div className='grid md:grid-cols-4 gap-6'>
-            <div className='bg-white dark:bg-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
+            <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 1
               </div>
-              <h3 className='font-display font-medium text-text-primary mb-3 text-lg tracking-refined'>Select Template</h3>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Select Template</h3>
               <p className='text-sm text-text-secondary leading-relaxed'>Choose from available story templates</p>
             </div>
-            <div className='bg-white dark:bg-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
+            <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 2
               </div>
-              <h3 className='font-display font-medium text-text-primary mb-3 text-lg tracking-refined'>Customize Fields</h3>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Customize Fields</h3>
               <p className='text-sm text-text-secondary leading-relaxed'>Edit text, images, and other properties</p>
             </div>
-            <div className='bg-white dark:bg-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
+            <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 3
               </div>
-              <h3 className='font-display font-medium text-text-primary mb-3 text-lg tracking-refined'>Preview Live</h3>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Preview Live</h3>
               <p className='text-sm text-text-secondary leading-relaxed'>See changes update in real-time</p>
             </div>
-            <div className='bg-white dark:bg-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
+            <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 4
               </div>
-              <h3 className='font-display font-medium text-text-primary mb-3 text-lg tracking-refined'>Export PNG</h3>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Export PNG</h3>
               <p className='text-sm text-text-secondary leading-relaxed'>Download perfect 1080×1920 image</p>
             </div>
           </div>

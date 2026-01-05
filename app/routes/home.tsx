@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { templates } from '../templates';
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: 'Template Studio - Story Template Generator' }, { name: 'description', content: 'Create and export beautiful 1080x1920 story templates' }];
+  return [{ title: 'Stronzi - Instagram Story Template Generator' }, { name: 'description', content: 'Create and export beautiful 1080x1920 story templates' }];
 }
 
 export default function Home() {
@@ -17,23 +17,19 @@ export default function Home() {
         </div>
 
         {/* Sunset Accent Line */}
-        <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-24 bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
 
-        <div className='container relative'>
+        <div className='container mx-auto flex flex-col items-center px-4 sm:px-6 lg:px-8 relative z-10 justify-center'>
           <div className='max-w-4xl mx-auto text-center'>
             {/* Main Heading */}
             <h1 className='font-display text-6xl md:text-7xl font-medium mb-8 tracking-tight leading-tight text-text-primary dark:text-white'>
               <span className='block text-fade-in'>Template Studio</span>
             </h1>
-
             {/* Role Description */}
-            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>Story Template Generator</p>
-
+            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>Instagram Story Generator</p>
             {/* Personal Philosophy */}
             <p className='text-lg md:text-xl mb-12 max-w-2xl mx-auto text-text-secondary leading-relaxed font-light'>
               Create stunning 1080×1920 story templates. Select a template, customize it, and export perfect PNG images with ease.
             </p>
-
             {/* CTA Buttons */}
             <div className='flex justify-center gap-6 flex-wrap'>
               <Link

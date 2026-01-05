@@ -54,7 +54,7 @@ export default function Generate() {
     return (
       <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
         <div className='container mx-auto'>
-          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Template Generator</h1>
+          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Instagram Story Generator</h1>
           <p className='text-text-secondary'>No templates available. Please add templates to the registry.</p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export default function Generate() {
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
       <div className='container mx-auto'>
-        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Generator</h1>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Instagram Story Generator</h1>
 
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left panel - Controls */}

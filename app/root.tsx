@@ -131,7 +131,7 @@ export default function App() {
             <button
               type='button'
               onClick={toggleTheme}
-              className='hidden md:inline-flex items-center justify-center rounded-full p-2.5 border border-sand/10 dark:border-sand/40 bg-white/20 dark:bg-sand/10 backdrop-blur-md hover:scale-105 transition-transform duration-400 focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue'
+              className='hidden md:inline-flex items-center justify-center rounded-full p-2.5 border border-sand/20 dark:border-sand/70 bg-white/35 dark:bg-sand/25 backdrop-blur-md shadow-sm dark:shadow-[0_1px_8px_rgba(0,0,0,0.35)] ring-1 ring-sand/10 dark:ring-sand/35 cursor-pointer select-none transition-all duration-400 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/55 hover:border-sand/30 hover:shadow-md hover:ring-sea/25 dark:hover:bg-sand/35 dark:hover:border-sand/80 dark:hover:ring-accent-blue/35 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sea dark:focus-visible:ring-accent-blue'
               aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
               title={isDark ? 'Light theme' : 'Dark theme'}
             >
@@ -218,7 +218,7 @@ export default function App() {
                 <div className='h-12 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
                 <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>stronzi</span>
               </div>
-              <p className='text-text-secondary dark:text-sand/90 max-w-md leading-relaxed tracking-refined'>
+              <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>
                 Crafting beautiful story templates for social media. Design, customize, and export perfect 1080×1920 images with ease.
               </p>
             </div>
@@ -259,8 +259,12 @@ export default function App() {
 
           {/* Bottom Bar */}
           <div className='border-t border-sand/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center'>
-            <div className='text-sm text-text-secondary/60 dark:text-sand/60 tracking-refined'>
-              © {new Date().getFullYear()} Template Studio. All rights reserved.
+            <div className='text-sm text-text-secondary dark:text-text-secondary tracking-refined'>
+              © {new Date().getFullYear()}{' '}
+              <a href='https://gaulatti.com' target='_blank' rel='noopener noreferrer' className='font-semibold hover:underline underline-offset-4'>
+                gaulatti
+              </a>
+              . All rights reserved.
             </div>
           </div>
         </div>

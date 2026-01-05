@@ -5,6 +5,7 @@ A sophisticated React-based application for creating and exporting professional 
 ## 🎯 Overview
 
 Template Studio is a complete solution for generating social media story templates with:
+
 - **Template System**: Extensible React component architecture with typed props
 - **Dynamic Forms**: Auto-generated forms based on template field definitions
 - **Live Preview**: Real-time preview of template customizations
@@ -15,6 +16,7 @@ Template Studio is a complete solution for generating social media story templat
 ## ✨ Features
 
 ### Core Functionality
+
 - 🎨 **Template Editor** - Select templates, customize fields, and preview changes live
 - 🖼️ **Image Export** - Export perfect 1080×1920 PNG images with a single click
 - 📱 **Gallery Browser** - View all templates in a responsive grid layout
@@ -22,6 +24,7 @@ Template Studio is a complete solution for generating social media story templat
 - 🌓 **Dark Mode** - Automatic dark mode based on system preferences
 
 ### Technical Features
+
 - 🚀 **Server-Side Rendering** - Built with React Router 7
 - ⚡️ **Hot Module Replacement** - Fast development with HMR
 - 📦 **Optimized Bundling** - Vite-powered build system
@@ -40,17 +43,20 @@ Template Studio is a complete solution for generating social media story templat
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd stronzi
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -177,32 +183,17 @@ export const fields: Array<FieldDef<MyStoryProps>> = [
 ];
 
 // The template component (1080×1920)
-const TemplateMyStory: React.FC<MyStoryProps> = ({ 
-  title, 
-  subtitle, 
-  imageUrl, 
-  description 
-}) => {
+const TemplateMyStory: React.FC<MyStoryProps> = ({ title, subtitle, imageUrl, description }) => {
   return (
-    <div className="relative w-[1080px] h-[1920px] overflow-hidden bg-gradient-to-br from-sea to-deep-sea">
+    <div className='relative w-[1080px] h-[1920px] overflow-hidden bg-gradient-to-br from-sea to-deep-sea'>
       {/* Background Image */}
-      <img 
-        src={imageUrl} 
-        alt="Background" 
-        className="absolute inset-0 w-full h-full object-cover opacity-50"
-      />
-      
+      <img src={imageUrl} alt='Background' className='absolute inset-0 w-full h-full object-cover opacity-50' />
+
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full p-16 text-white">
-        <h1 className="font-display text-8xl font-bold mb-8 text-center">
-          {title}
-        </h1>
-        <h2 className="font-display text-5xl mb-12 text-center">
-          {subtitle}
-        </h2>
-        <p className="text-3xl text-center max-w-3xl leading-relaxed">
-          {description}
-        </p>
+      <div className='relative z-10 flex flex-col items-center justify-center h-full p-16 text-white'>
+        <h1 className='font-display text-8xl font-bold mb-8 text-center'>{title}</h1>
+        <h2 className='font-display text-5xl mb-12 text-center'>{subtitle}</h2>
+        <p className='text-3xl text-center max-w-3xl leading-relaxed'>{description}</p>
       </div>
     </div>
   );
@@ -216,11 +207,7 @@ export default TemplateMyStory;
 Add your template to `app/templates/index.ts`:
 
 ```tsx
-import TemplateMyStory, { 
-  defaultProps as myStoryDefaults, 
-  fields as myStoryFields,
-  type MyStoryProps 
-} from './TemplateMyStory';
+import TemplateMyStory, { defaultProps as myStoryDefaults, fields as myStoryFields, type MyStoryProps } from './TemplateMyStory';
 
 const templates: TemplateDefinition<any>[] = [
   // ... existing templates
@@ -248,17 +235,20 @@ The application uses a custom design system with a carefully curated color palet
 ### Color Palette
 
 **Light Mode:**
+
 - Sand (`#F5E6D3`) - Light backgrounds
 - Desert (`#D4A574`) - Warm accents
 - Sea (`#5B7C8D`) - Primary actions
 - Dusk (`#4A4A4A`) - Primary text
 
 **Dark Mode:**
+
 - Deep Sea (`#1A2930`) - Dark backgrounds
 - Sunset (`#F7941D`) - Warm highlights
 - Accent Blue (`#5B7C8D`) - Links and actions
 
 **Accent Colors:**
+
 - Gold (`#D4AF37`)
 - Oxblood (`#800020`)
 - Bronze (`#CD7F32`)
@@ -277,6 +267,7 @@ npm run build
 ```
 
 This generates:
+
 ```
 build/
 ├── client/    # Static assets (HTML, CSS, JS, images)
@@ -308,6 +299,7 @@ The application will be available at `http://localhost:3000`.
 ### Multi-Stage Build
 
 The Dockerfile uses a multi-stage build for optimal image size:
+
 1. **development-dependencies-env** - Install all dependencies
 2. **production-dependencies-env** - Install production dependencies only
 3. **build-env** - Build the application
@@ -322,10 +314,12 @@ The project includes automated deployment to AWS S3 + CloudFront via GitHub Acti
 Set up the following in your GitHub repository:
 
 **Secrets:**
+
 - `AWS_ACCESS_KEY_ID` - AWS access key
 - `AWS_SECRET_ACCESS_KEY` - AWS secret key
 
 **Variables:**
+
 - `AWS_REGION` - AWS region (e.g., `us-east-1`)
 - `BUCKET_NAME` - S3 bucket name
 - `DISTRIBUTION_ID` - CloudFront distribution ID
@@ -333,6 +327,7 @@ Set up the following in your GitHub repository:
 ### Deployment Workflow
 
 On push to `main` branch:
+
 1. Checks out code
 2. Sets up Node.js 22
 3. Configures AWS credentials
@@ -348,6 +343,7 @@ The static site is deployed from the `build/client/` directory.
 The application can be deployed to any platform supporting:
 
 **Docker-based platforms:**
+
 - AWS ECS
 - Google Cloud Run
 - Azure Container Apps
@@ -356,12 +352,14 @@ The application can be deployed to any platform supporting:
 - Railway
 
 **Node.js platforms:**
+
 - Vercel
 - Netlify
 - Heroku
 - Render
 
 **Static hosting (client-side only):**
+
 - AWS S3 + CloudFront (current setup)
 - Netlify
 - Vercel

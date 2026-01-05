@@ -134,11 +134,13 @@ Register it in `app/templates/index.ts` and you're done! See the [Creating Templ
 
 ## 📄 License
 
-This project is private and not licensed for public use.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute this software as long as you include the license notice.
 
 ---
 
-Built with precision and care using React Router and modern web technologies.
+Built with precision using React Router and modern web technologies.
 �️ Tech Stack
 
 - **React 19** - UI framework
@@ -151,16 +153,14 @@ Built with precision and care using React Router and modern web technologies.
 
 ## 🤝 Contributing
 
-See the [Wiki](https://github.com/gaulatti/stronzi/wiki/Home) for comprehensive documentation on:
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+For more details, see the [Wiki](https://github.com/gaulatti/stronzi/wiki/Home) for comprehensive documentation on:
 
 - Project architecture
 - Template system
 - Design guidelines
 - Development workflows
-
-## 📄 License
-
-This project is private and not licensed for public use.
 
 ---
 

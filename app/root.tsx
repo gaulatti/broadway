@@ -1,8 +1,12 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, Link, useLocation } from 'react-router';
+import { Github, Moon, Sun, Monitor } from 'lucide-react';
 import React from 'react';
 
 import type { Route } from './+types/root';
 import './app.css';
+
+const GITHUB_REPO_URL = 'https://github.com/gaulatti/stronzi';
+const GITHUB_WIKI_URL = 'https://github.com/gaulatti/stronzi/wiki/Home';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -39,10 +43,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               (function() {
                 try {
                   const saved = localStorage.getItem("theme");
-                  const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                  const useDark = saved ? saved === "dark" : systemDark;
+                  let shouldBeDark = false;
                   
-                  if (useDark) {
+                  if (saved === "dark") {
+                    shouldBeDark = true;
+                  } else if (saved === "system" || !saved) {
+                    shouldBeDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                  }
+                  
+                  if (shouldBeDark) {
                     document.documentElement.classList.add('dark');
                   } else {
                     document.documentElement.classList.remove('dark');
@@ -65,37 +74,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [isDark, setIsDark] = React.useState(false);
+  const [theme, setTheme] = React.useState<'light' | 'dark' | 'system'>('light');
 
   React.useEffect(() => {
+    // Initialize theme from localStorage
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
+    const initialTheme = saved || 'system';
+    setTheme(initialTheme);
+  }, []);
+
+  React.useEffect(() => {
+    // Listen for system preference changes (only apply if theme is 'system')
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
-      const saved = localStorage.getItem('theme');
-      if (!saved) {
+      if (theme === 'system') {
         if (e.matches) {
           document.documentElement.classList.add('dark');
-          setIsDark(true);
         } else {
           document.documentElement.classList.remove('dark');
-          setIsDark(false);
         }
       }
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  React.useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
+  }, [theme]);
 
   const toggleTheme = React.useCallback(() => {
-    const html = document.documentElement;
-    const nextDark = !html.classList.contains('dark');
-    html.classList.toggle('dark', nextDark);
-    localStorage.setItem('theme', nextDark ? 'dark' : 'light');
-    setIsDark(nextDark);
-  }, []);
+    const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+
+    // Apply the theme immediately
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = nextTheme === 'dark' || (nextTheme === 'system' && systemDark);
+
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   return (
     <>
@@ -127,32 +145,35 @@ export default function App() {
               </Link>
             </div>
 
-            {/* Theme Toggle */}
-            <button
-              type='button'
-              onClick={toggleTheme}
-              className='hidden md:inline-flex items-center justify-center rounded-full p-2.5 border border-sand/20 dark:border-sand/70 bg-white/35 dark:bg-sand/25 backdrop-blur-md shadow-sm dark:shadow-[0_1px_8px_rgba(0,0,0,0.35)] ring-1 ring-sand/10 dark:ring-sand/35 cursor-pointer select-none transition-all duration-400 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/55 hover:border-sand/30 hover:shadow-md hover:ring-sea/25 dark:hover:bg-sand/35 dark:hover:border-sand/80 dark:hover:ring-accent-blue/35 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sea dark:focus-visible:ring-accent-blue'
-              aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-              title={isDark ? 'Light theme' : 'Dark theme'}
-            >
-              {isDark ? (
-                <svg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='stroke-gray-600 dark:stroke-gray-300'>
-                  <path d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
-                </svg>
-              ) : (
-                <svg width='18' height='18' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='stroke-gray-600 dark:stroke-gray-300'>
-                  <path d='M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
-                  <path d='M12 2v2' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M12 20v2' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M4.93 4.93l1.41 1.41' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M17.66 17.66l1.41 1.41' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M2 12h2' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M20 12h2' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M4.93 19.07l1.41-1.41' strokeWidth='1.8' strokeLinecap='round' />
-                  <path d='M17.66 6.34l1.41-1.41' strokeWidth='1.8' strokeLinecap='round' />
-                </svg>
-              )}
-            </button>
+            {/* Source link + Theme Toggle */}
+            <div className='hidden md:flex items-center gap-3'>
+              <a
+                href={GITHUB_REPO_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center rounded-full p-2.5 border border-sand/20 dark:border-sand/70 bg-white/35 dark:bg-sand/25 backdrop-blur-md shadow-sm dark:shadow-[0_1px_8px_rgba(0,0,0,0.35)] ring-1 ring-sand/10 dark:ring-sand/35 cursor-pointer select-none transition-all duration-400 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/55 hover:border-sand/30 hover:shadow-md hover:ring-sea/25 dark:hover:bg-sand/35 dark:hover:border-sand/80 dark:hover:ring-accent-blue/35 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sea dark:focus-visible:ring-accent-blue'
+                aria-label='View source on GitHub'
+                title='View source on GitHub'
+              >
+                <Github size={18} className='text-gray-600 dark:text-gray-300' strokeWidth={1.5} />
+              </a>
+
+              <button
+                type='button'
+                onClick={toggleTheme}
+                className='inline-flex items-center justify-center rounded-full p-2.5 border border-sand/20 dark:border-sand/70 bg-white/35 dark:bg-sand/25 backdrop-blur-md shadow-sm dark:shadow-[0_1px_8px_rgba(0,0,0,0.35)] ring-1 ring-sand/10 dark:ring-sand/35 cursor-pointer select-none transition-all duration-400 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/55 hover:border-sand/30 hover:shadow-md hover:ring-sea/25 dark:hover:bg-sand/35 dark:hover:border-sand/80 dark:hover:ring-accent-blue/35 active:translate-y-0 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sea dark:focus-visible:ring-accent-blue'
+                aria-label={theme === 'light' ? 'Switch to dark theme' : theme === 'dark' ? 'Switch to system theme' : 'Switch to light theme'}
+                title={theme === 'light' ? 'Dark' : theme === 'dark' ? 'System' : 'Light'}
+              >
+                {theme === 'light' ? (
+                  <Sun size={18} className='text-gray-600 dark:text-gray-300' strokeWidth={1.5} />
+                ) : theme === 'dark' ? (
+                  <Moon size={18} className='text-gray-600 dark:text-gray-300' strokeWidth={1.5} />
+                ) : (
+                  <Monitor size={18} className='text-gray-600 dark:text-gray-300' strokeWidth={1.5} />
+                )}
+              </button>
+            </div>
 
             {/* Mobile Menu Button */}
             <button className='md:hidden group' aria-label='Toggle menu' onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -242,6 +263,26 @@ export default function App() {
                     Gallery
                   </Link>
                 </li>
+                <li>
+                  <a
+                    href={GITHUB_REPO_URL}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'
+                  >
+                    Source (GitHub)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={GITHUB_WIKI_URL}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'
+                  >
+                    Docs (Wiki)
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -265,6 +306,12 @@ export default function App() {
                 gaulatti
               </a>
               . All rights reserved.
+            </div>
+
+            <div className='mt-4 md:mt-0 text-sm text-text-secondary/70 dark:text-text-secondary/70 tracking-refined'>
+              <a href={GITHUB_REPO_URL} target='_blank' rel='noopener noreferrer' className='hover:underline underline-offset-4'>
+                View source on GitHub
+              </a>
             </div>
           </div>
         </div>

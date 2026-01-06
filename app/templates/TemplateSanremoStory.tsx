@@ -144,7 +144,10 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
           <div className='flex-1 flex flex-col justify-center items-center space-y-10 -mt-5'>
             {/* Artist name and handle */}
             <div className='text-center'>
-              <h3 className='text-[128px] text-white tracking-tight leading-none' style={{ fontFamily: "'Encode Sans', sans-serif", fontWeight: 400 }}>
+              <h3
+                className='text-white tracking-tight leading-none'
+                style={{ fontFamily: "'Encode Sans', sans-serif", fontWeight: 400, fontSize: (artistName?.length ?? 0) > 17 ? '96px' : '128px' }}
+              >
                 {artistName}
               </h3>
               <div className='flex justify-center'>

@@ -150,11 +150,11 @@ const TemplateSanremoStory: React.FC<SanremoStoryProps> = (props) => {
               >
                 {artistName}
               </h3>
-              <div className='flex justify-center'>
-                <div className='mt-12 bg-white/20 rounded block text-[26px]' style={{ width: '200px', height: '40px' }}>
+              {/* <div className='flex justify-center'>
+                <div className='mt-4 bg-white/20 rounded block text-[26px]' style={{ width: '200px', height: '40px' }}>
                   Social Aquí
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Artist photo with decorative frame */}

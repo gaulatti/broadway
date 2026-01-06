@@ -34,17 +34,17 @@ export default function PreviewGallery() {
                 <div
                   className='relative'
                   style={{
-                    width: '216px',
-                    height: '384px',
+                    width: `${template.width * template.galleryScale}px`,
+                    height: `${template.height * template.galleryScale}px`,
                     overflow: 'hidden'
                   }}
                 >
                   <div
                     style={{
                       transformOrigin: 'top left',
-                      transform: 'scale(0.2)',
-                      width: '1080px',
-                      height: '1920px'
+                      transform: `scale(${template.galleryScale})`,
+                      width: `${template.width}px`,
+                      height: `${template.height}px`
                     }}
                   >
                     <template.Component {...template.defaultProps} />

@@ -4,21 +4,17 @@
  * Central registry for all available templates.
  * To add a new template:
  * 1. Create a new template component in this folder
- * 2. Import it here
- * 3. Add it to the templates array with id, name, Component, defaultProps, and fields
+ * 2. Export a templateDefinition from your template file
+ * 3. Import and add it to the templates array here
  */
 
 import type { TemplateDefinition } from './types';
-import TemplateSanremoStory, { defaultProps as sanremoDefaultProps, fields as sanremoFields, type SanremoStoryProps } from './TemplateSanremoStory';
+import { templateDefinition as sanremoStoryDefinition } from './TemplateSanremoStory';
+import { templateDefinition as sanremoPostDefinition } from './TemplateSanremoPost';
 
 export const templates: TemplateDefinition[] = [
-  {
-    id: 'sanremo_story',
-    name: 'Sanremo Story',
-    Component: TemplateSanremoStory,
-    defaultProps: sanremoDefaultProps,
-    fields: sanremoFields
-  } as TemplateDefinition<SanremoStoryProps>
+  sanremoStoryDefinition,
+  sanremoPostDefinition
   // Add more templates here as they are created
 ];
 

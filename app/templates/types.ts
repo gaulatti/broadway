@@ -31,4 +31,8 @@ export interface TemplateDefinition<TProps = any> {
   Component: React.FC<TProps>;
   defaultProps: TProps;
   fields: Array<FieldDef<TProps>>;
+  width: number; // Template width in pixels
+  height: number; // Template height in pixels
+  galleryScale: number; // Scale factor for gallery preview (e.g., 0.2, 0.5)
+  previewScale: number; // Scale factor for gallery preview (e.g., 0.2, 0.5)
 }

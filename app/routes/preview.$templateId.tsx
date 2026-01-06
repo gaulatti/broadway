@@ -69,7 +69,7 @@ export default function PreviewTemplate() {
             disabled={isExporting}
             className='bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
           >
-            {isExporting ? 'Exporting...' : 'Export PNG (1080×1920)'}
+            {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
           </button>
         </div>
 
@@ -78,16 +78,19 @@ export default function PreviewTemplate() {
           <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Preview</h2>
           <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
             {/* Preview container - scaled down for display */}
-            <div className='relative' style={{ width: '324px', height: '576px', overflow: 'hidden' }}>
+            <div
+              className='relative'
+              style={{ width: `${template.width * template.previewScale}px`, height: `${template.height * template.previewScale}px`, overflow: 'hidden' }}
+            >
               <div
                 style={{
                   transformOrigin: 'top left',
-                  transform: 'scale(0.3)',
-                  width: '1080px',
-                  height: '1920px'
+                  transform: `scale(${template.previewScale})`,
+                  width: `${template.width}px`,
+                  height: `${template.height}px`
                 }}
               >
-                <div ref={previewRef} style={{ width: '1080px', height: '1920px' }}>
+                <div ref={previewRef} style={{ width: `${template.width}px`, height: `${template.height}px` }}>
                   <template.Component {...template.defaultProps} />
                 </div>
               </div>

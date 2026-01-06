@@ -10,7 +10,7 @@
 
 import React, { useState, useRef } from 'react';
 import { templates } from '../templates';
-import type { TemplateDefinition } from '../templates/types';
+
 import { exportNodeToPng } from '../utils/exportImage';
 
 export default function Generate() {
@@ -54,7 +54,7 @@ export default function Generate() {
     return (
       <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
         <div className='container mx-auto'>
-          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Instagram Story Generator</h1>
+          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Template Generator</h1>
           <p className='text-text-secondary'>No templates available. Please add templates to the registry.</p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export default function Generate() {
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
       <div className='container mx-auto'>
-        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Instagram Story Generator</h1>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Generator</h1>
 
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left panel - Controls */}
@@ -131,7 +131,7 @@ export default function Generate() {
               disabled={isExporting}
               className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
             >
-              {isExporting ? 'Exporting...' : 'Export PNG (1080×1920)'}
+              {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
             </button>
           </div>
 
@@ -141,16 +141,19 @@ export default function Generate() {
               <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Live Preview</h2>
               <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
                 {/* Preview container - scaled down for display */}
-                <div className='relative' style={{ width: '324px', height: '576px', overflow: 'hidden' }}>
+                <div
+                  className='relative'
+                  style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}
+                >
                   <div
                     style={{
                       transformOrigin: 'top left',
-                      transform: 'scale(0.3)',
-                      width: '1080px',
-                      height: '1920px'
+                      transform: `scale(${template.galleryScale})`,
+                      width: `${template.width}px`,
+                      height: `${template.height}px`
                     }}
                   >
-                    <div ref={previewRef} style={{ width: '1080px', height: '1920px' }}>
+                    <div ref={previewRef} style={{ width: `${template.width}px`, height: `${template.height}px` }}>
                       <template.Component {...values} />
                     </div>
                   </div>

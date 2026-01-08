@@ -12,11 +12,13 @@ import type { TemplateDefinition } from './types';
 import { templateDefinition as sanremoStoryDefinition } from './TemplateSanremoStory';
 import { templateDefinition as sanremoPostDefinition } from './TemplateSanremoPost';
 import { templateDefinition as sanremoPost16x9Definition } from './TemplateSanremoPost16x9';
+import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanremoStory16x9';
 
 export const templates: TemplateDefinition[] = [
   sanremoStoryDefinition,
   sanremoPostDefinition,
-  sanremoPost16x9Definition
+  sanremoPost16x9Definition,
+  sanremoStory16x9Definition
   // Add more templates here as they are created
 ];
 

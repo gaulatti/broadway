@@ -10,7 +10,8 @@
 
 import React, { useState, useRef } from 'react';
 import { templates } from '../templates';
-
+import type { OverlayItem } from '../templates/types';
+import OverlayEditor from '../components/OverlayEditor';
 import { exportNodeToPng } from '../utils/exportImage';
 
 export default function Generate() {
@@ -92,7 +93,9 @@ export default function Generate() {
                 {template.fields.map((field) => (
                   <div key={field.key}>
                     <label className='block text-sm font-medium text-text-primary dark:text-white mb-1 tracking-wide'>{field.label}</label>
-                    {field.type === 'textarea' ? (
+                    {field.type === 'overlays' ? (
+                      <OverlayEditor value={(values[field.key] as OverlayItem[]) || []} onChange={(overlays) => handleFieldChange(field.key, overlays)} />
+                    ) : field.type === 'textarea' ? (
                       <textarea
                         defaultValue={values[field.key] || ''}
                         onBlur={(e) => handleFieldChange(field.key, e.target.value)}

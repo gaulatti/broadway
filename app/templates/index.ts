@@ -13,8 +13,10 @@ import { templateDefinition as sanremoStoryDefinition } from './TemplateSanremoS
 import { templateDefinition as sanremoPostDefinition } from './TemplateSanremoPost';
 import { templateDefinition as sanremoPost16x9Definition } from './TemplateSanremoPost16x9';
 import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanremoStory16x9';
+import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
 
 export const templates: TemplateDefinition[] = [
+  sanremoPromoPostDefinition,
   sanremoStoryDefinition,
   sanremoPostDefinition,
   sanremoPost16x9Definition,

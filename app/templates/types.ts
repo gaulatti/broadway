@@ -6,7 +6,25 @@
  * and default values for preview/demo purposes.
  */
 
-export type FieldType = 'text' | 'textarea' | 'number' | 'image';
+export type FieldType = 'text' | 'textarea' | 'number' | 'image' | 'overlays';
+
+/**
+ * A single text overlay block rendered over the photo area.
+ * Used by templates that accept ad-libitum text placement.
+ */
+export interface OverlayItem {
+  id: string;
+  text: string;
+  placement?: 'top' | 'center' | 'bottom';
+  align?: 'left' | 'center' | 'right';
+  fontSize?: number;
+  fontWeight?: 'normal' | 'bold';
+  color?: string;
+  uppercase?: boolean;
+  shadow?: boolean;
+  letterSpacing?: string;
+  lineHeight?: number;
+}
 
 /**
  * Field definition for auto-generating form inputs

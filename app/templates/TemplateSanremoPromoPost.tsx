@@ -177,18 +177,15 @@ const TemplateSanremoPromoPost: React.FC<SanremoPromoPostProps> = (props) => {
         backgroundColor: '#0a0a0a'
       }}
     >
-      {/* ── BACKGROUND PHOTO (FULL SIZE) ──────────────────────────────── */}
-      <img
-        src={backgroundImageUrl}
-        alt='Background'
-        crossOrigin='anonymous'
+      {/* ── BACKGROUND PHOTO (COVER) ──────────────────────────────────── */}
+      <div
         style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'center top',
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
           zIndex: 0
         }}
       />

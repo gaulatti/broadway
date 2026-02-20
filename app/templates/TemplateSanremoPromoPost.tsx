@@ -17,7 +17,7 @@
  * Overlays are passed as OverlayItem[] and edited via the visual OverlayEditor.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FieldDef, OverlayItem, TemplateDefinition } from './types';
 
 // ─── Template props ───────────────────────────────────────────────────────────
@@ -152,6 +152,43 @@ const FOOTER_CONTENT_TOP_GAP = 15;
 const TemplateSanremoPromoPost: React.FC<SanremoPromoPostProps> = (props) => {
   const { backgroundImageUrl, overlays = [], day, time, timezone } = props;
 
+  /**
+   * Pre-render the background image onto an off-screen canvas at exactly
+   * TOTAL_WIDTH × TOTAL_HEIGHT with a "cover, center-top" crop computed in JS.
+   * The resulting data URL is already inlined, so html-to-image needs no
+   * external fetch and no object-fit interpretation during export.
+   */
+  const [bgDataUrl, setBgDataUrl] = useState<string>('');
+  useEffect(() => {
+    if (!backgroundImageUrl) return;
+    let cancelled = false;
+    const img = new window.Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      if (cancelled) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = TOTAL_WIDTH;
+      canvas.height = TOTAL_HEIGHT;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      // Cover: scale so the image fills TOTAL_WIDTH × TOTAL_HEIGHT, anchor top-center
+      const scale = Math.max(TOTAL_WIDTH / img.naturalWidth, TOTAL_HEIGHT / img.naturalHeight);
+      const scaledW = img.naturalWidth * scale;
+      const scaledH = img.naturalHeight * scale;
+      const dx = (TOTAL_WIDTH - scaledW) / 2; // center horizontally
+      const dy = 0; // anchor to top
+      ctx.drawImage(img, dx, dy, scaledW, scaledH);
+      setBgDataUrl(canvas.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = () => {
+      if (!cancelled) setBgDataUrl('');
+    };
+    img.src = backgroundImageUrl;
+    return () => {
+      cancelled = true;
+    };
+  }, [backgroundImageUrl]);
+
   const topItems = overlays.filter((o) => o.placement === 'top');
   const centerItems = overlays.filter((o) => o.placement === 'center');
   const bottomItems = overlays.filter((o) => (o.placement ?? 'bottom') === 'bottom');
@@ -178,8 +215,10 @@ const TemplateSanremoPromoPost: React.FC<SanremoPromoPostProps> = (props) => {
       }}
     >
       {/* ── BACKGROUND PHOTO (COVER) ──────────────────────────────────── */}
+      {/* src is a pre-cropped data URL once the canvas effect resolves;       */}
+      {/* html-to-image inlines data URLs as-is — no fetch, no CORS issues.   */}
       <img
-        src={backgroundImageUrl}
+        src={bgDataUrl || backgroundImageUrl}
         alt='Background'
         crossOrigin='anonymous'
         style={{

@@ -53,7 +53,7 @@ const DEFAULT_OVERLAYS: OverlayItem[] = [
     shadow: true
   },
   {
-    id: 'item-2',
+    id: 'item-3',
     text: 'SOLO FALTAS TÚ!',
     placement: 'bottom',
     align: 'left',
@@ -108,6 +108,8 @@ export const fields: Array<FieldDef<SanremoPromoPostProps>> = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function overlayTextStyle(item: OverlayItem): React.CSSProperties {
+  const hasShadow = item.shadow !== false;
+
   return {
     fontFamily: "'Funnel Display', sans-serif",
     fontSize: `${item.fontSize ?? 80}px`,
@@ -117,7 +119,8 @@ function overlayTextStyle(item: OverlayItem): React.CSSProperties {
     letterSpacing: item.letterSpacing,
     lineHeight: item.lineHeight ?? 1.05,
     textAlign: item.align ?? 'left',
-    textShadow: (item.shadow ?? true) ? '0 2px 24px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.8)' : undefined,
+    textShadow: hasShadow ? '0 0 2px rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.9), 0 10px 26px rgba(0,0,0,0.75)' : 'none',
+    filter: hasShadow ? 'drop-shadow(0 2px 6px rgba(0,0,0,0.8))' : undefined,
     wordWrap: 'break-word',
     overflowWrap: 'break-word',
     hyphens: 'auto',

@@ -3,7 +3,7 @@
  *
  * Uses html-to-image to export template renders as PNG images.
  * html-to-image properly handles modern CSS including filters, gradients, and Google Fonts.
- * Ensures output is exactly 1080x1920 pixels regardless of device pixel ratio.
+ * Exports using the template's configured dimensions.
  */
 
 import { toPng } from 'html-to-image';
@@ -36,12 +36,19 @@ async function waitForImages(node: HTMLElement): Promise<void> {
 }
 
 /**
- * Export a DOM node to PNG with exact 1080x1920 dimensions
+ * Export a DOM node to PNG with exact dimensions
  *
  * @param node - The HTML element to capture
  * @param filename - Desired filename for the download
+ * @param width - Output width in pixels
+ * @param height - Output height in pixels
  */
-export async function exportNodeToPng(node: HTMLElement, filename: string = 'template.png'): Promise<void> {
+export async function exportNodeToPng(
+  node: HTMLElement,
+  filename: string = 'template.png',
+  width: number = node.offsetWidth,
+  height: number = node.offsetHeight
+): Promise<void> {
   try {
     // Wait for fonts to load - CRITICAL for proper text rendering
     if (document.fonts && document.fonts.ready) {
@@ -54,8 +61,8 @@ export async function exportNodeToPng(node: HTMLElement, filename: string = 'tem
     // CRITICAL: Do a first render pass to trigger all image loads and state updates
     // This ensures React state (like dominant color from onLoad) is fully updated
     await toPng(node, {
-      width: 1080,
-      height: 1920,
+      width,
+      height,
       pixelRatio: 1,
       cacheBust: false
     });
@@ -65,8 +72,8 @@ export async function exportNodeToPng(node: HTMLElement, filename: string = 'tem
 
     // Now capture the final render with all state updates applied
     const dataUrl = await toPng(node, {
-      width: 1080,
-      height: 1920,
+      width,
+      height,
       pixelRatio: 1,
       cacheBust: true,
       // Include external fonts and resources

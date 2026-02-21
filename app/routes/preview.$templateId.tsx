@@ -23,7 +23,7 @@ export default function PreviewTemplate() {
 
     setIsExporting(true);
     try {
-      await exportNodeToPng(previewRef.current, `${template.id}.png`);
+      await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height);
     } catch (error) {
       console.error('Export failed:', error);
     } finally {

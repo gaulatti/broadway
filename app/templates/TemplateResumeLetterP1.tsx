@@ -7,7 +7,7 @@
 
 import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
-import { resumeData } from '../pdf/resumeData';
+import { resumeData } from './resumeData';
 import TemplateResumeLetterP2 from './TemplateResumeLetterP2';
 import { buildResumePaginatedCards, buildResumeSecondaryPages } from './resumeSecondaryLayout';
 import {

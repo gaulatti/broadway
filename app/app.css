@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;1,400&family=Encode+Sans:wght@400;600;700&display=swap');
 @import "tailwindcss";
 
 /* Tailwind v4 dark variant should follow the `.dark` class (applied on <html>). */
@@ -11,9 +11,9 @@
 	- Switching themes only changes `--app-*` (no prefers-color-scheme overrides).
 */
 @theme {
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+  --font-sans: 'Libre Franklin', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display: 'Cabinet Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Encode Sans', ui-sans-serif, system-ui, sans-serif;
 
   /* Letter Spacing */
   --letter-spacing-refined: -0.02em;

@@ -9,23 +9,45 @@
 import React, { useRef, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { getTemplateById } from '../templates';
-import { exportNodeToPng } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf } from '../utils/exportImage';
+import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 
 export default function PreviewTemplate() {
   const { templateId } = useParams();
   const [isExporting, setIsExporting] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+  const additionalRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   const template = templateId ? getTemplateById(templateId) : undefined;
+  const isResume = templateId?.startsWith('resume_') ?? false;
+  const additionalPageElements = template
+    ? template.renderAdditionalPages
+      ? template.renderAdditionalPages(template.defaultProps)
+      : template.additionalPages?.map((PageComponent, index) => <PageComponent key={`additional-${index}`} {...template.defaultProps} />) || []
+    : [];
 
-  const handleExport = async () => {
+  const handleExportPng = async () => {
     if (!previewRef.current || !template) return;
-
     setIsExporting(true);
     try {
       await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height);
     } catch (error) {
       console.error('Export failed:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportPdf = async () => {
+    if (!previewRef.current || !template) return;
+    setIsExporting(true);
+    try {
+      // Vector PDF only — @react-pdf/renderer with true selectable text
+      await generateResumePdf(template.defaultProps as ResumeLetterProps, `${template.id}.pdf`);
+    } catch (error) {
+      console.error('Vector PDF export failed:', error);
+      alert('PDF export failed. Check console for details.');
+      throw error;
     } finally {
       setIsExporting(false);
     }
@@ -64,20 +86,31 @@ export default function PreviewTemplate() {
             <p className='text-text-secondary'>Template ID: {template.id}</p>
           </div>
 
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className='bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
-          >
-            {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
-          </button>
+          <div className='flex gap-3'>
+            <button
+              onClick={handleExportPng}
+              disabled={isExporting}
+              className='bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
+            >
+              {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
+            </button>
+            {isResume && (
+              <button
+                onClick={handleExportPdf}
+                disabled={isExporting}
+                className='bg-desert text-white px-6 py-3 rounded-lg font-medium hover:bg-sea dark:hover:bg-sea disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
+              >
+                {isExporting ? 'Exporting...' : 'Export PDF (Letter)'}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Preview */}
         <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
           <h2 className='text-lg font-display font-medium text-text-primary mb-4 tracking-refined'>Preview</h2>
-          <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
-            {/* Preview container - scaled down for display */}
+          <div className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
+            {/* Page 1 */}
             <div
               className='relative'
               style={{ width: `${template.width * template.previewScale}px`, height: `${template.height * template.previewScale}px`, overflow: 'hidden' }}
@@ -95,6 +128,33 @@ export default function PreviewTemplate() {
                 </div>
               </div>
             </div>
+
+            {/* Additional pages (e.g. resume page 2) */}
+            {additionalPageElements.map((pageElement, index) => (
+              <div
+                key={index}
+                className='relative'
+                style={{ width: `${template.width * template.previewScale}px`, height: `${template.height * template.previewScale}px`, overflow: 'hidden' }}
+              >
+                <div
+                  style={{
+                    transformOrigin: 'top left',
+                    transform: `scale(${template.previewScale})`,
+                    width: `${template.width}px`,
+                    height: `${template.height}px`
+                  }}
+                >
+                  <div
+                    ref={(el) => {
+                      additionalRefs.current[index] = el;
+                    }}
+                    style={{ width: `${template.width}px`, height: `${template.height}px` }}
+                  >
+                    {pageElement}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

@@ -6,3 +6,6 @@
 /.react-router/
 /build/
 /wiki
+
+# Private resume data — replace with real content, never commit
+app/pdf/resumeData.ts

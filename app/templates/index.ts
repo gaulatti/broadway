@@ -14,8 +14,10 @@ import { templateDefinition as sanremoPostDefinition } from './TemplateSanremoPo
 import { templateDefinition as sanremoPost16x9Definition } from './TemplateSanremoPost16x9';
 import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanremoStory16x9';
 import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
+import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 
 export const templates: TemplateDefinition[] = [
+  resumeLetterDefinition,
   sanremoPromoPostDefinition,
   sanremoStoryDefinition,
   sanremoPostDefinition,

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { templates } from '../templates';
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: 'Stronzi - Instagram Story Template Generator' }, { name: 'description', content: 'Create and export beautiful 1080x1920 story templates' }];
+  return [{ title: 'Broadway - Instagram Story Template Generator' }, { name: 'description', content: 'Create and export beautiful 1080x1920 story templates' }];
 }
 
 export default function Home() {

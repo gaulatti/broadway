@@ -1,12 +1,12 @@
-# Stronzi
+# Broadway
 
 A sophisticated React-based application for creating and exporting professional 1080×1920 story templates. Built with React Router 7, TypeScript, and a custom design system inspired by natural earth tones.
 
-**🌐 Live Demo:** [https://stronzi.gaulatti.com](https://stronzi.gaulatti.com)
+**🌐 Live Demo:** [https://broadway.gaulatti.com](https://broadway.gaulatti.com)
 
 ## 🎯 Overview
 
-Stronzi is a complete solution for generating social media story templates with:
+Broadway is a complete solution for generating social media story templates with:
 
 - **Template System** - Extensible React component architecture with typed props
 - **Dynamic Forms** - Auto-generated forms based on template field definitions
@@ -40,7 +40,7 @@ Stronzi is a complete solution for generating social media story templates with:
 
    ```bash
    git clone <repository-url>
-   cd stronzi
+   cd broadway
    ```
 
 2. Install dependencies:
@@ -77,27 +77,27 @@ npm run typecheck  # Run TypeScript type checking
 
 ## 📚 Documentation
 
-**Comprehensive documentation is available in the [Wiki](https://github.com/gaulatti/stronzi/wiki/Home):**
+**Comprehensive documentation is available in the [Wiki](https://github.com/gaulatti/broadway/wiki/Home):**
 
 ### Getting Started
 
-- **[Installation Guide](https://github.com/gaulatti/stronzi/wiki/Installation-Guide)** - Complete setup instructions
-- **[Quick Start](https://github.com/gaulatti/stronzi/wiki/Quick-Start)** - Get running in 5 minutes
-- **[User Guide](https://github.com/gaulatti/stronzi/wiki/User-Guide)** - How to use the application
+- **[Installation Guide](https://github.com/gaulatti/broadway/wiki/Installation-Guide)** - Complete setup instructions
+- **[Quick Start](https://github.com/gaulatti/broadway/wiki/Quick-Start)** - Get running in 5 minutes
+- **[User Guide](https://github.com/gaulatti/broadway/wiki/User-Guide)** - How to use the application
 
 ### Development
 
-- **[Project Structure](https://github.com/gaulatti/stronzi/wiki/Project-Structure)** - Understanding the codebase
-- **[Creating Templates](https://github.com/gaulatti/stronzi/wiki/Creating-Templates)** - Build custom templates
-- **[Design System](https://github.com/gaulatti/stronzi/wiki/Design-System)** - Colors, typography, and styling
-- **[API Reference](https://github.com/gaulatti/stronzi/wiki/API-Reference)** - Complete API documentation
+- **[Project Structure](https://github.com/gaulatti/broadway/wiki/Project-Structure)** - Understanding the codebase
+- **[Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates)** - Build custom templates
+- **[Design System](https://github.com/gaulatti/broadway/wiki/Design-System)** - Colors, typography, and styling
+- **[API Reference](https://github.com/gaulatti/broadway/wiki/API-Reference)** - Complete API documentation
 
 ### Deployment
 
-- **[Building for Production](https://github.com/gaulatti/stronzi/wiki/Building-Production)** - Production builds
-- **[Docker Deployment](https://github.com/gaulatti/stronzi/wiki/Docker-Deployment)** - Containerization guide
-- **[AWS Deployment](https://github.com/gaulatti/stronzi/wiki/AWS-Deployment)** - AWS S3 + CloudFront setup
-- **[Alternative Platforms](https://github.com/gaulatti/stronzi/wiki/Alternative-Platforms)** - Vercel, Netlify, Railway, etc.
+- **[Building for Production](https://github.com/gaulatti/broadway/wiki/Building-Production)** - Production builds
+- **[Docker Deployment](https://github.com/gaulatti/broadway/wiki/Docker-Deployment)** - Containerization guide
+- **[AWS Deployment](https://github.com/gaulatti/broadway/wiki/AWS-Deployment)** - AWS S3 + CloudFront setup
+- **[Alternative Platforms](https://github.com/gaulatti/broadway/wiki/Alternative-Platforms)** - Vercel, Netlify, Railway, etc.
 
 ## 🎯 Quick Example
 
@@ -122,7 +122,7 @@ const TemplateHello: React.FC<HelloProps> = ({ name }) => (
 export default TemplateHello;
 ```
 
-Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/stronzi/wiki/Creating-Templates) guide for details.\*React 19\*\* - UI framework
+Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates) guide for details.\*React 19\*\* - UI framework
 
 - **React Router 7** - Routing and SSR
 - **TypeScript 5** - Type safety
@@ -155,7 +155,7 @@ Built with precision using React Router and modern web technologies.
 
 Contributions are welcome! Please feel free to submit issues and pull requests.
 
-For more details, see the [Wiki](https://github.com/gaulatti/stronzi/wiki/Home) for comprehensive documentation on:
+For more details, see the [Wiki](https://github.com/gaulatti/broadway/wiki/Home) for comprehensive documentation on:
 
 - Project architecture
 - Template system
@@ -166,4 +166,4 @@ For more details, see the [Wiki](https://github.com/gaulatti/stronzi/wiki/Home) 
 
 **Built with precision** using React Router and modern web technologies.
 
-For detailed documentation, visit the **[Wiki](https://github.com/gaulatti/stronzi/wiki/Home)** | Live demo at **[stronzi.gaulatti.com](https://stronzi.gaulatti.com)**
+For detailed documentation, visit the **[Wiki](https://github.com/gaulatti/broadway/wiki/Home)** | Live demo at **[broadway.gaulatti.com](https://broadway.gaulatti.com)**

@@ -5,8 +5,8 @@ import React from 'react';
 import type { Route } from './+types/root';
 import './app.css';
 
-const GITHUB_REPO_URL = 'https://github.com/gaulatti/stronzi';
-const GITHUB_WIKI_URL = 'https://github.com/gaulatti/stronzi/wiki/Home';
+const GITHUB_REPO_URL = 'https://github.com/gaulatti/broadway';
+const GITHUB_WIKI_URL = 'https://github.com/gaulatti/broadway/wiki/Home';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -137,7 +137,7 @@ export default function App() {
                 className='h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-400 dark:invert'
               />
               <div className='h-8 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
-              <span className='text-xl font-bold tracking-tight text-text-primary dark:text-white'>stronzi</span>
+              <span className='text-xl font-bold tracking-tight text-text-primary dark:text-white'>broadway</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -245,7 +245,7 @@ export default function App() {
               <div className='flex items-center gap-4 mb-8'>
                 <img src='/logo.svg' alt='Template Studio' className='h-12 w-auto fill-current opacity-90 dark:invert' />
                 <div className='h-12 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
-                <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>stronzi</span>
+                <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>broadway</span>
               </div>
               <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>
                 Crafting beautiful story templates for social media. Design, customize, and export perfect 1080×1920 images with ease.

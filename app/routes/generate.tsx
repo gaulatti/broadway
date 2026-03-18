@@ -12,16 +12,35 @@ import React, { useState, useRef } from 'react';
 import { templates } from '../templates';
 import type { OverlayItem } from '../templates/types';
 import OverlayEditor from '../components/OverlayEditor';
-import { exportNodeToPng } from '../utils/exportImage';
+import {
+  ResumeContactLinksEditor,
+  ResumeEducationEditor,
+  ResumeEarlierExperienceEditor,
+  ResumeExperienceEditor,
+  ResumeLanguageEditor,
+  ResumeSkillGroupEditor,
+  ResumeSpotlightEditor
+} from '../components/ResumeDataEditor';
+import { exportNodeToPng, generateResumePdf } from '../utils/exportImage';
+import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
+import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
 
 export default function Generate() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(templates[0]?.id || '');
   const [values, setValues] = useState<Record<string, any>>({});
   const [isExporting, setIsExporting] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+  const additionalRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const resumeJsonInputRef = useRef<HTMLInputElement>(null);
 
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
+  const isResume = selectedTemplateId.startsWith('resume_');
+  const additionalPageElements = template
+    ? template.renderAdditionalPages
+      ? template.renderAdditionalPages(values as any)
+      : template.additionalPages?.map((PageComponent, index) => <PageComponent key={`additional-${index}`} {...values} />) || []
+    : [];
 
   // Initialize values when template changes
   React.useEffect(() => {
@@ -40,7 +59,6 @@ export default function Generate() {
 
   const handleExport = async () => {
     if (!previewRef.current || !template) return;
-
     setIsExporting(true);
     try {
       await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height);
@@ -48,6 +66,65 @@ export default function Generate() {
       console.error('Export failed:', error);
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  const handleExportPdf = async () => {
+    if (!previewRef.current || !template) return;
+    setIsExporting(true);
+    try {
+      // Vector PDF only — @react-pdf/renderer with true selectable text
+      await generateResumePdf(values as ResumeLetterProps, `${template.id}.pdf`);
+    } catch (error) {
+      console.error('Vector PDF export failed:', error);
+      alert('PDF export failed. Check console for details.');
+      throw error;
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleDownloadResumeTemplate = () => {
+    if (!template || !isResume) return;
+
+    const sourceProps = (values as ResumeLetterProps) || (template.defaultProps as ResumeLetterProps);
+    const schema = buildResumeSchemaExample(sourceProps);
+    const json = JSON.stringify(schema, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${template.id}.schema.example.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handlePickResumeJson = () => {
+    resumeJsonInputRef.current?.click();
+  };
+
+  const handleLoadResumeJson = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !template || !isResume) return;
+
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as unknown;
+      const result = parseResumeSchema(parsed, template.defaultProps as ResumeLetterProps);
+
+      if (!result.ok || !result.value) {
+        alert(`Invalid resume JSON:\n\n${result.errors.join('\n')}`);
+        return;
+      }
+
+      setValues(result.value);
+    } catch (error) {
+      console.error('Failed to load resume JSON:', error);
+      alert('Failed to load JSON file. Please verify it is valid JSON and follows the resume schema.');
+    } finally {
+      event.target.value = '';
     }
   };
 
@@ -95,10 +172,27 @@ export default function Generate() {
                     <label className='block text-sm font-medium text-text-primary dark:text-white mb-1 tracking-wide'>{field.label}</label>
                     {field.type === 'overlays' ? (
                       <OverlayEditor value={(values[field.key] as OverlayItem[]) || []} onChange={(overlays) => handleFieldChange(field.key, overlays)} />
+                    ) : field.type === 'experienceItems' ? (
+                      <ResumeExperienceEditor value={(values[field.key] as ResumeLetterProps['experience']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'educationItems' ? (
+                      <ResumeEducationEditor value={(values[field.key] as ResumeLetterProps['education']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'skillGroups' ? (
+                      <ResumeSkillGroupEditor value={(values[field.key] as ResumeLetterProps['skillGroups']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'contactLinks' ? (
+                      <ResumeContactLinksEditor value={(values[field.key] as ResumeLetterProps['contactLinks']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'languageItems' ? (
+                      <ResumeLanguageEditor value={(values[field.key] as ResumeLetterProps['languages']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'spotlightItems' ? (
+                      <ResumeSpotlightEditor value={(values[field.key] as ResumeLetterProps['spotlights']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                    ) : field.type === 'earlierExperienceItems' ? (
+                      <ResumeEarlierExperienceEditor
+                        value={(values[field.key] as ResumeLetterProps['earlierExperiences']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'textarea' ? (
                       <textarea
-                        defaultValue={values[field.key] || ''}
-                        onBlur={(e) => handleFieldChange(field.key, e.target.value)}
+                        value={values[field.key] || ''}
+                        onChange={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={field.rows || 3}
                         className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
@@ -106,8 +200,8 @@ export default function Generate() {
                     ) : field.type === 'number' ? (
                       <input
                         type='number'
-                        defaultValue={values[field.key] || ''}
-                        onBlur={(e) => handleFieldChange(field.key, parseFloat(e.target.value))}
+                        value={values[field.key] || ''}
+                        onChange={(e) => handleFieldChange(field.key, parseFloat(e.target.value) || 0)}
                         placeholder={field.placeholder}
                         min={field.min}
                         max={field.max}
@@ -117,8 +211,8 @@ export default function Generate() {
                     ) : (
                       <input
                         type='text'
-                        defaultValue={values[field.key] || ''}
-                        onBlur={(e) => handleFieldChange(field.key, e.target.value)}
+                        value={values[field.key] || ''}
+                        onChange={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
                       />
@@ -128,22 +222,50 @@ export default function Generate() {
               </div>
             </div>
 
-            {/* Export button */}
-            <button
-              onClick={handleExport}
-              disabled={isExporting}
-              className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
-            >
-              {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
-            </button>
+            {/* Export buttons */}
+            <div className='flex flex-col gap-2'>
+              <button
+                onClick={handleExport}
+                disabled={isExporting}
+                className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
+              >
+                {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
+              </button>
+              {isResume && (
+                <button
+                  onClick={handleExportPdf}
+                  disabled={isExporting}
+                  className='w-full bg-desert text-white px-6 py-3 rounded-lg font-medium hover:bg-sea dark:hover:bg-sea disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
+                >
+                  {isExporting ? 'Exporting...' : 'Export PDF (Letter)'}
+                </button>
+              )}
+              {isResume && (
+                <>
+                  <button
+                    onClick={handleDownloadResumeTemplate}
+                    className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
+                  >
+                    Download Template
+                  </button>
+                  <button
+                    onClick={handlePickResumeJson}
+                    className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
+                  >
+                    Load JSON
+                  </button>
+                  <input ref={resumeJsonInputRef} type='file' accept='application/json,.json' onChange={handleLoadResumeJson} className='hidden' />
+                </>
+              )}
+            </div>
           </div>
 
           {/* Right panel - Preview */}
           <div className='lg:col-span-2'>
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
               <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Live Preview</h2>
-              <div className='flex justify-center bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
-                {/* Preview container - scaled down for display */}
+              <div className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
+                {/* Page 1 */}
                 <div
                   className='relative'
                   style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}
@@ -157,10 +279,37 @@ export default function Generate() {
                     }}
                   >
                     <div ref={previewRef} style={{ width: `${template.width}px`, height: `${template.height}px` }}>
-                      <template.Component {...values} />
+                      <template.Component key={JSON.stringify(values)} {...values} />
                     </div>
                   </div>
                 </div>
+
+                {/* Additional pages (e.g. resume page 2) */}
+                {additionalPageElements.map((pageElement, index) => (
+                  <div
+                    key={index}
+                    className='relative'
+                    style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}
+                  >
+                    <div
+                      style={{
+                        transformOrigin: 'top left',
+                        transform: `scale(${template.galleryScale})`,
+                        width: `${template.width}px`,
+                        height: `${template.height}px`
+                      }}
+                    >
+                      <div
+                        ref={(el) => {
+                          additionalRefs.current[index] = el;
+                        }}
+                        style={{ width: `${template.width}px`, height: `${template.height}px` }}
+                      >
+                        {pageElement}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

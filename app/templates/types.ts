@@ -6,7 +6,19 @@
  * and default values for preview/demo purposes.
  */
 
-export type FieldType = 'text' | 'textarea' | 'number' | 'image' | 'overlays';
+export type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'number'
+  | 'image'
+  | 'overlays'
+  | 'experienceItems'
+  | 'educationItems'
+  | 'skillGroups'
+  | 'spotlightItems'
+  | 'earlierExperienceItems'
+  | 'contactLinks'
+  | 'languageItems';
 
 /**
  * A single text overlay block rendered over the photo area.
@@ -47,6 +59,10 @@ export interface TemplateDefinition<TProps = any> {
   id: string;
   name: string;
   Component: React.FC<TProps>;
+  /** Additional page components for multi-page PDF export (e.g. resume page 2). */
+  additionalPages?: Array<React.FC<TProps>>;
+  /** Optional dynamic additional-page renderer for data-dependent pagination. */
+  renderAdditionalPages?: (props: TProps) => React.ReactElement[];
   defaultProps: TProps;
   fields: Array<FieldDef<TProps>>;
   width: number; // Template width in pixels

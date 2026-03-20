@@ -253,9 +253,7 @@ function AppContent() {
                 <div className='h-12 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
                 <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>broadway</span>
               </div>
-              <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>
-                {t('footer.brand')}
-              </p>
+              <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>{t('footer.brand')}</p>
             </div>
 
             {/* Quick Links */}
@@ -315,8 +313,11 @@ function AppContent() {
           {/* Bottom Bar */}
           <div className='border-t border-sand/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center'>
             <div className='text-sm text-text-secondary dark:text-text-secondary tracking-refined'>
-              {t('footer.copyright', { year: new Date().getFullYear(), link: '<a href="https://gaulatti.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline underline-offset-4">gaulatti</a>' }).replace(/<[^>]*>/g, (m) => m.replace(/className="[^"]*"/g, ''))}
-              {' '}© {new Date().getFullYear()}{' '}
+              {t('footer.copyright', {
+                year: new Date().getFullYear(),
+                link: '<a href="https://gaulatti.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline underline-offset-4">gaulatti</a>'
+              }).replace(/<[^>]*>/g, (m) => m.replace(/className="[^"]*"/g, ''))}{' '}
+              © {new Date().getFullYear()}{' '}
               <a href='https://gaulatti.com' target='_blank' rel='noopener noreferrer' className='font-semibold hover:underline underline-offset-4'>
                 gaulatti
               </a>

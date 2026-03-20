@@ -55,7 +55,9 @@ export default function PreviewGallery() {
               </div>
 
               <div className='p-4 bg-light-sand dark:bg-dark-sand border-t border-sand/10 dark:border-dark-sand/20'>
-                <span className='text-sm text-sea dark:text-accent-blue group-hover:underline font-medium tracking-elegant'>{t('preview.gallery.viewFull')}</span>
+                <span className='text-sm text-sea dark:text-accent-blue group-hover:underline font-medium tracking-elegant'>
+                  {t('preview.gallery.viewFull')}
+                </span>
               </div>
             </Link>
           ))}

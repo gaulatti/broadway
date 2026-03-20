@@ -168,7 +168,9 @@ export default function PreviewTemplate() {
               <div key={field.key} className='border border-sand/30 dark:border-dark-sand rounded p-3'>
                 <p className='font-medium text-text-primary'>{field.label}</p>
                 <p className='text-sm text-text-secondary'>{t('preview.template.type', { type: field.type })}</p>
-                <p className='text-sm text-text-secondary mt-1 truncate'>{t('preview.template.default', { value: String(template.defaultProps[field.key]) })}</p>
+                <p className='text-sm text-text-secondary mt-1 truncate'>
+                  {t('preview.template.default', { value: String(template.defaultProps[field.key]) })}
+                </p>
               </div>
             ))}
           </div>

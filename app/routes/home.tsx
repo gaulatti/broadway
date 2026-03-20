@@ -32,9 +32,7 @@ export default function Home() {
             {/* Role Description */}
             <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>{t('home.hero.subtitle')}</p>
             {/* Personal Philosophy */}
-            <p className='text-lg md:text-xl mb-12 max-w-2xl mx-auto text-text-secondary leading-relaxed font-light'>
-              {t('home.hero.description')}
-            </p>
+            <p className='text-lg md:text-xl mb-12 max-w-2xl mx-auto text-text-secondary leading-relaxed font-light'>{t('home.hero.description')}</p>
             {/* CTA Buttons */}
             <div className='flex justify-center gap-6 flex-wrap'>
               <Link
@@ -97,9 +95,7 @@ export default function Home() {
                 />
               </svg>
             </div>
-            <p className='text-text-secondary mb-6 leading-relaxed'>
-              {t('home.features.useGeneratorDesc')}
-            </p>
+            <p className='text-text-secondary mb-6 leading-relaxed'>{t('home.features.useGeneratorDesc')}</p>
             <span className='text-sea dark:text-accent-blue font-medium tracking-elegant group-hover:underline inline-flex items-center gap-2'>
               {t('home.features.openGen')}
               <span className='transition-transform duration-400 group-hover:translate-x-1'>→</span>
@@ -128,9 +124,7 @@ export default function Home() {
                 />
               </svg>
             </div>
-            <p className='text-text-secondary mb-6 leading-relaxed'>
-              {t('home.features.browseDesc')}
-            </p>
+            <p className='text-text-secondary mb-6 leading-relaxed'>{t('home.features.browseDesc')}</p>
             <span className='text-sea dark:text-accent-blue font-medium tracking-elegant group-hover:underline inline-flex items-center gap-2'>
               {t('home.features.viewGal')}
               <span className='transition-transform duration-400 group-hover:translate-x-1'>→</span>

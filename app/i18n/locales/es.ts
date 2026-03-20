@@ -9,7 +9,8 @@ export const es = {
     gallery: 'Galería'
   },
   footer: {
-    brand: 'Creando plantillas flexibles para contenido visual y documentos estructurados. Diseña, personaliza y exporta resultados PNG y PDF pulidos con facilidad.',
+    brand:
+      'Creando plantillas flexibles para contenido visual y documentos estructurados. Diseña, personaliza y exporta resultados PNG y PDF pulidos con facilidad.',
     navigation: 'Navegación',
     features: 'Características',
     multiFormat: 'Plantillas Multi-formato',
@@ -23,7 +24,8 @@ export const es = {
     hero: {
       title: 'Generador Basado en Plantillas',
       subtitle: 'Genera desde Plantillas Reutilizables',
-      description: 'Genera visuales pulidos y documentos desde plantillas reutilizables. Personaliza contenido, obtén vista previa al instante y exporta a PNG o PDF.'
+      description:
+        'Genera visuales pulidos y documentos desde plantillas reutilizables. Personaliza contenido, obtén vista previa al instante y exporta a PNG o PDF.'
     },
     cta: {
       openGenerator: 'Abrir Generador',
@@ -36,10 +38,12 @@ export const es = {
     },
     features: {
       useGenerator: 'Usar Generador',
-      useGeneratorDesc: 'Selecciona una plantilla, edita sus campos con un formulario dinámico, obtén vista previa de cambios en tiempo real y exporta PNG o PDF de alta calidad.',
+      useGeneratorDesc:
+        'Selecciona una plantilla, edita sus campos con un formulario dinámico, obtén vista previa de cambios en tiempo real y exporta PNG o PDF de alta calidad.',
       openGen: 'Abrir generador',
       browseTemplates: 'Examinar Plantillas',
-      browseDesc: 'Ver todas las plantillas disponibles en la galería con vistas previas en miniatura. Haz clic en cualquier plantilla para verla en tamaño completo con valores predeterminados.',
+      browseDesc:
+        'Ver todas las plantillas disponibles en la galería con vistas previas en miniatura. Haz clic en cualquier plantilla para verla en tamaño completo con valores predeterminados.',
       viewGal: 'Ver galería'
     },
     workflow: {

@@ -9,7 +9,8 @@ export const it = {
     gallery: 'Galleria'
   },
   footer: {
-    brand: 'Creazione di template flessibili per contenuti visivi e documenti strutturati. Progetta, personalizza ed esporta risultati PNG e PDF raffinati con facilità.',
+    brand:
+      'Creazione di template flessibili per contenuti visivi e documenti strutturati. Progetta, personalizza ed esporta risultati PNG e PDF raffinati con facilità.',
     navigation: 'Navigazione',
     features: 'Caratteristiche',
     multiFormat: 'Template Multi-formato',
@@ -23,7 +24,8 @@ export const it = {
     hero: {
       title: 'Generatore di Template',
       subtitle: 'Genera da Template Riutilizzabili',
-      description: 'Genera visivi raffinati e documenti da template riutilizzabili. Personalizza contenuti, visualizza anteprime istantaneamente ed esporta in PNG o PDF.'
+      description:
+        'Genera visivi raffinati e documenti da template riutilizzabili. Personalizza contenuti, visualizza anteprime istantaneamente ed esporta in PNG o PDF.'
     },
     cta: {
       openGenerator: 'Apri Generatore',
@@ -36,10 +38,12 @@ export const it = {
     },
     features: {
       useGenerator: 'Usa Generatore',
-      useGeneratorDesc: 'Seleziona un template, modifica i suoi campi con un modulo dinamico, visualizza le modifiche in tempo reale ed esporta PNG o PDF di alta qualità.',
+      useGeneratorDesc:
+        'Seleziona un template, modifica i suoi campi con un modulo dinamico, visualizza le modifiche in tempo reale ed esporta PNG o PDF di alta qualità.',
       openGen: 'Apri generatore',
       browseTemplates: 'Sfoglia Template',
-      browseDesc: 'Vedi tutti i template disponibili nella galleria con anteprime in miniatura. Fai clic su qualsiasi template per visualizzarlo a grandezza naturale con i valori predefiniti.',
+      browseDesc:
+        'Vedi tutti i template disponibili nella galleria con anteprime in miniatura. Fai clic su qualsiasi template per visualizzarlo a grandezza naturale con i valori predefiniti.',
       viewGal: 'Visualizza galleria'
     },
     workflow: {

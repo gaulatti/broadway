@@ -11,6 +11,7 @@
 import React, { useState, useRef } from 'react';
 import { templates } from '../templates';
 import type { OverlayItem } from '../templates/types';
+import { useT } from '../i18n/useT';
 import OverlayEditor from '../components/OverlayEditor';
 import {
   ResumeContactLinksEditor,
@@ -26,6 +27,7 @@ import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
 
 export default function Generate() {
+  const t = useT();
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(templates[0]?.id || '');
   const [values, setValues] = useState<Record<string, any>>({});
   const [isExporting, setIsExporting] = useState(false);
@@ -132,8 +134,8 @@ export default function Generate() {
     return (
       <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
         <div className='container mx-auto'>
-          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>Template Generator</h1>
-          <p className='text-text-secondary'>No templates available. Please add templates to the registry.</p>
+          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>{t('generate.title')}</h1>
+          <p className='text-text-secondary'>{t('generate.noTemplates')}</p>
         </div>
       </div>
     );
@@ -142,14 +144,14 @@ export default function Generate() {
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
       <div className='container mx-auto'>
-        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Generator</h1>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>{t('generate.title')}</h1>
 
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Left panel - Controls */}
           <div className='lg:col-span-1 space-y-6'>
             {/* Template selector */}
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <label className='block text-sm font-medium text-text-primary dark:text-white mb-2 tracking-wide'>Select Template</label>
+              <label className='block text-sm font-medium text-text-primary dark:text-white mb-2 tracking-wide'>{t('generate.selectTemplate')}</label>
               <select
                 value={selectedTemplateId}
                 onChange={handleTemplateChange}
@@ -165,7 +167,7 @@ export default function Generate() {
 
             {/* Dynamic form */}
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Edit Fields</h2>
+              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.editFields')}</h2>
               <div className='space-y-4 max-h-[600px] overflow-y-auto'>
                 {template.fields.map((field) => (
                   <div key={field.key}>
@@ -247,7 +249,7 @@ export default function Generate() {
                 disabled={isExporting}
                 className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
               >
-                {isExporting ? 'Exporting...' : `Export PNG (${template.width}×${template.height})`}
+                {isExporting ? t('generate.exporting') : t('generate.exportPng', { width: template.width, height: template.height })}
               </button>
               {isResume && (
                 <button
@@ -255,7 +257,7 @@ export default function Generate() {
                   disabled={isExporting}
                   className='w-full bg-desert text-white px-6 py-3 rounded-lg font-medium hover:bg-sea dark:hover:bg-sea disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
                 >
-                  {isExporting ? 'Exporting...' : 'Export PDF (Letter)'}
+                  {isExporting ? t('generate.exporting') : t('generate.exportPdf')}
                 </button>
               )}
               {isResume && (
@@ -264,13 +266,13 @@ export default function Generate() {
                     onClick={handleDownloadResumeTemplate}
                     className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
                   >
-                    Download Template
+                    {t('generate.downloadTemplate')}
                   </button>
                   <button
                     onClick={handlePickResumeJson}
                     className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
                   >
-                    Load JSON
+                    {t('generate.loadJson')}
                   </button>
                   <input ref={resumeJsonInputRef} type='file' accept='application/json,.json' onChange={handleLoadResumeJson} className='hidden' />
                 </>
@@ -281,7 +283,7 @@ export default function Generate() {
           {/* Right panel - Preview */}
           <div className='lg:col-span-2'>
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>Live Preview</h2>
+              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.livePreview')}</h2>
               <div className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
                 {/* Page 1 */}
                 <div

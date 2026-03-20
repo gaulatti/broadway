@@ -3,6 +3,9 @@ import { Github, Moon, Sun, Monitor } from 'lucide-react';
 import React from 'react';
 
 import type { Route } from './+types/root';
+import { LocaleProvider } from './i18n/LocaleContext';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { useT } from './i18n/useT';
 import './app.css';
 
 const GITHUB_REPO_URL = 'https://github.com/gaulatti/broadway';
@@ -39,7 +42,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' className='bg-light-sand text-text-primary'>
+    <html lang='en-US' className='bg-light-sand text-text-primary'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -79,7 +82,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+function AppContent() {
+  const t = useT();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [theme, setTheme] = React.useState<'light' | 'dark' | 'system'>('light');
@@ -143,17 +147,17 @@ export default function App() {
             {/* Desktop Navigation */}
             <div className='hidden md:flex items-center space-x-12'>
               <Link to='/' className='text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined font-medium'>
-                Home
+                {t('nav.home')}
               </Link>
               <Link to='/generate' className='text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined font-medium'>
-                Generate
+                {t('nav.generate')}
               </Link>
               <Link to='/preview' className='text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined font-medium'>
-                Gallery
+                {t('nav.gallery')}
               </Link>
             </div>
 
-            {/* Source link + Theme Toggle */}
+            {/* Source link + Language Switcher + Theme Toggle */}
             <div className='hidden md:flex items-center gap-3'>
               <a
                 href={GITHUB_REPO_URL}
@@ -165,6 +169,8 @@ export default function App() {
               >
                 <Github size={18} className='text-gray-600 dark:text-gray-300' strokeWidth={1.5} />
               </a>
+
+              <LanguageSwitcher />
 
               <button
                 type='button'
@@ -207,21 +213,21 @@ export default function App() {
                 className='block text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined px-4 font-medium'
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Home
+                {t('nav.home')}
               </Link>
               <Link
                 to='/generate'
                 className='block text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined px-4 font-medium'
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Generate
+                {t('nav.generate')}
               </Link>
               <Link
                 to='/preview'
                 className='block text-base hover:text-sea dark:hover:text-accent-blue transition-colors duration-400 tracking-refined px-4 font-medium'
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Gallery
+                {t('nav.gallery')}
               </Link>
             </div>
           </div>
@@ -248,27 +254,27 @@ export default function App() {
                 <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>broadway</span>
               </div>
               <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>
-                Crafting flexible templates for visual content and structured documents. Design, customize, and export polished PNG and PDF outputs with ease.
+                {t('footer.brand')}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>Navigation</h3>
+              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>{t('footer.navigation')}</h3>
               <ul className='space-y-4'>
                 <li>
                   <Link to='/' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
-                    Home
+                    {t('nav.home')}
                   </Link>
                 </li>
                 <li>
                   <Link to='/generate' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
-                    Generate
+                    {t('nav.generate')}
                   </Link>
                 </li>
                 <li>
                   <Link to='/preview' className='text-text-secondary dark:text-text-secondary hover:text-sunset transition-colors duration-400'>
-                    Gallery
+                    {t('nav.gallery')}
                   </Link>
                 </li>
                 <li>
@@ -296,12 +302,12 @@ export default function App() {
 
             {/* Info */}
             <div>
-              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>Features</h3>
+              <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>{t('footer.features')}</h3>
               <ul className='space-y-4 text-text-secondary dark:text-text-secondary'>
-                <li className='tracking-refined'>Multi-format Templates</li>
-                <li className='tracking-refined'>Live Preview</li>
-                <li className='tracking-refined'>PNG + PDF Export</li>
-                <li className='tracking-refined'>Easy Customization</li>
+                <li className='tracking-refined'>{t('footer.multiFormat')}</li>
+                <li className='tracking-refined'>{t('footer.livePreview')}</li>
+                <li className='tracking-refined'>{t('footer.pdfExport')}</li>
+                <li className='tracking-refined'>{t('footer.easyCustomization')}</li>
               </ul>
             </div>
           </div>
@@ -309,7 +315,8 @@ export default function App() {
           {/* Bottom Bar */}
           <div className='border-t border-sand/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center'>
             <div className='text-sm text-text-secondary dark:text-text-secondary tracking-refined'>
-              © {new Date().getFullYear()}{' '}
+              {t('footer.copyright', { year: new Date().getFullYear(), link: '<a href="https://gaulatti.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline underline-offset-4">gaulatti</a>' }).replace(/<[^>]*>/g, (m) => m.replace(/className="[^"]*"/g, ''))}
+              {' '}© {new Date().getFullYear()}{' '}
               <a href='https://gaulatti.com' target='_blank' rel='noopener noreferrer' className='font-semibold hover:underline underline-offset-4'>
                 gaulatti
               </a>
@@ -318,7 +325,7 @@ export default function App() {
 
             <div className='mt-4 md:mt-0 text-sm text-text-secondary/70 dark:text-text-secondary/70 tracking-refined'>
               <a href={GITHUB_REPO_URL} target='_blank' rel='noopener noreferrer' className='hover:underline underline-offset-4'>
-                View source on GitHub
+                {t('footer.viewSource')}
               </a>
             </div>
           </div>
@@ -328,6 +335,14 @@ export default function App() {
         <div className='h-1 w-full bg-gradient-to-r from-desert via-sunset to-sea opacity-80'></div>
       </footer>
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <LocaleProvider>
+      <AppContent />
+    </LocaleProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import type { Route } from './+types/home';
 import { Link } from 'react-router';
 import { templates } from '../templates';
+import { useT } from '../i18n/useT';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +11,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const t = useT();
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea'>
       {/* Hero section - Gaulatti Style */}
@@ -25,13 +27,13 @@ export default function Home() {
           <div className='max-w-4xl mx-auto text-center'>
             {/* Main Heading */}
             <h1 className='font-display text-6xl md:text-7xl font-medium mb-8 tracking-tight leading-tight text-text-primary dark:text-white'>
-              <span className='block text-fade-in'>Template-Based Generator</span>
+              <span className='block text-fade-in'>{t('home.hero.title')}</span>
             </h1>
             {/* Role Description */}
-            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>Generate from Reusable Templates</p>
+            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>{t('home.hero.subtitle')}</p>
             {/* Personal Philosophy */}
             <p className='text-lg md:text-xl mb-12 max-w-2xl mx-auto text-text-secondary leading-relaxed font-light'>
-              Generate polished visuals and documents from reusable templates. Customize content, preview instantly, and export to PNG or PDF.
+              {t('home.hero.description')}
             </p>
             {/* CTA Buttons */}
             <div className='flex justify-center gap-6 flex-wrap'>
@@ -39,13 +41,13 @@ export default function Home() {
                 to='/generate'
                 className='px-8 py-3.5 bg-sea text-white hover:bg-desert transition-all duration-400 tracking-elegant text-base font-medium border border-transparent hover:border-desert/20'
               >
-                Open Generator
+                {t('home.cta.openGenerator')}
               </Link>
               <Link
                 to='/preview'
                 className='px-8 py-3.5 border border-dusk dark:border-white hover:border-desert dark:hover:border-accent-blue text-dusk dark:text-white hover:text-desert dark:hover:text-accent-blue transition-all duration-400 tracking-elegant text-base font-medium'
               >
-                View Gallery
+                {t('home.cta.viewGallery')}
               </Link>
             </div>
           </div>
@@ -58,15 +60,15 @@ export default function Home() {
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-center'>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>{templates.length}</p>
-              <p className='text-text-secondary dark:text-text-secondary font-medium tracking-wide'>Available Templates</p>
+              <p className='text-text-secondary dark:text-text-secondary font-medium tracking-wide'>{t('home.stats.templates')}</p>
             </div>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>Multi-size</p>
-              <p className='text-text-secondary font-medium tracking-wide'>Story, Post, and Letter Formats</p>
+              <p className='text-text-secondary font-medium tracking-wide'>{t('home.stats.formats')}</p>
             </div>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>PNG</p>
-              <p className='text-text-secondary font-medium tracking-wide'>High-Quality Export</p>
+              <p className='text-text-secondary font-medium tracking-wide'>{t('home.stats.export')}</p>
             </div>
           </div>
         </div>
@@ -79,7 +81,7 @@ export default function Home() {
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-3xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
-                Use Generator
+                {t('home.features.useGenerator')}
               </h2>
               <svg
                 className='w-10 h-10 text-sea dark:text-accent-blue transition-transform duration-400 group-hover:translate-x-1'
@@ -96,10 +98,10 @@ export default function Home() {
               </svg>
             </div>
             <p className='text-text-secondary mb-6 leading-relaxed'>
-              Select a template, edit its fields with a dynamic form, preview changes live, and export high-quality PNG or PDF output.
+              {t('home.features.useGeneratorDesc')}
             </p>
             <span className='text-sea dark:text-accent-blue font-medium tracking-elegant group-hover:underline inline-flex items-center gap-2'>
-              Open generator
+              {t('home.features.openGen')}
               <span className='transition-transform duration-400 group-hover:translate-x-1'>→</span>
             </span>
           </Link>
@@ -110,7 +112,7 @@ export default function Home() {
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-3xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
-                Browse Templates
+                {t('home.features.browseTemplates')}
               </h2>
               <svg
                 className='w-10 h-10 text-sea dark:text-accent-blue transition-transform duration-400 group-hover:translate-x-1'
@@ -127,10 +129,10 @@ export default function Home() {
               </svg>
             </div>
             <p className='text-text-secondary mb-6 leading-relaxed'>
-              View all available templates in the gallery with thumbnail previews. Click any template to see it full-size with default values.
+              {t('home.features.browseDesc')}
             </p>
             <span className='text-sea dark:text-accent-blue font-medium tracking-elegant group-hover:underline inline-flex items-center gap-2'>
-              View gallery
+              {t('home.features.viewGal')}
               <span className='transition-transform duration-400 group-hover:translate-x-1'>→</span>
             </span>
           </Link>
@@ -138,35 +140,35 @@ export default function Home() {
 
         {/* How it works */}
         <div className='mt-16 text-center max-w-6xl mx-auto'>
-          <h2 className='text-4xl font-display font-medium text-text-primary dark:text-white mb-12 tracking-refined'>How It Works</h2>
+          <h2 className='text-4xl font-display font-medium text-text-primary dark:text-white mb-12 tracking-refined'>{t('home.workflow.title')}</h2>
           <div className='grid md:grid-cols-4 gap-6'>
             <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 1
               </div>
-              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Select Template</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>Choose from available visual and document templates</p>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>{t('home.workflow.step1.title')}</h3>
+              <p className='text-sm text-text-secondary leading-relaxed'>{t('home.workflow.step1.desc')}</p>
             </div>
             <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 2
               </div>
-              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Customize Fields</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>Edit text, images, and other properties</p>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>{t('home.workflow.step2.title')}</h3>
+              <p className='text-sm text-text-secondary leading-relaxed'>{t('home.workflow.step2.desc')}</p>
             </div>
             <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 3
               </div>
-              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Preview Live</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>See changes update in real-time</p>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>{t('home.workflow.step3.title')}</h3>
+              <p className='text-sm text-text-secondary leading-relaxed'>{t('home.workflow.step3.desc')}</p>
             </div>
             <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
                 4
               </div>
-              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Export PNG</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>Download crisp PNG images or printable PDF files</p>
+              <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>{t('home.workflow.step4.title')}</h3>
+              <p className='text-sm text-text-secondary leading-relaxed'>{t('home.workflow.step4.desc')}</p>
             </div>
           </div>
         </div>

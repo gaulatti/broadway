@@ -8,12 +8,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { templates } from '../templates';
+import { useT } from '../i18n/useT';
 
 export default function PreviewGallery() {
+  const t = useT();
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
       <div className='container mx-auto'>
-        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>Template Gallery</h1>
+        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>{t('preview.gallery.title')}</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {templates.map((template) => (
@@ -53,7 +55,7 @@ export default function PreviewGallery() {
               </div>
 
               <div className='p-4 bg-light-sand dark:bg-dark-sand border-t border-sand/10 dark:border-dark-sand/20'>
-                <span className='text-sm text-sea dark:text-accent-blue group-hover:underline font-medium tracking-elegant'>View full preview →</span>
+                <span className='text-sm text-sea dark:text-accent-blue group-hover:underline font-medium tracking-elegant'>{t('preview.gallery.viewFull')}</span>
               </div>
             </Link>
           ))}
@@ -61,7 +63,7 @@ export default function PreviewGallery() {
 
         {templates.length === 0 && (
           <div className='text-center py-12'>
-            <p className='text-text-secondary text-lg'>No templates available. Add templates to the registry to see them here.</p>
+            <p className='text-text-secondary text-lg'>{t('preview.gallery.noTemplates')}</p>
           </div>
         )}
       </div>

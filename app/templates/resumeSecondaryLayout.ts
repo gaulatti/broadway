@@ -59,32 +59,34 @@ const estimateTextLines = (value: string, charsPerLine: number) => {
   return Math.max(1, Math.ceil(normalized.length / charsPerLine));
 };
 
+const clean = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
+
 export const buildResumeSecondaryCards = (props: ResumeLetterProps): ResumeSecondaryCard[] => {
   const timeline = (props.experience || []).filter(
-    (item) => item.title.trim() || item.company.trim() || item.date.trim() || item.highlights.some((line) => line.trim())
+    (item) => item && (clean(item.title) || clean(item.company) || clean(item.date) || (item.highlights || []).some((line) => clean(line)))
   );
-  const spotlightItems = (props.spotlights || []).filter((item) => item.title.trim() || item.metric.trim() || item.impact.trim());
-  const earlierItems = (props.earlierExperiences || []).map((item) => item.text.trim()).filter(Boolean);
-  const educationItems = (props.education || []).filter((item) => item.degree.trim() || item.school.trim() || item.date.trim());
-  const skillItems = (props.skillGroups || []).filter((group) => group.title.trim() || group.items.some((item) => item.trim()));
+  const spotlightItems = (props.spotlights || []).filter((item) => item && (clean(item.title) || clean(item.metric) || clean(item.impact)));
+  const earlierItems = (props.earlierExperiences || [])
+    .map((item) => clean(item?.text))
+    .filter(Boolean);
 
   return [
     ...spotlightItems.map((spotlight) => ({
       section: 'Spotlight' as const,
       type: 'spotlight' as const,
       id: `spotlight-${spotlight.id}`,
-      title: spotlight.title || 'Outstanding Achievement',
-      metric: spotlight.metric,
-      impact: spotlight.impact
+      title: clean(spotlight.title) || 'Outstanding Achievement',
+      metric: clean(spotlight.metric),
+      impact: clean(spotlight.impact)
     })),
     ...timeline.map((item) => ({
       section: 'Experience' as const,
       type: 'experience' as const,
       id: `experience-${item.id}`,
-      title: item.title,
-      company: item.company,
-      date: item.date,
-      highlights: item.highlights.map((line) => line.trim()).filter(Boolean)
+      title: clean(item.title),
+      company: clean(item.company),
+      date: clean(item.date),
+      highlights: (item.highlights || []).map((line) => clean(line)).filter(Boolean)
     })),
     ...(earlierItems.length > 0
       ? [
@@ -93,27 +95,6 @@ export const buildResumeSecondaryCards = (props: ResumeLetterProps): ResumeSecon
             type: 'earlier' as const,
             id: 'earlier-group',
             items: earlierItems
-          }
-        ]
-      : []),
-    ...educationItems.map((item) => ({
-      section: 'Education' as const,
-      type: 'education' as const,
-      id: `education-${item.id}`,
-      title: item.degree || item.school || 'Education',
-      date: item.date,
-      school: item.school
-    })),
-    ...(skillItems.length > 0
-      ? [
-          {
-            section: 'Expertise' as const,
-            type: 'expertise' as const,
-            id: 'expertise-group',
-            groups: skillItems.map((group) => ({
-              title: group.title || 'Skills',
-              text: group.items.filter(Boolean).join(' • ')
-            }))
           }
         ]
       : [])

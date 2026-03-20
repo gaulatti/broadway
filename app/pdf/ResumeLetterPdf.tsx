@@ -94,15 +94,15 @@ const C = {
   SECONDARY: '#595959'
 } as const;
 const CONTENT_SAFE_INSET = 18;
-const SIDEBAR_WIDTH = 225;
-const SECONDARY_SIDEBAR_WIDTH = 220;
+const SIDEBAR_WIDTH = 190;
+const SECONDARY_SIDEBAR_WIDTH = 185;
 
 // ─── Refined Stylesheet ─────────────────────────────────────────────────────
 
 const S = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     fontFamily: 'Libre Franklin',
     fontSize: 9.5,
     color: C.TEXT
@@ -113,12 +113,12 @@ const S = StyleSheet.create({
     width: SIDEBAR_WIDTH,
     paddingTop: 28 + CONTENT_SAFE_INSET,
     paddingBottom: 28 + CONTENT_SAFE_INSET,
-    paddingLeft: 18 + CONTENT_SAFE_INSET,
-    paddingRight: 18,
+    paddingLeft: 18,
+    paddingRight: 18 + CONTENT_SAFE_INSET,
     flexDirection: 'column',
-    borderRightWidth: 1,
-    borderRightColor: C.SAND,
-    borderRightStyle: 'solid',
+    borderLeftWidth: 1,
+    borderLeftColor: C.SAND,
+    borderLeftStyle: 'solid',
     position: 'relative'
   },
   sidebarName: {
@@ -221,6 +221,71 @@ const S = StyleSheet.create({
     paddingBottom: 28 + CONTENT_SAFE_INSET,
     paddingLeft: 20,
     flexDirection: 'column'
+  },
+  mainHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    columnGap: 8
+  },
+  mainHeaderIdentity: {
+    flex: 1,
+    paddingRight: 8
+  },
+  mainName: {
+    fontFamily: 'Encode Sans',
+    fontWeight: 700,
+    fontSize: 22,
+    color: C.DEEP_SEA,
+    letterSpacing: -0.5,
+    lineHeight: 1,
+    marginBottom: 5
+  },
+  mainTitle: {
+    fontFamily: 'Libre Franklin',
+    fontWeight: 400,
+    fontSize: 8.5,
+    color: C.DESERT,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    lineHeight: 1.35
+  },
+  mainIdentityContact: {
+    fontFamily: 'Libre Franklin',
+    fontWeight: 400,
+    fontSize: 7.3,
+    color: C.TEXT,
+    lineHeight: 1.35,
+    marginTop: 2
+  },
+  mainContactColumn: {
+    maxWidth: 178,
+    alignItems: 'flex-end'
+  },
+  mainContactText: {
+    fontFamily: 'Libre Franklin',
+    fontWeight: 400,
+    fontSize: 7.3,
+    color: C.TEXT,
+    lineHeight: 1.35,
+    textAlign: 'right',
+    marginBottom: 2
+  },
+  mainContactLink: {
+    fontFamily: 'Libre Franklin',
+    fontWeight: 400,
+    fontSize: 7.3,
+    color: C.SEA,
+    lineHeight: 1.35,
+    textAlign: 'right',
+    marginBottom: 2
+  },
+  mainHeaderRule: {
+    height: 1,
+    backgroundColor: C.DESERT,
+    opacity: 0.5,
+    marginBottom: 8
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -329,7 +394,7 @@ const S = StyleSheet.create({
   // ── Page 2 specific styles ───────────────────────────────────────────────
   page2: {
     backgroundColor: '#ffffff',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     fontFamily: 'Libre Franklin',
     fontSize: 8.5,
     color: C.TEXT
@@ -338,11 +403,11 @@ const S = StyleSheet.create({
     width: SECONDARY_SIDEBAR_WIDTH,
     paddingTop: 28 + CONTENT_SAFE_INSET,
     paddingBottom: 24 + CONTENT_SAFE_INSET,
-    paddingLeft: 16 + CONTENT_SAFE_INSET,
-    paddingRight: 16,
-    borderRightWidth: 1,
-    borderRightColor: C.SAND,
-    borderRightStyle: 'solid',
+    paddingLeft: 16,
+    paddingRight: 16 + CONTENT_SAFE_INSET,
+    borderLeftWidth: 1,
+    borderLeftColor: C.SAND,
+    borderLeftStyle: 'solid',
     position: 'relative',
     flexDirection: 'column'
   },
@@ -531,7 +596,7 @@ const S = StyleSheet.create({
     fontWeight: 300,
     fontSize: 7,
     color: C.SECONDARY,
-    textAlign: 'center',
+    textAlign: 'left',
     letterSpacing: 0.6
   }
 });
@@ -606,7 +671,7 @@ const SnapshotCard = ({
   frameless = false,
   children
 }: {
-  title: string;
+  title?: string;
   date?: string;
   variant?: 'default' | 'highlight';
   frameless?: boolean;
@@ -620,7 +685,7 @@ const SnapshotCard = ({
       style={isHighlight ? [S.snapshotCard, S.snapshotHighlightCard] : frameless ? [S.snapshotCard, { backgroundColor: 'transparent' }] : S.snapshotCard}
     >
       {date && <Text style={S.snapshotDateBadge}>{date}</Text>}
-      <Text style={date ? [S.snapshotTitle, S.snapshotTitleWithDate] : S.snapshotTitle}>{title}</Text>
+      {title ? <Text style={date ? [S.snapshotTitle, S.snapshotTitleWithDate] : S.snapshotTitle}>{title}</Text> : null}
       {children}
     </View>
   );
@@ -652,16 +717,26 @@ const ExpEntry = ({ role, company, date, highlights }: ExpEntryProps) => (
 export type ResumeLetterPdfProps = ResumeLetterProps;
 
 export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
-  const { name, title, email, phone, location, contactLinks, languages, introStatement } = props;
-  const links = (contactLinks || []).map((item) => item.trim()).filter(Boolean);
-  const languageItems = (languages || []).filter((item) => item.language.trim() || item.proficiency.trim());
+  const clean = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
+  const { name, title, email, phone, location, contactLinks, languages, introStatement, skillGroups, education } = props;
+  const links = (contactLinks || []).map((item) => clean(item)).filter(Boolean);
+  const languageItems = (languages || []).filter((item) => item && (clean(item.language) || clean(item.proficiency)));
+  const educationItems = (education || []).filter((item) => item && (clean(item.degree) || clean(item.school) || clean(item.date)));
+  const expertiseGroups = (skillGroups || [])
+    .filter((group) => Boolean(group))
+    .map((group, index) => ({
+      id: group.id || `skills-group-${index}`,
+      title: clean(group.title) || 'Skills',
+      text: (group.items || []).map((item) => clean(item)).filter(Boolean).join(' • ')
+    }))
+    .filter((group) => group.title || group.text);
   const { primary: primaryCards, secondary: secondaryPages } = buildResumePaginatedCards(props);
 
   return (
     <Document>
       {/* ══════════════════════════════════════ PAGE 1 ══════════════════════════════════════ */}
       <Page size='LETTER' style={S.page}>
-        {/* Left Sidebar — Name + Contact */}
+        {/* Sidebar */}
         <View style={S.sidebar}>
           {/* Subtle vertical gradient background */}
           <Svg style={{ position: 'absolute', top: 0, left: 0, width: SIDEBAR_WIDTH, height: 792 }}>
@@ -675,24 +750,54 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
             <Rect x='0' y='0' width={`${SIDEBAR_WIDTH}`} height='792' fill='url(#desertGradient)' />
           </Svg>
 
-          <Text style={S.sidebarName}>{name}</Text>
-          <Text style={S.sidebarTitle}>{title}</Text>
+          {educationItems.length > 0 && (
+            <View style={S.sidebarMetaBlock}>
+              <Text style={S.sidebarMetaLabel}>Education</Text>
+              {educationItems.map((item) => (
+                <View key={`sidebar-education-${item.id}`} style={{ marginBottom: 6 }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Encode Sans',
+                      fontWeight: 600,
+                      fontSize: 6.7,
+                      color: C.DEEP_SEA,
+                      letterSpacing: 0.25,
+                      marginBottom: 2
+                    }}
+                  >
+                    {item.degree || 'Education'}
+                  </Text>
+                  <Text style={{ fontFamily: 'Libre Franklin', fontWeight: 400, fontSize: 6.7, color: C.TEXT, lineHeight: 1.35 }}>
+                    {item.school}
+                    {clean(item.date) ? ` · ${item.date}` : ''}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          )}
 
-          {/* Contact */}
-          <View style={S.contactBlock}>
-            <Text style={S.contactLabel}>Contact</Text>
-            <Text style={S.contactText}>{email}</Text>
-            {phone?.trim() && <Text style={S.contactText}>{phone}</Text>}
-            <Text style={S.contactText}>{location}</Text>
-            {links.map((link, index) => {
-              const href = toExternalUrl(link);
-              return (
-                <Link key={`contact-link-${index}`} src={href} style={S.contactLink}>
-                  {link}
-                </Link>
-              );
-            })}
-          </View>
+          {expertiseGroups.length > 0 && (
+            <View style={S.sidebarMetaBlock}>
+              <Text style={S.sidebarMetaLabel}>Expertise</Text>
+              {expertiseGroups.map((group) => (
+                <View key={`sidebar-expertise-${group.id}`} style={{ marginBottom: 6 }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Encode Sans',
+                      fontWeight: 600,
+                      fontSize: 6.7,
+                      color: C.DEEP_SEA,
+                      letterSpacing: 0.25,
+                      marginBottom: 2
+                    }}
+                  >
+                    {group.title}
+                  </Text>
+                  <Text style={{ fontFamily: 'Libre Franklin', fontWeight: 400, fontSize: 6.7, color: C.TEXT, lineHeight: 1.35 }}>{group.text}</Text>
+                </View>
+              ))}
+            </View>
+          )}
 
           {languageItems.length > 0 && (
             <View style={S.sidebarMetaBlock}>
@@ -700,7 +805,7 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
               {languageItems.map((item, index) => (
                 <Text key={`language-${index}`} style={S.sidebarMetaText}>
                   {item.language}
-                  {item.proficiency.trim() ? ` — ${item.proficiency}` : ''}
+                  {clean(item.proficiency) ? ` — ${item.proficiency}` : ''}
                 </Text>
               ))}
             </View>
@@ -717,6 +822,28 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
 
         {/* Main Content Area */}
         <View style={S.mainContent}>
+          <View style={S.mainHeaderRow}>
+            <View style={S.mainHeaderIdentity}>
+              <Text style={S.mainName}>{name}</Text>
+              <Text style={S.mainTitle}>{title}</Text>
+              <Text style={S.mainIdentityContact}>{email}</Text>
+              <Text style={S.mainIdentityContact}>{location}</Text>
+            </View>
+            <View style={S.mainContactColumn}>
+              {phone?.trim() && <Text style={S.mainContactText}>{phone}</Text>}
+              {links.map((link, index) => {
+                const href = toExternalUrl(link);
+                return (
+                  <Link key={`contact-main-link-${index}`} src={href} style={S.mainContactLink}>
+                    {link}
+                  </Link>
+                );
+              })}
+            </View>
+          </View>
+
+          <View style={S.mainHeaderRule} />
+
           {primaryCards.map((card, index) => {
             const showSectionHeading = index === 0 || primaryCards[index - 1].section !== card.section;
             return (
@@ -732,7 +859,7 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
                   </SnapshotCard>
                 )}
                 {card.type === 'earlier' && (
-                  <SnapshotCard title='Earlier Experience' frameless>
+                  <SnapshotCard frameless>
                     {card.items.map((item, itemIndex) => (
                       <View key={`${card.id}-primary-earlier-${itemIndex}`} style={S.snapshotSkillRow}>
                         <View style={S.snapshotSkillDot} />
@@ -741,27 +868,9 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
                     ))}
                   </SnapshotCard>
                 )}
-                {card.type === 'education' && (
-                  <SnapshotCard title={card.title} date={card.date} frameless>
-                    <Text style={S.snapshotText}>{card.school}</Text>
-                  </SnapshotCard>
-                )}
-                {card.type === 'expertise' && (
-                  <SnapshotCard title='Expertise' frameless>
-                    {card.groups.map((group, groupIndex) => (
-                      <View
-                        key={`${card.id}-primary-expertise-${groupIndex}`}
-                        style={{ marginTop: groupIndex > 0 ? 8 : 0, marginBottom: groupIndex < card.groups.length - 1 ? 5 : 0 }}
-                      >
-                        <Text style={S.snapshotTitle}>{group.title || 'Skills'}</Text>
-                        <Text style={S.snapshotSkillBody}>{group.text}</Text>
-                      </View>
-                    ))}
-                  </SnapshotCard>
-                )}
-              </React.Fragment>
-            );
-          })}
+                </React.Fragment>
+              );
+            })}
         </View>
       </Page>
 
@@ -807,29 +916,11 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
                     </SnapshotCard>
                   )}
                   {card.type === 'earlier' && (
-                    <SnapshotCard title='Earlier Experience' frameless>
+                    <SnapshotCard frameless>
                       {card.items.map((item, itemIndex) => (
                         <View key={`${card.id}-secondary-earlier-${itemIndex}`} style={S.snapshotSkillRow}>
                           <View style={S.snapshotSkillDot} />
                           <Text style={S.snapshotSkillText}>{item}</Text>
-                        </View>
-                      ))}
-                    </SnapshotCard>
-                  )}
-                  {card.type === 'education' && (
-                    <SnapshotCard title={card.title} date={card.date} frameless>
-                      <Text style={S.snapshotText}>{card.school}</Text>
-                    </SnapshotCard>
-                  )}
-                  {card.type === 'expertise' && (
-                    <SnapshotCard title='Expertise' frameless>
-                      {card.groups.map((group, groupIndex) => (
-                        <View
-                          key={`${card.id}-secondary-expertise-${groupIndex}`}
-                          style={{ marginTop: groupIndex > 0 ? 8 : 0, marginBottom: groupIndex < card.groups.length - 1 ? 5 : 0 }}
-                        >
-                          <Text style={S.snapshotTitle}>{group.title || 'Skills'}</Text>
-                          <Text style={S.snapshotSkillBody}>{group.text}</Text>
                         </View>
                       ))}
                     </SnapshotCard>

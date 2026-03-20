@@ -40,18 +40,19 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
         overflowWrap: 'normal',
         hyphens: 'none',
         display: 'flex',
+        flexDirection: 'row-reverse',
         overflow: 'hidden'
       }}
     >
       <div
         style={{
-          width: '220px',
-          borderRight: `1px solid ${C.SAND}`,
+          width: '185px',
+          borderLeft: `1px solid ${C.SAND}`,
           background: `linear-gradient(180deg, ${C.DESERT}14 0%, ${C.TERRACOTTA}08 50%, ${C.SEA}14 100%)`,
           paddingTop: `${28 + CONTENT_SAFE_INSET}px`,
-          paddingRight: '16px',
+          paddingRight: `${16 + CONTENT_SAFE_INSET}px`,
           paddingBottom: `${22 + CONTENT_SAFE_INSET}px`,
-          paddingLeft: `${16 + CONTENT_SAFE_INSET}px`,
+          paddingLeft: '16px',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -161,7 +162,7 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
               )}
 
               {card.type === 'earlier' && (
-                <SnapshotCard title='Earlier Experience' frameless>
+                <SnapshotCard frameless>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     {card.items.map((item, itemIndex) => (
                       <div key={`earlier-secondary-${itemIndex}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
@@ -193,56 +194,6 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
                 </SnapshotCard>
               )}
 
-              {card.type === 'education' && (
-                <SnapshotCard title={card.title || 'Education'} date={card.date} frameless>
-                  <div
-                    style={{
-                      fontFamily: FONT_BODY,
-                      fontWeight: 500,
-                      fontSize: '8.5px',
-                      color: C.SEA,
-                      lineHeight: '1.35'
-                    }}
-                  >
-                    {card.school}
-                  </div>
-                </SnapshotCard>
-              )}
-
-              {card.type === 'expertise' && (
-                <SnapshotCard title='Expertise' frameless>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
-                    {card.groups.map((group, groupIndex) => (
-                      <div key={`expertise-secondary-${groupIndex}`}>
-                        <div
-                          style={{
-                            fontFamily: FONT_DISPLAY,
-                            fontWeight: 500,
-                            fontSize: '9px',
-                            color: C.DEEP_SEA,
-                            marginTop: groupIndex > 0 ? '8px' : '0',
-                            marginBottom: '4px',
-                            letterSpacing: '-0.1px'
-                          }}
-                        >
-                          {group.title || 'Skills'}
-                        </div>
-                        <div
-                          style={{
-                            fontFamily: FONT_BODY,
-                            fontWeight: 400,
-                            fontSize: '8px',
-                            color: C.TEXT,
-                            lineHeight: '1.45'
-                          }}
-                        >
-                          {group.text}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </SnapshotCard>
-              )}
             </React.Fragment>
           );
         })}
@@ -256,10 +207,10 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
               fontSize: '7px',
               color: C.SECONDARY,
               letterSpacing: '0.6px',
-              textAlign: 'center'
+              textAlign: 'left'
             }}
           >
-            Desert & Sea · 2026
+            Generated with Broadway · broadway.gaulatti.com
           </div>
         </div>
       </div>

@@ -96,7 +96,7 @@ export const SectionHeading = ({ label }: { label: string }) => (
 );
 
 interface SnapshotCardProps {
-  title: string;
+  title?: string;
   date?: string;
   variant?: 'default' | 'highlight';
   frameless?: boolean;
@@ -141,18 +141,20 @@ export const SnapshotCard = ({ title, date, variant = 'default', frameless = fal
       )}
 
       <div style={{ paddingRight: date ? '72px' : 0 }}>
-        <div
-          style={{
-            fontFamily: FONT_DISPLAY,
-            fontWeight: 500,
-            fontSize: '9px',
-            color: C.DEEP_SEA,
-            marginBottom: '5px',
-            letterSpacing: '-0.1px'
-          }}
-        >
-          {title}
-        </div>
+        {title ? (
+          <div
+            style={{
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 500,
+              fontSize: '9px',
+              color: C.DEEP_SEA,
+              marginBottom: '5px',
+              letterSpacing: '-0.1px'
+            }}
+          >
+            {title}
+          </div>
+        ) : null}
         {children}
       </div>
     </div>

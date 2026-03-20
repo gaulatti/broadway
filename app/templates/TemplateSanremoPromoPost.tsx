@@ -1,7 +1,7 @@
 /**
  * Sanremo Promo Post Template
  *
- * A 1080x1350 Instagram portrait post template for ModoSanremo program promotions.
+ * A 1080x1350 portrait post template for ModoSanremo program promotions.
  *
  * Layout (fixed):
  *   ┌──────────────────────────────┐

@@ -1,5 +1,5 @@
 /**
- * Template Studio - Image Export Utility
+ * Template Generator - Image Export Utility
  *
  * PNG Export: Uses html-to-image to export template renders as PNG images.
  * PDF Export: Uses @react-pdf/renderer for true vector PDFs with selectable text.

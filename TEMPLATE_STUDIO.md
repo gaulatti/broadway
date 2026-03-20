@@ -1,13 +1,13 @@
-# Template Studio
+# Template Generator
 
-A React-based system for creating and exporting 1080×1920 story templates. Select templates, customize fields, preview changes live, and export perfect PNG images.
+A React-based system for creating and exporting multi-format templates. Select templates, customize fields, preview changes live, and export polished PNG or PDF output.
 
 ## Features
 
 - **Template System**: React components with typed props and metadata
 - **Dynamic Forms**: Auto-generated forms based on template field definitions
 - **Live Preview**: Real-time preview of template changes
-- **PNG Export**: Perfect 1080×1920 PNG exports using html2canvas
+- **Export Options**: High-quality PNG export plus vector PDF export for resume templates
 - **Gallery View**: Browse all available templates with thumbnails
 - **Individual Preview**: View and export individual templates
 
@@ -56,7 +56,7 @@ app/
 2. Select a template from the dropdown
 3. Edit fields in the form (text, textarea, images, numbers)
 4. Watch the preview update in real-time
-5. Click "Export PNG" to download a 1080×1920 image
+5. Click "Export" to download PNG or PDF (template-dependent)
 
 ### Browsing Templates
 

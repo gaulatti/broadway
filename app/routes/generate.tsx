@@ -5,7 +5,7 @@
  * 1. Select a template from dropdown
  * 2. Edit template fields via auto-generated form
  * 3. Preview changes live
- * 4. Export the result as 1080x1920 PNG
+ * 4. Export the result as PNG (and PDF for resume templates)
  */
 
 import React, { useState, useRef } from 'react';
@@ -173,17 +173,35 @@ export default function Generate() {
                     {field.type === 'overlays' ? (
                       <OverlayEditor value={(values[field.key] as OverlayItem[]) || []} onChange={(overlays) => handleFieldChange(field.key, overlays)} />
                     ) : field.type === 'experienceItems' ? (
-                      <ResumeExperienceEditor value={(values[field.key] as ResumeLetterProps['experience']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeExperienceEditor
+                        value={(values[field.key] as ResumeLetterProps['experience']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'educationItems' ? (
-                      <ResumeEducationEditor value={(values[field.key] as ResumeLetterProps['education']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeEducationEditor
+                        value={(values[field.key] as ResumeLetterProps['education']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'skillGroups' ? (
-                      <ResumeSkillGroupEditor value={(values[field.key] as ResumeLetterProps['skillGroups']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeSkillGroupEditor
+                        value={(values[field.key] as ResumeLetterProps['skillGroups']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'contactLinks' ? (
-                      <ResumeContactLinksEditor value={(values[field.key] as ResumeLetterProps['contactLinks']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeContactLinksEditor
+                        value={(values[field.key] as ResumeLetterProps['contactLinks']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'languageItems' ? (
-                      <ResumeLanguageEditor value={(values[field.key] as ResumeLetterProps['languages']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeLanguageEditor
+                        value={(values[field.key] as ResumeLetterProps['languages']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'spotlightItems' ? (
-                      <ResumeSpotlightEditor value={(values[field.key] as ResumeLetterProps['spotlights']) || []} onChange={(items) => handleFieldChange(field.key, items)} />
+                      <ResumeSpotlightEditor
+                        value={(values[field.key] as ResumeLetterProps['spotlights']) || []}
+                        onChange={(items) => handleFieldChange(field.key, items)}
+                      />
                     ) : field.type === 'earlierExperienceItems' ? (
                       <ResumeEarlierExperienceEditor
                         value={(values[field.key] as ResumeLetterProps['earlierExperiences']) || []}

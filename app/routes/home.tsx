@@ -3,7 +3,10 @@ import { Link } from 'react-router';
 import { templates } from '../templates';
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: 'Broadway - Instagram Story Template Generator' }, { name: 'description', content: 'Create and export beautiful 1080x1920 story templates' }];
+  return [
+    { title: 'Broadway - Template-Based Generator' },
+    { name: 'description', content: 'Generate polished visuals and documents from reusable templates' }
+  ];
 }
 
 export default function Home() {
@@ -22,13 +25,13 @@ export default function Home() {
           <div className='max-w-4xl mx-auto text-center'>
             {/* Main Heading */}
             <h1 className='font-display text-6xl md:text-7xl font-medium mb-8 tracking-tight leading-tight text-text-primary dark:text-white'>
-              <span className='block text-fade-in'>Template Studio</span>
+              <span className='block text-fade-in'>Template-Based Generator</span>
             </h1>
             {/* Role Description */}
-            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>Instagram Story Generator</p>
+            <p className='font-display text-2xl md:text-3xl mb-6 text-sea tracking-refined font-normal'>Generate from Reusable Templates</p>
             {/* Personal Philosophy */}
             <p className='text-lg md:text-xl mb-12 max-w-2xl mx-auto text-text-secondary leading-relaxed font-light'>
-              Create stunning 1080×1920 story templates. Select a template, customize it, and export perfect PNG images with ease.
+              Generate polished visuals and documents from reusable templates. Customize content, preview instantly, and export to PNG or PDF.
             </p>
             {/* CTA Buttons */}
             <div className='flex justify-center gap-6 flex-wrap'>
@@ -36,7 +39,7 @@ export default function Home() {
                 to='/generate'
                 className='px-8 py-3.5 bg-sea text-white hover:bg-desert transition-all duration-400 tracking-elegant text-base font-medium border border-transparent hover:border-desert/20'
               >
-                Start Generating
+                Open Generator
               </Link>
               <Link
                 to='/preview'
@@ -58,8 +61,8 @@ export default function Home() {
               <p className='text-text-secondary dark:text-text-secondary font-medium tracking-wide'>Available Templates</p>
             </div>
             <div>
-              <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>1080×1920</p>
-              <p className='text-text-secondary font-medium tracking-wide'>Perfect Story Size</p>
+              <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>Multi-size</p>
+              <p className='text-text-secondary font-medium tracking-wide'>Story, Post, and Letter Formats</p>
             </div>
             <div>
               <p className='text-5xl font-display font-medium text-sea dark:text-accent-blue mb-3 tracking-refined'>PNG</p>
@@ -76,7 +79,7 @@ export default function Home() {
           >
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-3xl font-display font-medium text-text-primary group-hover:text-sea dark:group-hover:text-accent-blue transition-colors duration-400 tracking-refined'>
-                Generate Template
+                Use Generator
               </h2>
               <svg
                 className='w-10 h-10 text-sea dark:text-accent-blue transition-transform duration-400 group-hover:translate-x-1'
@@ -93,10 +96,10 @@ export default function Home() {
               </svg>
             </div>
             <p className='text-text-secondary mb-6 leading-relaxed'>
-              Select a template, edit its fields with a dynamic form, preview changes live, and export as a perfect 1080×1920 PNG.
+              Select a template, edit its fields with a dynamic form, preview changes live, and export high-quality PNG or PDF output.
             </p>
             <span className='text-sea dark:text-accent-blue font-medium tracking-elegant group-hover:underline inline-flex items-center gap-2'>
-              Start generating
+              Open generator
               <span className='transition-transform duration-400 group-hover:translate-x-1'>→</span>
             </span>
           </Link>
@@ -142,7 +145,7 @@ export default function Home() {
                 1
               </div>
               <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Select Template</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>Choose from available story templates</p>
+              <p className='text-sm text-text-secondary leading-relaxed'>Choose from available visual and document templates</p>
             </div>
             <div className='bg-white dark:bg-dark-sand rounded-lg p-8 shadow-sm hover-lift border border-sand/10 dark:border-dark-sand/20 transition-all duration-400'>
               <div className='w-16 h-16 bg-sand dark:bg-dark-sand text-sea dark:text-accent-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-display font-medium'>
@@ -163,7 +166,7 @@ export default function Home() {
                 4
               </div>
               <h3 className='font-display font-medium text-text-primary dark:text-white mb-3 text-lg tracking-refined'>Export PNG</h3>
-              <p className='text-sm text-text-secondary leading-relaxed'>Download perfect 1080×1920 image</p>
+              <p className='text-sm text-text-secondary leading-relaxed'>Download crisp PNG images or printable PDF files</p>
             </div>
           </div>
         </div>

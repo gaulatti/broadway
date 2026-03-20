@@ -1,24 +1,25 @@
 # Broadway
 
-A sophisticated React-based application for creating and exporting professional 1080×1920 story templates. Built with React Router 7, TypeScript, and a custom design system inspired by natural earth tones.
+A sophisticated React-based generator for creating and exporting polished visuals and documents from reusable templates. Built with React Router 7, TypeScript, and a custom design system inspired by natural earth tones.
 
 **🌐 Live Demo:** [https://broadway.gaulatti.com](https://broadway.gaulatti.com)
 
 ## 🎯 Overview
 
-Broadway is a complete solution for generating social media story templates with:
+Broadway is a complete solution for generating customizable templates across multiple formats, with:
 
 - **Template System** - Extensible React component architecture with typed props
 - **Dynamic Forms** - Auto-generated forms based on template field definitions
 - **Live Preview** - Real-time preview of template customizations
-- **PNG Export** - Perfect 1080×1920 PNG exports
+- **Multi-format Export** - High-quality PNG export and PDF export for resume templates
 - **Gallery View** - Browse all available templates
 - **Responsive Design** - Beautiful UI with automatic dark mode support
 
 ## ✨ Features
 
-- 🎨 **Template Editor** - Select templates, customize fields, preview changes live
-- 🖼️ **PNG Export** - Export perfect 1080×1920 images with one click
+- 🎨 **Template Editor** - Select templates, customize fields, and preview changes live
+- 🖼️ **PNG Export** - Export high-quality images with one click
+- 📄 **PDF Export** - Export resume templates as vector PDFs with selectable text
 - 📱 **Gallery Browser** - View all templates in responsive grid
 - 🌓 **Dark Mode** - Automatic system preference detection
 - 🚀 **Server-Side Rendering** - Built with React Router 7
@@ -123,14 +124,7 @@ export default TemplateHello;
 ```
 
 Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates) guide for details.\*React 19\*\* - UI framework
-
-- **React Router 7** - Routing and SSR
-- **TypeScript 5** - Type safety
-- **Vite 7** - Build tool
-- **Tailwind CSS 4** - Styling
-- **html-to-image** - PNG export
-- **fast-average-color** - Color analysis
-- **Node.js 20** - Runtime
+Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates) guide for details.
 
 ## 📄 License
 
@@ -141,7 +135,8 @@ You are free to use, modify, and distribute this software as long as you include
 ---
 
 Built with precision using React Router and modern web technologies.
-�️ Tech Stack
+
+## 🛠️ Tech Stack
 
 - **React 19** - UI framework
 - **React Router 7** - Routing and SSR
@@ -149,6 +144,7 @@ Built with precision using React Router and modern web technologies.
 - **Vite 7** - Build tool
 - **Tailwind CSS 4** - Styling
 - **html-to-image** - PNG export
+- **@react-pdf/renderer** - Vector PDF export for resumes
 - **Node.js 20** - Runtime
 
 ## 🤝 Contributing

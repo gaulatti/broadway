@@ -1,8 +1,8 @@
 /**
  * Sanremo Post Template
  *
- * A 1080x1080 Instagram post template for showcasing Sanremo artists.
- * Square format optimized for Instagram feed posts.
+ * A 1080x1080 square post template for showcasing Sanremo artists.
+ * Square format optimized for feed-style posts.
  */
 
 import React, { useState } from 'react';

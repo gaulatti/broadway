@@ -1,5 +1,5 @@
 /**
- * Template Studio - Type Definitions
+ * Template Generator - Type Definitions
  *
  * This module defines the core types for the template system.
  * Templates are React components with typed props, metadata for auto-form generation,

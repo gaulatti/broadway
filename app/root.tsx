@@ -133,7 +133,7 @@ export default function App() {
             <Link to='/' className='group transition-all duration-400 flex items-center gap-4'>
               <img
                 src='/logo.svg'
-                alt='Template Studio'
+                alt='Broadway template generator'
                 className='h-8 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-400 dark:invert'
               />
               <div className='h-8 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
@@ -243,12 +243,12 @@ export default function App() {
             {/* Brand Column */}
             <div className='lg:col-span-2'>
               <div className='flex items-center gap-4 mb-8'>
-                <img src='/logo.svg' alt='Template Studio' className='h-12 w-auto fill-current opacity-90 dark:invert' />
+                <img src='/logo.svg' alt='Broadway template generator' className='h-12 w-auto fill-current opacity-90 dark:invert' />
                 <div className='h-12 w-[1px] bg-gradient-to-b from-sunset/0 via-sunset to-sunset/0'></div>
                 <span className='text-3xl font-bold tracking-tight text-text-primary dark:text-white'>broadway</span>
               </div>
               <p className='text-text-secondary dark:text-text-secondary max-w-md leading-relaxed tracking-refined'>
-                Crafting beautiful story templates for social media. Design, customize, and export perfect 1080×1920 images with ease.
+                Crafting flexible templates for visual content and structured documents. Design, customize, and export polished PNG and PDF outputs with ease.
               </p>
             </div>
 
@@ -298,9 +298,9 @@ export default function App() {
             <div>
               <h3 className='font-medium tracking-elegant text-sm text-desert dark:text-desert mb-8 uppercase'>Features</h3>
               <ul className='space-y-4 text-text-secondary dark:text-text-secondary'>
-                <li className='tracking-refined'>1080×1920 Templates</li>
+                <li className='tracking-refined'>Multi-format Templates</li>
                 <li className='tracking-refined'>Live Preview</li>
-                <li className='tracking-refined'>PNG Export</li>
+                <li className='tracking-refined'>PNG + PDF Export</li>
                 <li className='tracking-refined'>Easy Customization</li>
               </ul>
             </div>

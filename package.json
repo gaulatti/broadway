@@ -13,6 +13,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "@gaulatti/bleecker": "^0.1.6",
     "@react-pdf/renderer": "^4.3.2",
     "@react-router/node": "7.10.1",
     "@react-router/serve": "7.10.1",

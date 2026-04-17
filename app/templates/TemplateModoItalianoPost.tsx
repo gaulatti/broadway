@@ -15,8 +15,7 @@ export interface ModoItalianoPostProps {
 
 export const defaultProps: ModoItalianoPostProps = {
   bottomText: 'Descúbrelo en @modoitaliano',
-  backgroundImageUrl:
-    'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=2000&q=80'
+  backgroundImageUrl: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=2000&q=80'
 };
 
 export const fields: Array<FieldDef<ModoItalianoPostProps>> = [

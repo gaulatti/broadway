@@ -14,8 +14,9 @@ export interface ModoItalianoPostProps {
 }
 
 export const defaultProps: ModoItalianoPostProps = {
-  bottomText: 'Descúbrelo en @modoitaliano',
-  backgroundImageUrl: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=2000&q=80'
+  bottomText: 'Elettra Lamborghini pide poner fin a las fiestas nocturnas cerca de los hoteles del festival de Sanremo',
+  backgroundImageUrl:
+    'https://cdn.fifthbell.com/media/2026/02/26/elettra-lamborghini-calls-for-end-to-late-night-parties-near-sanremo-festival-hotels-Hvsjli7JKP.avif'
 };
 
 export const fields: Array<FieldDef<ModoItalianoPostProps>> = [
@@ -23,7 +24,7 @@ export const fields: Array<FieldDef<ModoItalianoPostProps>> = [
     key: 'bottomText',
     label: 'Bottom Text',
     type: 'text',
-    placeholder: 'Descúbrelo en @modoitaliano'
+    placeholder: 'Elettra Lamborghini pide poner fin a las fiestas nocturnas cerca de los hoteles del festival de Sanremo'
   },
   {
     key: 'backgroundImageUrl',

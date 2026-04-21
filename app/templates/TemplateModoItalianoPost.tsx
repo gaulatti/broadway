@@ -82,7 +82,7 @@ const TemplateModoItalianoPost: React.FC<ModoItalianoPostProps> = ({ bottomText,
           style={{
             height: '92px',
             width: 'auto',
-            filter: 'brightness(0) saturate(100%) invert(100%) drop-shadow(0 6px 32px rgba(0,0,0,0.5))'
+            filter: 'brightness(0) saturate(100%) invert(100%) drop-shadow(0 12px 48px rgba(0,0,0,0.9))'
           }}
         />
       </div>
@@ -138,14 +138,14 @@ const TemplateModoItalianoPost: React.FC<ModoItalianoPostProps> = ({ bottomText,
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
-            padding: '54px 72px'
+            padding: '72px'
           }}
         >
           <p
             style={{
               margin: 0,
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: '61px',
+              fontFamily: 'Outfit, sans-serif',
+              fontSize: '72px',
               fontWeight: 600,
               lineHeight: 1.15,
               textAlign: 'left',

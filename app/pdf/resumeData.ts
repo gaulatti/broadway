@@ -39,7 +39,12 @@ export const resumeData: ResumeLetterProps = {
         'Led distributed live broadcast operation spanning crews in 3 countries simultaneously.',
         'Rebuilt the entire production model in 72 hours following a critical failure mid-event.',
         'Directed nightly 4–5 hr broadcasts achieving 2,000+ concurrent peak viewers.'
-      ]
+      ],
+      subSpotlight: {
+        title: 'Festival Recovery Sprint',
+        metric: 'Show restored in 72h with zero missed nights',
+        impact: 'Redesigned rundown + failover workflow under pressure, preserving sponsor commitments and audience trust.'
+      }
     },
     {
       id: 'exp-3',

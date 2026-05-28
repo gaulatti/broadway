@@ -31,6 +31,11 @@ export interface ResumeExperienceItem {
   company: string;
   date: string;
   highlights: string[];
+  subSpotlight?: {
+    title?: string;
+    metric?: string;
+    impact?: string;
+  };
 }
 
 export interface ResumeEducationItem {
@@ -96,7 +101,10 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
     .map((group, index) => ({
       id: group.id || `skills-group-${index}`,
       title: clean(group.title) || 'Skills',
-      text: (group.items || []).map((item) => clean(item)).filter(Boolean).join(' • ')
+      text: (group.items || [])
+        .map((item) => clean(item))
+        .filter(Boolean)
+        .join(' • ')
     }))
     .filter((group) => group.title || group.text);
   const { primary: primaryCards } = buildResumePaginatedCards(props);
@@ -432,7 +440,13 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
               {showSectionHeading && <SectionHeading label={card.section} />}
 
               {card.type === 'experience' && (
-                <ExpEntry role={card.title || 'Experience'} company={card.company} date={card.date} highlights={card.highlights} />
+                <ExpEntry
+                  role={card.title || 'Experience'}
+                  company={card.company}
+                  date={card.date}
+                  highlights={card.highlights}
+                  subSpotlight={card.subSpotlight}
+                />
               )}
 
               {card.type === 'spotlight' && (
@@ -500,7 +514,6 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
                   </div>
                 </SnapshotCard>
               )}
-
             </React.Fragment>
           );
         })}

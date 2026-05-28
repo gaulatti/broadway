@@ -390,6 +390,53 @@ const S = StyleSheet.create({
     lineHeight: 1.45,
     color: C.TEXT
   },
+  expSubSpotlight: {
+    marginTop: 7,
+    marginLeft: 0,
+    marginBottom: 6,
+    borderLeftWidth: 3,
+    borderLeftColor: C.SEA,
+    borderLeftStyle: 'solid',
+    borderTopWidth: 1,
+    borderTopColor: C.SAND,
+    borderTopStyle: 'solid',
+    borderRightWidth: 1,
+    borderRightColor: C.SAND,
+    borderRightStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: C.SAND,
+    borderBottomStyle: 'solid',
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    paddingTop: 5,
+    paddingRight: 6,
+    paddingBottom: 5,
+    paddingLeft: 6,
+    backgroundColor: '#f6f8fb'
+  },
+  expSubSpotlightTitle: {
+    fontFamily: 'Encode Sans',
+    fontWeight: 600,
+    fontSize: 8.4,
+    color: C.DEEP_SEA,
+    lineHeight: 1.2,
+    marginBottom: 2
+  },
+  expSubSpotlightMetric: {
+    fontFamily: 'Encode Sans',
+    fontWeight: 600,
+    fontSize: 9,
+    color: C.SEA,
+    lineHeight: 1.2,
+    marginBottom: 2
+  },
+  expSubSpotlightImpact: {
+    fontFamily: 'Libre Franklin',
+    fontWeight: 400,
+    fontSize: 7.8,
+    color: C.TEXT,
+    lineHeight: 1.4
+  },
 
   // ── Page 2 specific styles ───────────────────────────────────────────────
   page2: {
@@ -696,21 +743,39 @@ interface ExpEntryProps {
   company: string;
   date: string;
   highlights: string[];
+  subSpotlight?: {
+    title?: string;
+    metric?: string;
+    impact?: string;
+  };
 }
 
 // Card-based experience entry with modern styling
-const ExpEntry = ({ role, company, date, highlights }: ExpEntryProps) => (
-  <View style={S.expCard} wrap={false}>
-    <View style={S.expHeaderRow}>
-      <View style={S.expHeaderMain}>
-        <Text style={S.expRole}>{role}</Text>
-        {company.trim() && <Text style={S.expCompany}>{company}</Text>}
+const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpEntryProps) => {
+  const hasSubSpotlight = Boolean(subSpotlight?.title?.trim() || subSpotlight?.metric?.trim() || subSpotlight?.impact?.trim());
+
+  return (
+    <View style={S.expCard} wrap={false}>
+      <View style={S.expHeaderRow}>
+        <View style={S.expHeaderMain}>
+          <Text style={S.expRole}>{role}</Text>
+          {company.trim() && <Text style={S.expCompany}>{company}</Text>}
+        </View>
+        {date.trim() && <Text style={S.expDateBadge}>{date}</Text>}
       </View>
-      {date.trim() && <Text style={S.expDateBadge}>{date}</Text>}
+
+      {hasSubSpotlight && (
+        <View style={S.expSubSpotlight}>
+          {subSpotlight?.title?.trim() && <Text style={S.expSubSpotlightTitle}>{subSpotlight.title}</Text>}
+          {subSpotlight?.metric?.trim() && <Text style={S.expSubSpotlightMetric}>{subSpotlight.metric}</Text>}
+          {subSpotlight?.impact?.trim() && <Text style={S.expSubSpotlightImpact}>{subSpotlight.impact}</Text>}
+        </View>
+      )}
+
+      <BulletLines highlights={highlights} />
     </View>
-    <BulletLines highlights={highlights} />
-  </View>
-);
+  );
+};
 
 // ─── Document ────────────────────────────────────────────────────────────────
 
@@ -727,7 +792,10 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
     .map((group, index) => ({
       id: group.id || `skills-group-${index}`,
       title: clean(group.title) || 'Skills',
-      text: (group.items || []).map((item) => clean(item)).filter(Boolean).join(' • ')
+      text: (group.items || [])
+        .map((item) => clean(item))
+        .filter(Boolean)
+        .join(' • ')
     }))
     .filter((group) => group.title || group.text);
   const { primary: primaryCards, secondary: secondaryPages } = buildResumePaginatedCards(props);
@@ -850,7 +918,13 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
               <React.Fragment key={card.id}>
                 {showSectionHeading && <SectionHeading label={card.section} />}
                 {card.type === 'experience' && (
-                  <ExpEntry role={card.title || 'Experience'} company={card.company} date={card.date} highlights={card.highlights} />
+                  <ExpEntry
+                    role={card.title || 'Experience'}
+                    company={card.company}
+                    date={card.date}
+                    highlights={card.highlights}
+                    subSpotlight={card.subSpotlight}
+                  />
                 )}
                 {card.type === 'spotlight' && (
                   <SnapshotCard title={card.title || 'Outstanding Achievement'} variant='highlight'>
@@ -868,9 +942,9 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
                     ))}
                   </SnapshotCard>
                 )}
-                </React.Fragment>
-              );
-            })}
+              </React.Fragment>
+            );
+          })}
         </View>
       </Page>
 
@@ -907,7 +981,13 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
                 <React.Fragment key={card.id}>
                   {showSectionHeading && <SectionHeading label={card.section} />}
                   {card.type === 'experience' && (
-                    <ExpEntry role={card.title || 'Experience'} company={card.company} date={card.date} highlights={card.highlights} />
+                    <ExpEntry
+                      role={card.title || 'Experience'}
+                      company={card.company}
+                      date={card.date}
+                      highlights={card.highlights}
+                      subSpotlight={card.subSpotlight}
+                    />
                   )}
                   {card.type === 'spotlight' && (
                     <SnapshotCard title={card.title || 'Outstanding Achievement'} variant='highlight'>

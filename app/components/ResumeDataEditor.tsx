@@ -104,11 +104,64 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
               </div>
               <textarea
                 value={item.highlights.join('\n')}
-                onChange={(e) => update(item.id, { highlights: e.target.value.split('\n').map((line) => line.trim()).filter(Boolean) })}
+                onChange={(e) =>
+                  update(item.id, {
+                    highlights: e.target.value
+                      .split('\n')
+                      .map((line) => line.trim())
+                      .filter(Boolean)
+                  })
+                }
                 rows={4}
                 placeholder='Highlights (one per line)'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
+
+              <div className='rounded-md border border-sand/35 bg-light-sand/40 dark:bg-dark-sand/50 p-3 space-y-2'>
+                <p className='text-xs font-semibold uppercase tracking-wide text-text-secondary'>Company Spotlight (optional)</p>
+                <input
+                  type='text'
+                  value={item.subSpotlight?.title || ''}
+                  onChange={(e) =>
+                    update(item.id, {
+                      subSpotlight: {
+                        ...(item.subSpotlight || {}),
+                        title: e.target.value
+                      }
+                    })
+                  }
+                  placeholder='Spotlight title'
+                  className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
+                />
+                <input
+                  type='text'
+                  value={item.subSpotlight?.metric || ''}
+                  onChange={(e) =>
+                    update(item.id, {
+                      subSpotlight: {
+                        ...(item.subSpotlight || {}),
+                        metric: e.target.value
+                      }
+                    })
+                  }
+                  placeholder='Spotlight metric / headline'
+                  className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
+                />
+                <textarea
+                  value={item.subSpotlight?.impact || ''}
+                  onChange={(e) =>
+                    update(item.id, {
+                      subSpotlight: {
+                        ...(item.subSpotlight || {}),
+                        impact: e.target.value
+                      }
+                    })
+                  }
+                  rows={2}
+                  placeholder='Spotlight impact details'
+                  className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
+                />
+              </div>
             </div>
             <RowActions
               canMoveUp={index > 0}

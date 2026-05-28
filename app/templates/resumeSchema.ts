@@ -33,6 +33,11 @@ export interface ResumeTemplateSchema {
     company: string;
     date: string;
     highlights: string[];
+    subSpotlight?: {
+      title?: string;
+      metric?: string;
+      impact?: string;
+    };
   }>;
   earlierExperiences?: Array<
     | string
@@ -111,7 +116,14 @@ export const buildResumeSchemaExample = (props: ResumeLetterProps): ResumeTempla
     title: entry.title,
     company: entry.company,
     date: entry.date,
-    highlights: entry.highlights || []
+    highlights: entry.highlights || [],
+    subSpotlight: entry.subSpotlight
+      ? {
+          title: entry.subSpotlight.title || '',
+          metric: entry.subSpotlight.metric || '',
+          impact: entry.subSpotlight.impact || ''
+        }
+      : undefined
   })),
   earlierExperiences: (props.earlierExperiences || []).map((item) => ({
     text: item.text || ''
@@ -186,7 +198,24 @@ export const parseResumeSchema = (input: unknown, base: ResumeLetterProps): Resu
       title: ensureString(entry.title, `experience[${index}].title`, errors),
       company: ensureString(entry.company, `experience[${index}].company`, errors),
       date: ensureString(entry.date, `experience[${index}].date`, errors),
-      highlights: ensureStringArray(entry.highlights, `experience[${index}].highlights`, errors)
+      highlights: ensureStringArray(entry.highlights, `experience[${index}].highlights`, errors),
+      subSpotlight: (() => {
+        const value = entry.subSpotlight;
+        if (value === undefined || value === null) {
+          return undefined;
+        }
+        if (!isRecord(value)) {
+          errors.push(`experience[${index}].subSpotlight must be an object when provided.`);
+          return undefined;
+        }
+        const title = ensureString(value.title, `experience[${index}].subSpotlight.title`, errors, false);
+        const metric = ensureString(value.metric, `experience[${index}].subSpotlight.metric`, errors, false);
+        const impact = ensureString(value.impact, `experience[${index}].subSpotlight.impact`, errors, false);
+        if (!title && !metric && !impact) {
+          return undefined;
+        }
+        return { title, metric, impact };
+      })()
     };
   });
 

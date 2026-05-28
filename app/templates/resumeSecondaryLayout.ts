@@ -9,6 +9,11 @@ export type ResumeSecondaryCard =
       company: string;
       date: string;
       highlights: string[];
+      subSpotlight?: {
+        title?: string;
+        metric?: string;
+        impact?: string;
+      };
     }
   | {
       section: 'Spotlight';
@@ -66,9 +71,7 @@ export const buildResumeSecondaryCards = (props: ResumeLetterProps): ResumeSecon
     (item) => item && (clean(item.title) || clean(item.company) || clean(item.date) || (item.highlights || []).some((line) => clean(line)))
   );
   const spotlightItems = (props.spotlights || []).filter((item) => item && (clean(item.title) || clean(item.metric) || clean(item.impact)));
-  const earlierItems = (props.earlierExperiences || [])
-    .map((item) => clean(item?.text))
-    .filter(Boolean);
+  const earlierItems = (props.earlierExperiences || []).map((item) => clean(item?.text)).filter(Boolean);
 
   return [
     ...spotlightItems.map((spotlight) => ({
@@ -86,7 +89,15 @@ export const buildResumeSecondaryCards = (props: ResumeLetterProps): ResumeSecon
       title: clean(item.title),
       company: clean(item.company),
       date: clean(item.date),
-      highlights: (item.highlights || []).map((line) => clean(line)).filter(Boolean)
+      highlights: (item.highlights || []).map((line) => clean(line)).filter(Boolean),
+      subSpotlight:
+        item.subSpotlight && (clean(item.subSpotlight.title) || clean(item.subSpotlight.metric) || clean(item.subSpotlight.impact))
+          ? {
+              title: clean(item.subSpotlight.title),
+              metric: clean(item.subSpotlight.metric),
+              impact: clean(item.subSpotlight.impact)
+            }
+          : undefined
     })),
     ...(earlierItems.length > 0
       ? [
@@ -106,7 +117,12 @@ export const estimateSecondaryCardHeight = (card: ResumeSecondaryCard) => {
     const titleLines = estimateTextLines(card.title, 34);
     const companyLines = estimateTextLines(card.company, 46);
     const highlightLines = card.highlights.length === 0 ? 1 : card.highlights.reduce((sum, line) => sum + estimateTextLines(line, 68), 0);
-    return EXPERIENCE_BASE_HEIGHT + titleLines * 11 + companyLines * 10 + highlightLines * 11 + CARD_MARGIN_BOTTOM;
+    const subSpotlight = card.subSpotlight;
+    const subSpotlightLines = subSpotlight
+      ? estimateTextLines(subSpotlight.title || '', 38) + estimateTextLines(subSpotlight.metric || '', 44) + estimateTextLines(subSpotlight.impact || '', 66)
+      : 0;
+    const subSpotlightHeight = subSpotlight ? 14 + subSpotlightLines * 10 : 0;
+    return EXPERIENCE_BASE_HEIGHT + titleLines * 11 + companyLines * 10 + highlightLines * 11 + subSpotlightHeight + CARD_MARGIN_BOTTOM;
   }
   if (card.type === 'spotlight') {
     const titleLines = estimateTextLines(card.title, 36);

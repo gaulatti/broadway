@@ -31,13 +31,30 @@ export default function Generate() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(templates[0]?.id || '');
   const [values, setValues] = useState<Record<string, any>>({});
   const [isExporting, setIsExporting] = useState(false);
+  const [previewViewport, setPreviewViewport] = useState({ width: 0, height: 0 });
   const previewRef = useRef<HTMLDivElement>(null);
+  const previewScrollRef = useRef<HTMLDivElement>(null);
   const additionalRefs = useRef<Array<HTMLDivElement | null>>([]);
   const resumeJsonInputRef = useRef<HTMLInputElement>(null);
 
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
   const isResume = selectedTemplateId.startsWith('resume_');
+  const previewScale = template?.previewScale ?? template?.galleryScale ?? 1;
+  const previewViewportHeight = 'calc(100vh - var(--bleecker-header-height, 88px) - 72px)';
+  const fittedPreviewScale = React.useMemo(() => {
+    if (!template) return 1;
+    const width = Math.max(0, previewViewport.width - 24);
+    const height = Math.max(0, previewViewport.height - 24);
+    if (!width || !height) return previewScale;
+
+    const widthScale = width / template.width;
+    const heightScale = height / template.height;
+    const fit = Math.min(widthScale, heightScale);
+
+    if (!Number.isFinite(fit) || fit <= 0) return previewScale;
+    return fit;
+  }, [previewScale, previewViewport.height, previewViewport.width, template]);
   const additionalPageElements = template
     ? template.renderAdditionalPages
       ? template.renderAdditionalPages(values as any)
@@ -50,6 +67,33 @@ export default function Generate() {
       setValues({ ...template.defaultProps });
     }
   }, [template]);
+
+  React.useEffect(() => {
+    const node = previewScrollRef.current;
+    if (!node) return;
+
+    const measure = () => {
+      const rect = node.getBoundingClientRect();
+      setPreviewViewport({
+        width: rect.width,
+        height: rect.height
+      });
+    };
+
+    measure();
+
+    const resizeObserver = new ResizeObserver(() => {
+      measure();
+    });
+
+    resizeObserver.observe(node);
+    window.addEventListener('resize', measure);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, [selectedTemplateId]);
 
   const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTemplateId(e.target.value);
@@ -144,11 +188,9 @@ export default function Generate() {
   return (
     <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
       <div className='container mx-auto'>
-        <h1 className='text-4xl font-display font-medium text-text-primary mb-8 tracking-refined'>{t('generate.title')}</h1>
-
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8'>
           {/* Left panel - Controls */}
-          <div className='lg:col-span-1 space-y-6'>
+          <div className='lg:col-span-4 xl:col-span-3 space-y-6'>
             {/* Template selector */}
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
               <label className='block text-sm font-medium text-text-primary dark:text-white mb-2 tracking-wide'>{t('generate.selectTemplate')}</label>
@@ -168,7 +210,7 @@ export default function Generate() {
             {/* Dynamic form */}
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
               <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.editFields')}</h2>
-              <div className='space-y-4 max-h-[600px] overflow-y-auto'>
+              <div className='space-y-4 max-h-150 overflow-y-auto'>
                 {template.fields.map((field) => (
                   <div key={field.key}>
                     <label className='block text-sm font-medium text-text-primary dark:text-white mb-1 tracking-wide'>{field.label}</label>
@@ -281,19 +323,23 @@ export default function Generate() {
           </div>
 
           {/* Right panel - Preview */}
-          <div className='lg:col-span-2'>
+          <div className='lg:col-span-8 xl:col-span-9 lg:sticky lg:top-6 lg:self-start'>
             <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
               <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.livePreview')}</h2>
-              <div className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg'>
+              <div
+                ref={previewScrollRef}
+                className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg overflow-auto'
+                style={{ height: previewViewportHeight }}
+              >
                 {/* Page 1 */}
                 <div
-                  className='relative'
-                  style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}
+                  className='relative shrink-0'
+                  style={{ width: `${template.width * fittedPreviewScale}px`, height: `${template.height * fittedPreviewScale}px`, overflow: 'hidden' }}
                 >
                   <div
                     style={{
                       transformOrigin: 'top left',
-                      transform: `scale(${template.galleryScale})`,
+                      transform: `scale(${fittedPreviewScale})`,
                       width: `${template.width}px`,
                       height: `${template.height}px`
                     }}
@@ -308,13 +354,13 @@ export default function Generate() {
                 {additionalPageElements.map((pageElement, index) => (
                   <div
                     key={index}
-                    className='relative'
-                    style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}
+                    className='relative shrink-0'
+                    style={{ width: `${template.width * fittedPreviewScale}px`, height: `${template.height * fittedPreviewScale}px`, overflow: 'hidden' }}
                   >
                     <div
                       style={{
                         transformOrigin: 'top left',
-                        transform: `scale(${template.galleryScale})`,
+                        transform: `scale(${fittedPreviewScale})`,
                         width: `${template.width}px`,
                         height: `${template.height}px`
                       }}

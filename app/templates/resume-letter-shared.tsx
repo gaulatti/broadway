@@ -166,81 +166,148 @@ interface ExpEntryProps {
   company: string;
   date: string;
   highlights: string[];
+  subSpotlight?: {
+    title?: string;
+    metric?: string;
+    impact?: string;
+  };
 }
 
-export const ExpEntry = ({ role, company, date, highlights }: ExpEntryProps) => (
-  <div
-    style={{
-      backgroundColor: 'transparent',
-      borderRadius: 0,
-      padding: `${CARD_VERTICAL_PADDING}px 4px`,
-      position: 'relative',
-      marginBottom: `${CARD_GAP}px`
-    }}
-  >
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          gap: '8px',
-          marginBottom: '5px'
-        }}
-      >
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div
-            style={{
-              fontFamily: FONT_DISPLAY,
-              fontSize: '10px',
-              fontWeight: 500,
-              color: C.DEEP_SEA,
-              marginBottom: company ? '3px' : 0,
-              letterSpacing: '-0.2px',
-              lineHeight: '1.2'
-            }}
-          >
-            {role}
-          </div>
+export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpEntryProps) => {
+  const hasSubSpotlight = Boolean(subSpotlight?.title?.trim() || subSpotlight?.metric?.trim() || subSpotlight?.impact?.trim());
 
-          {company && (
+  return (
+    <div
+      style={{
+        backgroundColor: 'transparent',
+        borderRadius: 0,
+        padding: `${CARD_VERTICAL_PADDING}px 4px`,
+        position: 'relative',
+        marginBottom: `${CARD_GAP}px`
+      }}
+    >
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: '8px',
+            marginBottom: '5px'
+          }}
+        >
+          <div style={{ minWidth: 0, flex: 1 }}>
             <div
               style={{
-                fontFamily: FONT_BODY,
-                fontSize: '8px',
-                color: C.TERRACOTTA,
+                fontFamily: FONT_DISPLAY,
+                fontSize: '10px',
                 fontWeight: 500,
-                letterSpacing: '0.2px'
+                color: C.DEEP_SEA,
+                marginBottom: company ? '3px' : 0,
+                letterSpacing: '-0.2px',
+                lineHeight: '1.2'
               }}
             >
-              {company}
+              {role}
+            </div>
+
+            {company && (
+              <div
+                style={{
+                  fontFamily: FONT_BODY,
+                  fontSize: '8px',
+                  color: C.TERRACOTTA,
+                  fontWeight: 500,
+                  letterSpacing: '0.2px'
+                }}
+              >
+                {company}
+              </div>
+            )}
+          </div>
+
+          {date && (
+            <div
+              style={{
+                backgroundColor: `${C.SAND}50`,
+                padding: '3px 8px',
+                borderRadius: '5px',
+                fontSize: '7px',
+                color: C.SECONDARY,
+                fontFamily: FONT_BODY,
+                letterSpacing: '0.4px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {date}
             </div>
           )}
         </div>
 
-        {date && (
+        {hasSubSpotlight && (
           <div
             style={{
-              backgroundColor: `${C.SAND}50`,
-              padding: '3px 8px',
-              borderRadius: '5px',
-              fontSize: '7px',
-              color: C.SECONDARY,
-              fontFamily: FONT_BODY,
-              letterSpacing: '0.4px',
-              whiteSpace: 'nowrap'
+              marginTop: '7px',
+              marginLeft: '0px',
+              marginBottom: '6px',
+              borderLeft: `3px solid ${C.SEA}`,
+              borderTop: `1px solid ${C.SAND}`,
+              borderRight: `1px solid ${C.SAND}`,
+              borderBottom: `1px solid ${C.SAND}`,
+              background: `linear-gradient(90deg, ${C.SEA}14 0%, #ffffff 80%)`,
+              borderRadius: '0 7px 7px 0',
+              padding: '6px 8px'
             }}
           >
-            {date}
+            {subSpotlight?.title?.trim() && (
+              <div
+                style={{
+                  fontFamily: FONT_DISPLAY,
+                  fontSize: '8.6px',
+                  color: C.DEEP_SEA,
+                  fontWeight: 500,
+                  lineHeight: '1.2',
+                  marginBottom: subSpotlight.metric?.trim() || subSpotlight.impact?.trim() ? '2px' : 0
+                }}
+              >
+                {subSpotlight.title}
+              </div>
+            )}
+            {subSpotlight?.metric?.trim() && (
+              <div
+                style={{
+                  fontFamily: FONT_DISPLAY,
+                  fontSize: '9.2px',
+                  color: C.SEA,
+                  fontWeight: 500,
+                  lineHeight: '1.2',
+                  marginBottom: subSpotlight.impact?.trim() ? '2px' : 0
+                }}
+              >
+                {subSpotlight.metric}
+              </div>
+            )}
+            {subSpotlight?.impact?.trim() && (
+              <div
+                style={{
+                  fontFamily: FONT_BODY,
+                  fontSize: '8px',
+                  color: C.TEXT,
+                  lineHeight: '1.4'
+                }}
+              >
+                {subSpotlight.impact}
+              </div>
+            )}
           </div>
         )}
-      </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-        {(highlights || []).filter(Boolean).map((line, index) => (
-          <Bullet key={`${role}-${index}`} text={line} />
-        ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {(highlights || []).filter(Boolean).map((line, index) => (
+            <Bullet key={`${role}-${index}`} text={line} />
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};

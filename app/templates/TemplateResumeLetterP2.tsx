@@ -125,7 +125,13 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
               {showSectionHeading && <SectionHeading label={card.section} />}
 
               {card.type === 'experience' && (
-                <ExpEntry role={card.title || 'Experience'} company={card.company} date={card.date} highlights={card.highlights} />
+                <ExpEntry
+                  role={card.title || 'Experience'}
+                  company={card.company}
+                  date={card.date}
+                  highlights={card.highlights}
+                  subSpotlight={card.subSpotlight}
+                />
               )}
 
               {card.type === 'spotlight' && (
@@ -193,7 +199,6 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
                   </div>
                 </SnapshotCard>
               )}
-
             </React.Fragment>
           );
         })}

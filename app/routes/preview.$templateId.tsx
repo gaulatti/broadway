@@ -9,9 +9,10 @@
 import React, { useRef, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { getTemplateById } from '../templates';
-import { exportNodeToPng, generateResumePdf } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf } from '../utils/exportImage';
 import { useT } from '../i18n/useT';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
+import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 
 export default function PreviewTemplate() {
   const t = useT();
@@ -22,6 +23,7 @@ export default function PreviewTemplate() {
 
   const template = templateId ? getTemplateById(templateId) : undefined;
   const isResume = templateId?.startsWith('resume_') ?? false;
+  const hasPdf = isResume || templateId === 'fifthbell_letter';
   const additionalPageElements = template
     ? template.renderAdditionalPages
       ? template.renderAdditionalPages(template.defaultProps)
@@ -44,8 +46,11 @@ export default function PreviewTemplate() {
     if (!previewRef.current || !template) return;
     setIsExporting(true);
     try {
-      // Vector PDF only — @react-pdf/renderer with true selectable text
-      await generateResumePdf(template.defaultProps as ResumeLetterProps, `${template.id}.pdf`);
+      if (templateId === 'fifthbell_letter') {
+        await generateFifthbellLetterPdf(template.defaultProps as FifthbellLetterProps, `${template.id}.pdf`);
+      } else {
+        await generateResumePdf(template.defaultProps as ResumeLetterProps, `${template.id}.pdf`);
+      }
     } catch (error) {
       console.error('Vector PDF export failed:', error);
       alert('PDF export failed. Check console for details.');
@@ -96,7 +101,7 @@ export default function PreviewTemplate() {
             >
               {isExporting ? t('generate.exporting') : t('preview.template.exportPng', { width: template.width, height: template.height })}
             </button>
-            {isResume && (
+            {hasPdf && (
               <button
                 onClick={handleExportPdf}
                 disabled={isExporting}

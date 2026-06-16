@@ -22,8 +22,9 @@ import {
   ResumeSkillGroupEditor,
   ResumeSpotlightEditor
 } from '../components/ResumeDataEditor';
-import { exportNodeToPng, generateResumePdf } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf } from '../utils/exportImage';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
+import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
 
 export default function Generate() {
@@ -40,6 +41,7 @@ export default function Generate() {
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
   const isResume = selectedTemplateId.startsWith('resume_');
+  const hasPdf = isResume || selectedTemplateId === 'fifthbell_letter';
   const previewScale = template?.previewScale ?? template?.galleryScale ?? 1;
   const previewViewportHeight = 'calc(100vh - var(--bleecker-header-height, 88px) - 72px)';
   const fittedPreviewScale = React.useMemo(() => {
@@ -119,8 +121,11 @@ export default function Generate() {
     if (!previewRef.current || !template) return;
     setIsExporting(true);
     try {
-      // Vector PDF only — @react-pdf/renderer with true selectable text
-      await generateResumePdf(values as ResumeLetterProps, `${template.id}.pdf`);
+      if (selectedTemplateId === 'fifthbell_letter') {
+        await generateFifthbellLetterPdf(values as FifthbellLetterProps, `${template.id}.pdf`);
+      } else {
+        await generateResumePdf(values as ResumeLetterProps, `${template.id}.pdf`);
+      }
     } catch (error) {
       console.error('Vector PDF export failed:', error);
       alert('PDF export failed. Check console for details.');
@@ -293,7 +298,7 @@ export default function Generate() {
               >
                 {isExporting ? t('generate.exporting') : t('generate.exportPng', { width: template.width, height: template.height })}
               </button>
-              {isResume && (
+              {hasPdf && (
                 <button
                   onClick={handleExportPdf}
                   disabled={isExporting}

@@ -16,10 +16,12 @@ import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanr
 import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
 import { templateDefinition as modoitalianoPostDefinition } from './TemplateModoItalianoPost';
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
+import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
 
 export const templates: TemplateDefinition[] = [
   modoitalianoPostDefinition,
   resumeLetterDefinition,
+  fifthbellLetterDefinition,
   sanremoPromoPostDefinition,
   sanremoStoryDefinition,
   sanremoPostDefinition,

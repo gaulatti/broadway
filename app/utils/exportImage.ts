@@ -10,6 +10,7 @@
 import React from 'react';
 import { toPng } from 'html-to-image';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
+import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 
 /**
  * Wait for all images within a node to complete loading
@@ -137,6 +138,22 @@ export async function generateResumePdf(props: ResumeLetterProps, filename: stri
 
   // Pass the props to ResumeLetterPdf
   const element = React.createElement(ResumeLetterPdf, props);
+  const blob = await pdf(element as Parameters<typeof pdf>[0]).toBlob();
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+export async function generateFifthbellLetterPdf(props: FifthbellLetterProps, filename: string = 'fifthbell-letter.pdf'): Promise<void> {
+  const [{ pdf }, { FifthbellLetterPdf }] = await Promise.all([import('@react-pdf/renderer'), import('../pdf/FifthbellLetterPdf')]);
+
+  const element = React.createElement(FifthbellLetterPdf, props);
   const blob = await pdf(element as Parameters<typeof pdf>[0]).toBlob();
 
   const url = URL.createObjectURL(blob);

@@ -21,7 +21,17 @@ const GITHUB_REPO_URL = 'https://github.com/gaulatti/broadway';
 const GITHUB_WIKI_URL = 'https://github.com/gaulatti/broadway/wiki/Home';
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Funnel+Display:wght@300..800&family=MuseoModerno:wght@100..900&family=Outfit:wght@100..900&display=swap'
+  }
 ];
 
 function renderAppLink({ children, className, item, onClick }: RenderLinkProps<NavItem>) {

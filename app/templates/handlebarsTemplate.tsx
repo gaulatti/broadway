@@ -20,30 +20,12 @@ export interface HandlebarsTemplateComponentProps {
   [key: string]: unknown;
 }
 
-function renderQrCodeSvg(url: string): string {
-  const typeNumber = 0;
-  const errorCorrectionLevel = 'M';
-  const qr = qrcode(typeNumber, errorCorrectionLevel);
+function buildQrCodeHtml(url: string): string {
+  const qr = qrcode(0, 'M');
   qr.addData(url);
   qr.make();
-  // SVG with a white background and black modules
-  const cellSize = 4;
-  const margin = 4;
-  const count = qr.getModuleCount();
-  const size = (count + margin * 2) * cellSize;
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="100%" height="100%">`;
-  svg += `<rect width="${size}" height="${size}" fill="#ffffff"/>`;
-  for (let row = 0; row < count; row++) {
-    for (let col = 0; col < count; col++) {
-      if (qr.isDark(row, col)) {
-        const x = (col + margin) * cellSize;
-        const y = (row + margin) * cellSize;
-        svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="#000000"/>`;
-      }
-    }
-  }
-  svg += '</svg>';
-  return svg;
+  const qrSvg = qr.createSvgTag(5, 0);
+  return `<div class="qr-container"><div class="qr-code" aria-label="QR Code">${qrSvg}</div></div>`;
 }
 
 function registerHelpers(): void {
@@ -51,8 +33,7 @@ function registerHelpers(): void {
   // provided instead of pre-rendered QR HTML.
   Handlebars.registerHelper('instagramQrCode', (url: string) => {
     if (!url) return '';
-    const svg = renderQrCodeSvg(url);
-    return `<div class="qr-container"><div class="qr-code">${svg}</div></div>`;
+    return buildQrCodeHtml(url);
   });
 }
 

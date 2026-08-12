@@ -28,7 +28,6 @@ export default defineConfig({
   plugins: [resolveBleeckerEntrypoints(), tailwindcss(), reactRouter(), tsconfigPaths()],
   resolve: {
     alias: {
-      '@brokaw/templates': path.resolve(__dirname, 'node_modules/@fifthbell/brokaw/src/templates/templates'),
       // Bleecker 0.1.36 emits these imports as files although they are directories.
       // Keep this narrow compatibility alias until the package's ESM output is corrected.
       [path.resolve(__dirname, 'node_modules/@gaulatti/bleecker/dist/core.js')]: path.resolve(

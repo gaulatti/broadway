@@ -1,30 +1,29 @@
 /**
  * Instagram Image Template
  *
- * A 1080x1350 social image template loaded from @fifthbell/brokaw's
- * Handlebars template bundle.
+ * A 1080x1350 social image kept in sync with @fifthbell/brokaw's
+ * Instagram image template.
  */
 
 import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
 import { HandlebarsTemplateComponent } from './handlebarsTemplate';
-import instagramImageSource from '@brokaw/templates/instagram-image.hbs?raw';
+import instagramImageSource from './instagram-image.hbs?raw';
 
 export interface InstagramImageProps {
   imageUrl: string;
-  qrCodeHtml: string;
-  url: string;
-  categoryName: string;
   title: string;
+  category?: string;
+  slug?: string;
+  url?: string;
 }
 
 export const defaultProps: InstagramImageProps = {
-  imageUrl:
-    'https://cdn.fifthbell.com/media/2026/02/26/elettra-lamborghini-calls-for-end-to-late-night-parties-near-sanremo-festival-hotels-Hvsjli7JKP.avif',
-  qrCodeHtml: `<div class="qr-container"><div class="qr-code"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#ffffff"/><path d="M10 10h30v30H10zm5 5v20h20V15zm40-5h30v30H55zm5 5v20h20V15zM10 55h30v30H10zm5 5v20h20V60zm15-40h5v5h-5zm0 45h5v5h-5zm10-45h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm10-40h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm0 10h5v5h-5zm10 0h5v5h-5zm0-10h5v5h-5zm0-10h5v5h-5zm0-10h5v5h-5zm0-10h5v5h-5zm10 40h5v5h-5zm0 10h5v5h-5zm0-10h5v5h-5zm-10-10h5v5h-5zm-10 0h5v5h-5zm-10 0h5v5h-5z" fill="#000000"/></svg></div></div>`,
-  url: '',
-  categoryName: 'Sanremo',
-  title: 'Elettra Lamborghini pide poner fin a las fiestas nocturnas cerca de los hoteles del festival'
+  imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1080&h=1350&q=80',
+  title: 'Major Update: Shared Instagram Template Now Lives in Brokaw',
+  category: 'Technology',
+  slug: 'technology',
+  url: 'https://fifthbell.com/technology/shared-instagram-template'
 };
 
 export const fields: Array<FieldDef<InstagramImageProps>> = [
@@ -41,17 +40,16 @@ export const fields: Array<FieldDef<InstagramImageProps>> = [
     placeholder: 'https://www.instagram.com/...'
   },
   {
-    key: 'qrCodeHtml',
-    label: 'QR Code HTML (overrides URL)',
-    type: 'textarea',
-    placeholder: '<div class="qr-container">...</div>',
-    rows: 6
+    key: 'category',
+    label: 'Category',
+    type: 'text',
+    placeholder: 'Technology'
   },
   {
-    key: 'categoryName',
-    label: 'Category Name',
+    key: 'slug',
+    label: 'Slug (category fallback)',
     type: 'text',
-    placeholder: 'SANREMO'
+    placeholder: 'latest-news'
   },
   {
     key: 'title',
@@ -65,8 +63,20 @@ export const fields: Array<FieldDef<InstagramImageProps>> = [
 const WIDTH = 1080;
 const HEIGHT = 1350;
 
+function resolveCategoryName({ category, slug }: InstagramImageProps): string {
+  if (category) return category.toUpperCase();
+  if (slug) return slug.replace(/-/g, ' ').toUpperCase();
+  return 'LATEST STORY';
+}
+
 const TemplateInstagramImage: React.FC<InstagramImageProps> = (props) => (
-  <HandlebarsTemplateComponent source={instagramImageSource} width={WIDTH} height={HEIGHT} {...props} />
+  <HandlebarsTemplateComponent
+    source={instagramImageSource}
+    width={WIDTH}
+    height={HEIGHT}
+    {...props}
+    categoryName={resolveCategoryName(props)}
+  />
 );
 
 export const templateDefinition: TemplateDefinition<InstagramImageProps> = {

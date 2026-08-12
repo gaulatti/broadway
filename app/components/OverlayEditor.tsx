@@ -8,6 +8,12 @@
  */
 
 import React, { useState } from 'react';
+import { Button } from '@gaulatti/bleecker/components/button';
+import { IconButton } from '@gaulatti/bleecker/components/icon-button';
+import { Input } from '@gaulatti/bleecker/components/input';
+import { Slider } from '@gaulatti/bleecker/components/slider';
+import { Toggle } from '@gaulatti/bleecker/components/toggle';
+import { ToggleGroup, ToggleGroupItem } from '@gaulatti/bleecker/components/toggle-group';
 import {
   DndContext,
   closestCenter,
@@ -59,15 +65,15 @@ const SLOT_LABELS: Record<Placement, string> = {
 };
 
 const SLOT_COLORS: Record<Placement, string> = {
-  top: 'border-sky-400/40 bg-sky-950/20',
-  center: 'border-violet-400/40 bg-violet-950/20',
-  bottom: 'border-emerald-400/40 bg-emerald-950/20'
+  top: 'border-white/10 bg-white/[0.035]',
+  center: 'border-white/10 bg-white/[0.05]',
+  bottom: 'border-white/10 bg-white/[0.035]'
 };
 
 const SLOT_BADGE: Record<Placement, string> = {
-  top: 'bg-sky-500/20 text-sky-300',
-  center: 'bg-violet-500/20 text-violet-300',
-  bottom: 'bg-emerald-500/20 text-emerald-300'
+  top: 'bg-white/[0.07] text-white/65',
+  center: 'bg-desert/15 text-desert',
+  bottom: 'bg-white/[0.07] text-white/65'
 };
 
 // ─── Single sortable item row ─────────────────────────────────────────────────
@@ -96,10 +102,11 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, onUpdate, onDelete, ghost }) =>
       {/* Header row */}
       <div className='flex items-center gap-2 px-3 py-2'>
         {/* Drag handle */}
-        <button
+        <IconButton
           {...listeners}
           {...attributes}
-          className='cursor-grab active:cursor-grabbing text-white/30 hover:text-white/60 touch-none shrink-0'
+          aria-label='Drag to reorder'
+          className='h-7 w-7 cursor-grab touch-none shrink-0 border-transparent bg-transparent text-white/30 hover:bg-white/[0.06] hover:text-white/60 active:cursor-grabbing'
           title='Drag to reorder'
         >
           <svg width='14' height='14' viewBox='0 0 14 14' fill='currentColor'>
@@ -110,30 +117,30 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, onUpdate, onDelete, ghost }) =>
             <circle cx='4' cy='11' r='1.2' />
             <circle cx='10' cy='11' r='1.2' />
           </svg>
-        </button>
+        </IconButton>
 
         {/* Text preview / input */}
-        <input
+        <Input
           type='text'
           value={item.text}
           onChange={(e) => upd({ text: e.target.value })}
           placeholder='Enter text…'
-          className='flex-1 min-w-0 bg-transparent text-white placeholder-white/30 text-sm outline-none'
+          className='h-8 min-w-0 flex-1 border-transparent bg-transparent px-1 text-sm text-white placeholder:text-white/30 focus:border-transparent focus:ring-0 dark:bg-transparent'
         />
 
         {/* Expand toggle */}
-        <button onClick={() => setExpanded((x) => !x)} className='text-white/40 hover:text-white/80 shrink-0 transition-colors' title='Edit style'>
+        <IconButton aria-label='Edit text style' onClick={() => setExpanded((x) => !x)} className='h-7 w-7 shrink-0 border-transparent bg-transparent text-white/40 hover:bg-white/[0.06] hover:text-white/80' title='Edit style'>
           <svg width='16' height='16' viewBox='0 0 16 16' fill='currentColor' className={`transition-transform ${expanded ? 'rotate-180' : ''}`}>
             <path d='M4 6l4 4 4-4' stroke='currentColor' strokeWidth='1.5' fill='none' strokeLinecap='round' strokeLinejoin='round' />
           </svg>
-        </button>
+        </IconButton>
 
         {/* Delete */}
-        <button onClick={onDelete} className='text-white/25 hover:text-red-400 shrink-0 transition-colors' title='Remove item'>
+        <IconButton aria-label='Remove text item' onClick={onDelete} className='h-7 w-7 shrink-0 border-transparent bg-transparent text-white/25 hover:bg-terracotta/10 hover:text-terracotta' title='Remove item'>
           <svg width='14' height='14' viewBox='0 0 14 14' fill='none' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round'>
             <path d='M2 2l10 10M12 2L2 12' />
           </svg>
-        </button>
+        </IconButton>
       </div>
 
       {/* Expanded style controls */}
@@ -145,58 +152,50 @@ const ItemRow: React.FC<ItemRowProps> = ({ item, onUpdate, onDelete, ghost }) =>
               <span className='text-xs text-white/50'>Size</span>
               <span className='text-xs text-white/70 font-mono'>{item.fontSize ?? 72}px</span>
             </div>
-            <input
-              type='range'
+            <Slider
+              aria-label='Font size'
               min={24}
               max={180}
               step={2}
               value={item.fontSize ?? 72}
-              onChange={(e) => upd({ fontSize: parseInt(e.target.value) })}
-              className='w-full accent-sky-400 h-1.5'
+              onChange={(value) => upd({ fontSize: value })}
+              className='w-full'
             />
           </div>
 
           {/* Alignment */}
           <div>
             <span className='text-xs text-white/50 block mb-1'>Align</span>
-            <div className='flex gap-1'>
+            <ToggleGroup type='single' value={item.align} onValueChange={(value) => value && upd({ align: value as OverlayItem['align'] })} size='sm' className='grid grid-cols-3'>
               {(['left', 'center', 'right'] as const).map((a) => (
-                <button
+                <ToggleGroupItem
                   key={a}
-                  onClick={() => upd({ align: a })}
-                  className={`flex-1 py-1 rounded text-xs transition-colors ${item.align === a ? 'bg-sky-500/40 text-sky-200' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
+                  value={a}
+                  aria-label={`Align ${a}`}
+                  className='text-xs'
                 >
-                  {a === 'left' ? '⬛ Left' : a === 'center' ? '⬜ Center' : 'Right ⬛'}
-                </button>
+                  {a[0].toUpperCase() + a.slice(1)}
+                </ToggleGroupItem>
               ))}
-            </div>
+            </ToggleGroup>
           </div>
 
           {/* Toggles row */}
           <div className='flex gap-2'>
             {/* Bold */}
-            <button
-              onClick={() => upd({ fontWeight: item.fontWeight === 'bold' ? 'normal' : 'bold' })}
-              className={`flex-1 py-1 rounded text-xs font-bold transition-colors ${item.fontWeight === 'bold' ? 'bg-sky-500/40 text-sky-200' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
-            >
+            <Toggle size='sm' pressed={item.fontWeight === 'bold'} onPressedChange={() => upd({ fontWeight: item.fontWeight === 'bold' ? 'normal' : 'bold' })} className='flex-1 text-xs font-semibold'>
               B Bold
-            </button>
+            </Toggle>
 
             {/* Uppercase */}
-            <button
-              onClick={() => upd({ uppercase: !item.uppercase })}
-              className={`flex-1 py-1 rounded text-xs transition-colors ${item.uppercase ? 'bg-sky-500/40 text-sky-200' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
-            >
+            <Toggle size='sm' pressed={item.uppercase} onPressedChange={() => upd({ uppercase: !item.uppercase })} className='flex-1 text-xs'>
               AA Caps
-            </button>
+            </Toggle>
 
             {/* Shadow */}
-            <button
-              onClick={() => upd({ shadow: !(item.shadow ?? true) })}
-              className={`flex-1 py-1 rounded text-xs transition-colors ${(item.shadow ?? true) ? 'bg-sky-500/40 text-sky-200' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
-            >
+            <Toggle size='sm' pressed={item.shadow ?? true} onPressedChange={() => upd({ shadow: !(item.shadow ?? true) })} className='flex-1 text-xs'>
               ◑ Shadow
-            </button>
+            </Toggle>
           </div>
         </div>
       )}
@@ -218,12 +217,12 @@ const Slot: React.FC<SlotProps> = ({ placement, items, onAdd, onUpdate, onDelete
   <div className={`rounded-xl border ${SLOT_COLORS[placement]} p-3 space-y-2`}>
     <div className='flex items-center justify-between mb-1'>
       <span className={`text-xs font-semibold uppercase tracking-widest px-2 py-0.5 rounded-full ${SLOT_BADGE[placement]}`}>{SLOT_LABELS[placement]}</span>
-      <button onClick={onAdd} className='text-xs text-white/40 hover:text-white/80 transition-colors flex items-center gap-1' title='Add text item'>
+      <Button onClick={onAdd} variant='ghost' size='xs' className='text-white/45 hover:bg-white/[0.06] hover:text-white/85' title='Add text item'>
         <svg width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round'>
           <path d='M6 1v10M1 6h10' />
         </svg>
         Add
-      </button>
+      </Button>
     </div>
 
     <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>

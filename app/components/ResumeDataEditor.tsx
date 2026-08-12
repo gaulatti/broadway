@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button } from '@gaulatti/bleecker/components/button';
+import { Input } from '@gaulatti/bleecker/components/input';
+import { Textarea } from '@gaulatti/bleecker/components/textarea';
 import type {
   ResumeEducationItem,
   ResumeEarlierExperienceItem,
@@ -14,9 +17,9 @@ const SectionFrame: React.FC<{ title: string; onAdd: () => void; addLabel: strin
   <div className='rounded-xl border border-sand/40 dark:border-sand/30 bg-light-sand/50 dark:bg-dark-sand/50 p-3 space-y-3'>
     <div className='flex items-center justify-between'>
       <span className='text-xs font-semibold uppercase tracking-widest text-text-secondary'>{title}</span>
-      <button onClick={onAdd} className='text-xs px-2 py-1 rounded border border-sand/50 hover:border-sea transition-colors'>
+      <Button onClick={onAdd} className='text-xs px-2 py-1 rounded border border-sand/50 hover:border-sea transition-colors'>
         {addLabel}
-      </button>
+      </Button>
     </div>
     {children}
   </div>
@@ -30,15 +33,15 @@ const RowActions: React.FC<{ onUp: () => void; onDown: () => void; onDelete: () 
   canMoveDown
 }) => (
   <div className='flex items-center gap-2'>
-    <button onClick={onUp} disabled={!canMoveUp} className='text-xs px-2 py-1 rounded border border-sand/50 disabled:opacity-40'>
+    <Button onClick={onUp} disabled={!canMoveUp} className='text-xs px-2 py-1 rounded border border-sand/50 disabled:opacity-40'>
       Up
-    </button>
-    <button onClick={onDown} disabled={!canMoveDown} className='text-xs px-2 py-1 rounded border border-sand/50 disabled:opacity-40'>
+    </Button>
+    <Button onClick={onDown} disabled={!canMoveDown} className='text-xs px-2 py-1 rounded border border-sand/50 disabled:opacity-40'>
       Down
-    </button>
-    <button onClick={onDelete} className='text-xs px-2 py-1 rounded border border-red-300 text-red-700 dark:text-red-300'>
+    </Button>
+    <Button onClick={onDelete} className='text-xs px-2 py-1 rounded border border-red-300 text-red-700 dark:text-red-300'>
       Remove
-    </button>
+    </Button>
   </div>
 );
 
@@ -79,30 +82,33 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
             <div className='grid grid-cols-1 gap-2'>
-              <input
+              <Input
                 type='text'
                 value={item.title}
                 onChange={(e) => update(item.id, { title: e.target.value })}
-                placeholder='Role / Title'
+                aria-label='Role or title'
+                placeholder='Role or title'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-                <input
+                <Input
                   type='text'
                   value={item.company}
                   onChange={(e) => update(item.id, { company: e.target.value })}
+                  aria-label='Company'
                   placeholder='Company'
                   className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                 />
-                <input
+                <Input
                   type='text'
                   value={item.date}
                   onChange={(e) => update(item.id, { date: e.target.value })}
+                  aria-label='Employment dates'
                   placeholder='Dates'
                   className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                 />
               </div>
-              <textarea
+              <Textarea
                 value={item.highlights.join('\n')}
                 onChange={(e) =>
                   update(item.id, {
@@ -113,13 +119,14 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
                   })
                 }
                 rows={4}
-                placeholder='Highlights (one per line)'
+                aria-label='Highlights, one per line'
+                placeholder='Highlights, one per line'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
 
               <div className='rounded-md border border-sand/35 bg-light-sand/40 dark:bg-dark-sand/50 p-3 space-y-2'>
                 <p className='text-xs font-semibold uppercase tracking-wide text-text-secondary'>Company Spotlight (optional)</p>
-                <input
+                <Input
                   type='text'
                   value={item.subSpotlight?.title || ''}
                   onChange={(e) =>
@@ -130,10 +137,11 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
                       }
                     })
                   }
+                  aria-label='Spotlight title'
                   placeholder='Spotlight title'
                   className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                 />
-                <input
+                <Input
                   type='text'
                   value={item.subSpotlight?.metric || ''}
                   onChange={(e) =>
@@ -144,10 +152,11 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
                       }
                     })
                   }
-                  placeholder='Spotlight metric / headline'
+                  aria-label='Spotlight metric'
+                  placeholder='Spotlight metric'
                   className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                 />
-                <textarea
+                <Textarea
                   value={item.subSpotlight?.impact || ''}
                   onChange={(e) =>
                     update(item.id, {
@@ -158,7 +167,8 @@ export const ResumeExperienceEditor: React.FC<ExperienceEditorProps> = ({ value,
                     })
                   }
                   rows={2}
-                  placeholder='Spotlight impact details'
+                  aria-label='Spotlight impact'
+                  placeholder='Spotlight impact'
                   className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                 />
               </div>
@@ -205,26 +215,29 @@ export const ResumeEducationEditor: React.FC<EducationEditorProps> = ({ value, o
       <div className='space-y-3'>
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
-            <input
+            <Input
               type='text'
               value={item.degree}
               onChange={(e) => update(item.id, { degree: e.target.value })}
+              aria-label='Degree'
               placeholder='Degree'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-              <input
+              <Input
                 type='text'
                 value={item.school}
                 onChange={(e) => update(item.id, { school: e.target.value })}
+                aria-label='School'
                 placeholder='School'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
-              <input
+              <Input
                 type='text'
                 value={item.date}
                 onChange={(e) => update(item.id, { date: e.target.value })}
-                placeholder='Date'
+                aria-label='Education dates'
+                placeholder='Dates'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
             </div>
@@ -302,34 +315,36 @@ export const ResumeSkillGroupEditor: React.FC<SkillGroupEditorProps> = ({ value,
       <div className='space-y-3'>
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
-            <input
+            <Input
               type='text'
               value={item.title}
               onChange={(e) => update(item.id, { title: e.target.value })}
-              placeholder='Group title (e.g. Frontend)'
+              aria-label='Skill group title'
+              placeholder='Group title'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
             <div className='space-y-2'>
               {(item.items || []).map((skill, skillIndex) => (
                 <div key={`${item.id}-skill-${skillIndex}`} className='flex items-center gap-2'>
-                  <input
+                  <Input
                     type='text'
                     value={skill}
                     onChange={(e) => updateSkill(item.id, skillIndex, e.target.value)}
-                    placeholder='Skill item'
+                    aria-label={`Skill ${skillIndex + 1}`}
+                    placeholder='Skill'
                     className='flex-1 px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
                   />
-                  <button
+                  <Button
                     onClick={() => removeSkill(item.id, skillIndex)}
                     className='text-xs px-2 py-2 rounded border border-red-300 text-red-700 dark:text-red-300'
                   >
                     Remove
-                  </button>
+                  </Button>
                 </div>
               ))}
-              <button onClick={() => addSkill(item.id)} className='text-xs px-2 py-1 rounded border border-sand/50 hover:border-sea transition-colors'>
+              <Button onClick={() => addSkill(item.id)} className='text-xs px-2 py-1 rounded border border-sand/50 hover:border-sea transition-colors'>
                 Add Skill
-              </button>
+              </Button>
             </div>
             <RowActions
               canMoveUp={index > 0}
@@ -373,25 +388,28 @@ export const ResumeSpotlightEditor: React.FC<SpotlightEditorProps> = ({ value, o
       <div className='space-y-3'>
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
-            <input
+            <Input
               type='text'
               value={item.title}
               onChange={(e) => update(item.id, { title: e.target.value })}
+              aria-label='Spotlight title'
               placeholder='Title'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
-            <input
+            <Input
               type='text'
               value={item.metric}
               onChange={(e) => update(item.id, { metric: e.target.value })}
-              placeholder='Metric / headline'
+              aria-label='Spotlight metric'
+              placeholder='Metric'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
-            <textarea
+            <Textarea
               value={item.impact}
               onChange={(e) => update(item.id, { impact: e.target.value })}
               rows={3}
-              placeholder='Impact details'
+              aria-label='Spotlight impact'
+              placeholder='Impact'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
             <RowActions
@@ -434,11 +452,12 @@ export const ResumeEarlierExperienceEditor: React.FC<EarlierExperienceEditorProp
       <div className='space-y-3'>
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
-            <textarea
+            <Textarea
               value={item.text}
               onChange={(e) => update(item.id, { text: e.target.value })}
               rows={2}
-              placeholder='Earlier experience summary'
+              aria-label='Earlier experience description'
+              placeholder='Earlier experience'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
             <RowActions
@@ -474,11 +493,12 @@ export const ResumeContactLinksEditor: React.FC<ContactLinksEditorProps> = ({ va
       <div className='space-y-3'>
         {items.map((item, index) => (
           <div key={`contact-link-${index}`} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
-            <input
+            <Input
               type='text'
               value={item}
               onChange={(e) => update(index, e.target.value)}
-              placeholder='https://github.com/yourname'
+              aria-label={`Contact link ${index + 1}`}
+              placeholder='Contact link'
               className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
             />
             <RowActions
@@ -523,18 +543,20 @@ export const ResumeLanguageEditor: React.FC<LanguageEditorProps> = ({ value, onC
         {items.map((item, index) => (
           <div key={item.id} className='rounded-lg border border-sand/40 bg-white dark:bg-sand/30 p-3 space-y-2'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-              <input
+              <Input
                 type='text'
                 value={item.language}
                 onChange={(e) => update(item.id, { language: e.target.value })}
+                aria-label='Language'
                 placeholder='Language'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
-              <input
+              <Input
                 type='text'
                 value={item.proficiency}
                 onChange={(e) => update(item.id, { proficiency: e.target.value })}
-                placeholder='Fluency level'
+                aria-label='Language proficiency'
+                placeholder='Proficiency'
                 className='w-full px-3 py-2 text-sm border border-sand/40 rounded-md bg-white dark:bg-sand'
               />
             </div>

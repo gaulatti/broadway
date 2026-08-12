@@ -1,18 +1,15 @@
-import {
-  AppShell,
-  BleeckerThemeScript,
-  Footer as BleeckerFooter,
-  Header as BleeckerHeader,
-  HeaderSelect,
-  IconButton,
-  ThemeProvider,
-  ThemeToggle,
-  type NavItem,
-  type RenderLinkProps
-} from '@gaulatti/bleecker';
+import { AppShell } from '@gaulatti/bleecker/layout/app-shell';
+import { Footer as BleeckerFooter } from '@gaulatti/bleecker/layout/footer';
+import { Header as BleeckerHeader } from '@gaulatti/bleecker/layout/header';
+import { HeaderSelect } from '@gaulatti/bleecker/components/header-select';
+import { IconButton } from '@gaulatti/bleecker/components/icon-button';
+import { ThemeToggle } from '@gaulatti/bleecker/components/theme-toggle';
+import { BleeckerThemeScript } from '@gaulatti/bleecker/theme/theme-script';
+import { ThemeProvider } from '@gaulatti/bleecker/theme/theme-provider';
+import type { NavItem, RenderLinkProps } from '@gaulatti/bleecker/components/nav-menu';
 import { Github } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { isRouteErrorResponse, Link, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { isRouteErrorResponse, Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router';
 
 import type { Route } from './+types/root';
 import { LocaleProvider, useLocale } from './i18n/LocaleContext';
@@ -24,17 +21,7 @@ const GITHUB_REPO_URL = 'https://github.com/gaulatti/broadway';
 const GITHUB_WIKI_URL = 'https://github.com/gaulatti/broadway/wiki/Home';
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous'
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Funnel+Display:wght@300..800&family=MuseoModerno:wght@100..900&family=Outfit:wght@100..900&display=swap'
-  }
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
 ];
 
 function renderAppLink({ children, className, item, onClick }: RenderLinkProps<NavItem>) {
@@ -173,7 +160,7 @@ function AppContent() {
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang='en-US'>
+    <html lang='en-US' suppressHydrationWarning>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -181,7 +168,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
         <BleeckerThemeScript storageKey='theme' />
       </head>
-      <body className='bg-light-sand text-text-primary'>
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -191,10 +178,13 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
   return (
     <LocaleProvider>
       <ThemeProvider defaultTheme='system' storageKey='theme'>
-        <AppContent />
+        {isAdmin ? <Outlet /> : <AppContent />}
       </ThemeProvider>
     </LocaleProvider>
   );
@@ -214,14 +204,17 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className='container mx-auto p-4 pt-16'>
-      <h1>{message}</h1>
-      <p>{details}</p>
+    <main className='page-canvas'>
+      <div className='page-container max-w-3xl'>
+      <p className='text-[10px] font-semibold uppercase tracking-[0.12em] text-desert'>Application status</p>
+      <h1 className='mt-3 text-4xl font-semibold tracking-refined'>{message}</h1>
+      <p className='font-secondary mt-4 text-sm leading-6 text-text-secondary'>{details}</p>
       {stack ? (
         <pre className='w-full overflow-x-auto p-4'>
           <code>{stack}</code>
         </pre>
       ) : null}
+      </div>
     </main>
   );
 }

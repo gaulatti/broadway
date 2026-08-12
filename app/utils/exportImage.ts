@@ -11,6 +11,7 @@ import React from 'react';
 import { toPng } from 'html-to-image';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
+import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
 
 /**
  * Wait for all images within a node to complete loading
@@ -40,6 +41,19 @@ async function waitForImages(node: HTMLElement): Promise<void> {
 }
 
 /**
+ * Resolve the actual capture target for a preview node.
+ * Handlebars templates render inside an iframe, so we capture the iframe body
+ * instead of the wrapper div. React templates render directly and are returned as-is.
+ */
+function resolveCaptureTarget(node: HTMLElement): HTMLElement {
+  const iframe = node.querySelector('iframe');
+  if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+    return iframe.contentDocument.body;
+  }
+  return node;
+}
+
+/**
  * Export a DOM node to PNG with exact dimensions
  *
  * @param node - The HTML element to capture
@@ -54,17 +68,26 @@ export async function exportNodeToPng(
   height: number = node.offsetHeight
 ): Promise<void> {
   try {
-    // Wait for fonts to load - CRITICAL for proper text rendering
+    const targetNode = resolveCaptureTarget(node);
+
+    // Wait for fonts to load - CRITICAL for proper text rendering.
+    // Handlebars templates render inside an iframe, so also wait for iframe fonts.
+    const fontPromises: Array<Promise<unknown>> = [];
     if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
+      fontPromises.push(document.fonts.ready);
     }
+    const iframe = node.querySelector('iframe');
+    if (iframe && iframe.contentDocument && iframe.contentDocument.fonts && iframe.contentDocument.fonts.ready) {
+      fontPromises.push(iframe.contentDocument.fonts.ready);
+    }
+    await Promise.all(fontPromises);
 
     // Wait for images to load
-    await waitForImages(node);
+    await waitForImages(targetNode);
 
     // CRITICAL: Do a first render pass to trigger all image loads and state updates
     // This ensures React state (like dominant color from onLoad) is fully updated
-    await toPng(node, {
+    await toPng(targetNode, {
       width,
       height,
       pixelRatio: 1,
@@ -75,7 +98,7 @@ export async function exportNodeToPng(
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Now capture the final render with all state updates applied
-    const dataUrl = await toPng(node, {
+    const dataUrl = await toPng(targetNode, {
       width,
       height,
       pixelRatio: 1,
@@ -156,6 +179,19 @@ export async function generateFifthbellLetterPdf(props: FifthbellLetterProps, fi
   const element = React.createElement(FifthbellLetterPdf, props);
   const blob = await pdf(element as Parameters<typeof pdf>[0]).toBlob();
 
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+export async function generateGaulattiLetterPdf(props: GaulattiLetterProps, filename: string = 'gaulatti-letter.pdf'): Promise<void> {
+  const [{ pdf }, { GaulattiLetterPdf }] = await Promise.all([import('@react-pdf/renderer'), import('../pdf/GaulattiLetterPdf')]);
+  const blob = await pdf(React.createElement(GaulattiLetterPdf, props) as Parameters<typeof pdf>[0]).toBlob();
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;

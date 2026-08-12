@@ -1,3 +1,82 @@
 @import "@gaulatti/bleecker/styles.base.css";
 @source "../node_modules/@gaulatti/bleecker/dist/**/*.js";
 @source "./**/*.{ts,tsx}";
+
+@layer base {
+  body {
+    margin: 0;
+  }
+
+  :focus-visible {
+    scroll-margin: var(--space-component);
+  }
+}
+
+@layer components {
+  .page-canvas {
+    min-height: 100vh;
+    background: color-mix(in srgb, var(--surface-muted) 56%, var(--surface-canvas));
+    color: var(--app-text-primary);
+  }
+
+  .page-container {
+    width: min(100% - 2rem, 80rem);
+    margin-inline: auto;
+    padding-block: var(--space-container) var(--space-page);
+  }
+
+  .editor-stack input:not([type='file']),
+  .editor-stack textarea,
+  .editor-control {
+    width: 100%;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-ui);
+    background: var(--surface-raised);
+    color: var(--app-text-primary);
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    padding: 0.625rem 0.75rem;
+    transition: border-color var(--motion-control) var(--ease-premium), box-shadow var(--motion-control) var(--ease-premium), background-color var(--motion-control) var(--ease-premium);
+  }
+
+  .editor-stack input:not([type='file']):focus-visible,
+  .editor-stack textarea:focus-visible,
+  .editor-control:focus-visible {
+    border-color: var(--app-ring);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-ring) 18%, transparent);
+    outline: none;
+  }
+
+  .preview-stage {
+    background-color: var(--surface-muted);
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--app-sand) 34%, transparent) 0.7px, transparent 0.7px);
+    background-size: 18px 18px;
+  }
+
+  .quiet-link {
+    color: var(--app-sea);
+    text-decoration-color: transparent;
+    text-underline-offset: 0.25rem;
+    transition: color var(--motion-control) var(--ease-premium), text-decoration-color var(--motion-control) var(--ease-premium);
+  }
+
+  .quiet-link:hover {
+    color: var(--app-desert);
+    text-decoration-color: currentColor;
+  }
+}
+
+@media (min-width: 640px) {
+  .page-container {
+    width: min(100% - 3rem, 80rem);
+    padding-top: var(--space-section);
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    width: min(100% - 5rem, 80rem);
+    padding-top: var(--space-page);
+  }
+}

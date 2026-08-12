@@ -15,13 +15,17 @@ import { templateDefinition as sanremoPost16x9Definition } from './TemplateSanre
 import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanremoStory16x9';
 import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
 import { templateDefinition as modoitalianoPostDefinition } from './TemplateModoItalianoPost';
+import { templateDefinition as instagramImageDefinition } from './TemplateInstagramImage';
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
+import { templateDefinition as gaulattiLetterDefinition } from './TemplateGaulattiLetter';
 
 export const templates: TemplateDefinition[] = [
   modoitalianoPostDefinition,
+  instagramImageDefinition,
   resumeLetterDefinition,
   fifthbellLetterDefinition,
+  gaulattiLetterDefinition,
   sanremoPromoPostDefinition,
   sanremoStoryDefinition,
   sanremoPostDefinition,

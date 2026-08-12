@@ -9,6 +9,16 @@
  */
 
 import React, { useState, useRef } from 'react';
+import { Button } from '@gaulatti/bleecker/components/button';
+import { Card } from '@gaulatti/bleecker/components/card';
+import { Empty } from '@gaulatti/bleecker/components/empty';
+import { Field } from '@gaulatti/bleecker/components/field';
+import { Input } from '@gaulatti/bleecker/components/input';
+import { LoadingSpinner } from '@gaulatti/bleecker/components/loading-spinner';
+import { Select } from '@gaulatti/bleecker/components/select';
+import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
+import { Textarea } from '@gaulatti/bleecker/components/textarea';
+import { Download, FileInput, FileText, ImageDown, LayoutTemplate } from 'lucide-react';
 import { templates } from '../templates';
 import type { OverlayItem } from '../templates/types';
 import { useT } from '../i18n/useT';
@@ -22,9 +32,10 @@ import {
   ResumeSkillGroupEditor,
   ResumeSpotlightEditor
 } from '../components/ResumeDataEditor';
-import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf } from '../utils/exportImage';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
+import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
 import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
 
 export default function Generate() {
@@ -41,7 +52,7 @@ export default function Generate() {
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
   const isResume = selectedTemplateId.startsWith('resume_');
-  const hasPdf = isResume || selectedTemplateId === 'fifthbell_letter';
+  const hasPdf = isResume || selectedTemplateId === 'fifthbell_letter' || selectedTemplateId === 'gaulatti_letter';
   const previewScale = template?.previewScale ?? template?.galleryScale ?? 1;
   const previewViewportHeight = 'calc(100vh - var(--bleecker-header-height, 88px) - 72px)';
   const fittedPreviewScale = React.useMemo(() => {
@@ -97,10 +108,6 @@ export default function Generate() {
     };
   }, [selectedTemplateId]);
 
-  const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTemplateId(e.target.value);
-  };
-
   const handleFieldChange = (key: string, value: any) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
@@ -123,6 +130,8 @@ export default function Generate() {
     try {
       if (selectedTemplateId === 'fifthbell_letter') {
         await generateFifthbellLetterPdf(values as FifthbellLetterProps, `${template.id}.pdf`);
+      } else if (selectedTemplateId === 'gaulatti_letter') {
+        await generateGaulattiLetterPdf(values as GaulattiLetterProps, `${template.id}.pdf`);
       } else {
         await generateResumePdf(values as ResumeLetterProps, `${template.id}.pdf`);
       }
@@ -181,91 +190,91 @@ export default function Generate() {
 
   if (!template) {
     return (
-      <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
-        <div className='container mx-auto'>
-          <h1 className='text-4xl font-display font-medium text-text-primary mb-4 tracking-refined'>{t('generate.title')}</h1>
-          <p className='text-text-secondary'>{t('generate.noTemplates')}</p>
-        </div>
-      </div>
+      <main className='page-canvas'><div className='page-container max-w-3xl'><Empty icon={<LayoutTemplate size={22} />} title={t('generate.title')} description={t('generate.noTemplates')} /></div></main>
     );
   }
 
   return (
-    <div className='min-h-screen bg-light-sand dark:bg-deep-sea p-8'>
-      <div className='container mx-auto'>
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8'>
+    <main className='page-canvas'>
+      <div className='page-container'>
+        <header className='mb-9 flex flex-col gap-6 border-b border-sand/25 pb-8 dark:border-white/[0.08] sm:flex-row sm:items-end sm:justify-between'>
+          <div><p className='text-[10px] font-semibold uppercase tracking-[0.13em] text-desert'>Production studio</p><h1 className='mt-3 text-4xl font-semibold tracking-refined sm:text-5xl'>{t('generate.title')}</h1><p className='font-secondary mt-3 max-w-xl text-sm leading-6 text-text-secondary'>Choose a format, refine its content, and export production-ready artwork.</p></div>
+          <StatusBadge label={`${template.width} × ${template.height}px`} variant='default' />
+        </header>
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start'>
           {/* Left panel - Controls */}
-          <div className='lg:col-span-4 xl:col-span-3 space-y-6'>
+          <div className='space-y-5 lg:col-span-4 xl:col-span-3'>
             {/* Template selector */}
-            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <label className='block text-sm font-medium text-text-primary dark:text-white mb-2 tracking-wide'>{t('generate.selectTemplate')}</label>
-              <select
+            <Card variant='elevated'>
+              <Field label={t('generate.selectTemplate')} description={`${templates.length} production formats`}>
+              <Select
+                aria-label={t('generate.selectTemplate')}
                 value={selectedTemplateId}
-                onChange={handleTemplateChange}
-                className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue bg-white dark:bg-sand text-text-primary dark:text-white transition-all duration-300'
-              >
-                {templates.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+                onChange={setSelectedTemplateId}
+                options={templates.map((item) => ({ label: item.name, value: item.id }))}
+              />
+              </Field>
+            </Card>
 
             {/* Dynamic form */}
-            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.editFields')}</h2>
-              <div className='space-y-4 max-h-150 overflow-y-auto'>
+            <Card variant='surface'>
+              <div className='mb-5 flex items-center justify-between'><div><p className='text-[10px] font-semibold uppercase tracking-[0.1em] text-text-secondary'>Content</p><h2 className='mt-1.5 text-xl font-medium'>{t('generate.editFields')}</h2></div><StatusBadge label={`${template.fields.length} fields`} /></div>
+              <div className='editor-stack max-h-[38rem] space-y-5 overflow-y-auto pr-2'>
                 {template.fields.map((field) => (
                   <div key={field.key}>
-                    <label className='block text-sm font-medium text-text-primary dark:text-white mb-1 tracking-wide'>{field.label}</label>
                     {field.type === 'overlays' ? (
-                      <OverlayEditor value={(values[field.key] as OverlayItem[]) || []} onChange={(overlays) => handleFieldChange(field.key, overlays)} />
+                      <Field label={field.label}><div><OverlayEditor value={(values[field.key] as OverlayItem[]) || []} onChange={(overlays) => handleFieldChange(field.key, overlays)} /></div></Field>
                     ) : field.type === 'experienceItems' ? (
+                      <Field label={field.label}><div>
                       <ResumeExperienceEditor
                         value={(values[field.key] as ResumeLetterProps['experience']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'educationItems' ? (
+                      <Field label={field.label}><div>
                       <ResumeEducationEditor
                         value={(values[field.key] as ResumeLetterProps['education']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'skillGroups' ? (
+                      <Field label={field.label}><div>
                       <ResumeSkillGroupEditor
                         value={(values[field.key] as ResumeLetterProps['skillGroups']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'contactLinks' ? (
+                      <Field label={field.label}><div>
                       <ResumeContactLinksEditor
                         value={(values[field.key] as ResumeLetterProps['contactLinks']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'languageItems' ? (
+                      <Field label={field.label}><div>
                       <ResumeLanguageEditor
                         value={(values[field.key] as ResumeLetterProps['languages']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'spotlightItems' ? (
+                      <Field label={field.label}><div>
                       <ResumeSpotlightEditor
                         value={(values[field.key] as ResumeLetterProps['spotlights']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'earlierExperienceItems' ? (
+                      <Field label={field.label}><div>
                       <ResumeEarlierExperienceEditor
                         value={(values[field.key] as ResumeLetterProps['earlierExperiences']) || []}
                         onChange={(items) => handleFieldChange(field.key, items)}
-                      />
+                      /></div></Field>
                     ) : field.type === 'textarea' ? (
-                      <textarea
+                      <Field label={field.label}><Textarea
                         value={values[field.key] || ''}
                         onChange={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={field.rows || 3}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
-                      />
+                      /></Field>
                     ) : field.type === 'number' ? (
-                      <input
+                      <Field label={field.label}><Input
                         type='number'
                         value={values[field.key] || ''}
                         onChange={(e) => handleFieldChange(field.key, parseFloat(e.target.value) || 0)}
@@ -273,67 +282,62 @@ export default function Generate() {
                         min={field.min}
                         max={field.max}
                         step={field.step}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
-                      />
+                      /></Field>
                     ) : (
-                      <input
+                      <Field label={field.label}><Input
                         type='text'
                         value={values[field.key] || ''}
                         onChange={(e) => handleFieldChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className='w-full px-3 py-2 border border-sand/30 dark:border-sand/40 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sea dark:focus:ring-accent-blue focus:border-sea dark:focus:border-accent-blue text-sm text-text-primary dark:text-white bg-white dark:bg-sand transition-all duration-300'
-                      />
+                      /></Field>
                     )}
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
 
             {/* Export buttons */}
-            <div className='flex flex-col gap-2'>
-              <button
+            <Card variant='outlined' className='space-y-3'>
+              <p className='text-[10px] font-semibold uppercase tracking-[0.1em] text-text-secondary'>Export artwork</p>
+              <Button fullWidth
                 onClick={handleExport}
                 disabled={isExporting}
-                className='w-full bg-sea dark:bg-accent-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-desert dark:hover:bg-desert disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
               >
-                {isExporting ? t('generate.exporting') : t('generate.exportPng', { width: template.width, height: template.height })}
-              </button>
+                {isExporting ? <LoadingSpinner size='sm' /> : <ImageDown size={15} />}{isExporting ? t('generate.exporting') : t('generate.exportPng', { width: template.width, height: template.height })}
+              </Button>
               {hasPdf && (
-                <button
+                <Button fullWidth variant='secondary'
                   onClick={handleExportPdf}
                   disabled={isExporting}
-                  className='w-full bg-desert text-white px-6 py-3 rounded-lg font-medium hover:bg-sea dark:hover:bg-sea disabled:bg-text-secondary/50 disabled:cursor-not-allowed transition-all duration-400 shadow-sm hover:shadow tracking-elegant'
                 >
-                  {isExporting ? t('generate.exporting') : t('generate.exportPdf')}
-                </button>
+                  <FileText size={15} />{isExporting ? t('generate.exporting') : t('generate.exportPdf')}
+                </Button>
               )}
               {isResume && (
                 <>
-                  <button
+                  <Button fullWidth variant='ghost'
                     onClick={handleDownloadResumeTemplate}
-                    className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
                   >
-                    {t('generate.downloadTemplate')}
-                  </button>
-                  <button
+                    <Download size={15} />{t('generate.downloadTemplate')}
+                  </Button>
+                  <Button fullWidth variant='ghost'
                     onClick={handlePickResumeJson}
-                    className='w-full bg-white dark:bg-sand text-text-primary dark:text-white px-6 py-3 rounded-lg font-medium border border-sand/40 hover:border-sea dark:hover:border-accent-blue transition-all duration-300'
                   >
-                    {t('generate.loadJson')}
-                  </button>
+                    <FileInput size={15} />{t('generate.loadJson')}
+                  </Button>
                   <input ref={resumeJsonInputRef} type='file' accept='application/json,.json' onChange={handleLoadResumeJson} className='hidden' />
                 </>
               )}
-            </div>
+            </Card>
           </div>
 
           {/* Right panel - Preview */}
-          <div className='lg:col-span-8 xl:col-span-9 lg:sticky lg:top-6 lg:self-start'>
-            <div className='bg-white dark:bg-dark-sand rounded-lg shadow-sm p-6 border border-sand/10 dark:border-dark-sand/20'>
-              <h2 className='text-lg font-display font-medium text-text-primary dark:text-white mb-4 tracking-refined'>{t('generate.livePreview')}</h2>
+          <div className='lg:sticky lg:top-6 lg:col-span-8 lg:self-start xl:col-span-9'>
+            <Card padding='md' variant='elevated'>
+              <div className='mb-5 flex items-center justify-between'><div><p className='text-[10px] font-semibold uppercase tracking-[0.1em] text-text-secondary'>Canvas</p><h2 className='mt-1.5 text-xl font-medium'>{t('generate.livePreview')}</h2></div><StatusBadge label='Live' variant='live' /></div>
               <div
                 ref={previewScrollRef}
-                className='flex flex-col items-center gap-6 bg-light-sand dark:bg-dark-sand p-4 rounded-lg overflow-auto'
+                className='preview-stage flex flex-col items-center gap-6 overflow-auto rounded-[var(--radius-ui)] p-4'
                 style={{ height: previewViewportHeight }}
               >
                 {/* Page 1 */}
@@ -382,10 +386,10 @@ export default function Generate() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

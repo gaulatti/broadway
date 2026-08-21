@@ -18,7 +18,7 @@ import { LoadingSpinner } from '@gaulatti/bleecker/components/loading-spinner';
 import { Select } from '@gaulatti/bleecker/components/select';
 import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
 import { Textarea } from '@gaulatti/bleecker/components/textarea';
-import { Download, FileInput, FileText, ImageDown, LayoutTemplate } from 'lucide-react';
+import { Download, FileInput, FileText, ImageDown, ImageUp, LayoutTemplate } from 'lucide-react';
 import { templates } from '../templates';
 import type { OverlayItem } from '../templates/types';
 import { useT } from '../i18n/useT';
@@ -48,6 +48,8 @@ export default function Generate() {
   const previewScrollRef = useRef<HTMLDivElement>(null);
   const additionalRefs = useRef<Array<HTMLDivElement | null>>([]);
   const resumeJsonInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const imageUploadFieldKeyRef = useRef<string>('');
 
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
@@ -110,6 +112,25 @@ export default function Generate() {
 
   const handleFieldChange = (key: string, value: any) => {
     setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleImageFieldUpload = (key: string, file: File | undefined) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      handleFieldChange(key, reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handlePickImage = (key: string) => {
+    imageUploadFieldKeyRef.current = key;
+    imageInputRef.current?.click();
+  };
+
+  const handleImageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleImageFieldUpload(imageUploadFieldKeyRef.current, e.target.files?.[0]);
+    e.target.value = '';
   };
 
   const handleExport = async () => {
@@ -283,6 +304,23 @@ export default function Generate() {
                         max={field.max}
                         step={field.step}
                       /></Field>
+                    ) : field.type === 'image' ? (
+                      <Field label={field.label}><div className='flex items-center gap-2'>
+                        <Input
+                          type='text'
+                          value={String(values[field.key] || '').startsWith('data:') ? '' : values[field.key] || ''}
+                          onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                          placeholder={String(values[field.key] || '').startsWith('data:') ? 'Local image loaded' : field.placeholder}
+                        />
+                        <Button
+                          variant='secondary'
+                          className='shrink-0'
+                          title='Upload local image'
+                          onClick={() => handlePickImage(field.key)}
+                        >
+                          <ImageUp size={15} />
+                        </Button>
+                      </div></Field>
                     ) : (
                       <Field label={field.label}><Input
                         type='text'
@@ -328,6 +366,7 @@ export default function Generate() {
                   <input ref={resumeJsonInputRef} type='file' accept='application/json,.json' onChange={handleLoadResumeJson} className='hidden' />
                 </>
               )}
+              <input ref={imageInputRef} type='file' accept='image/*' onChange={handleImageInputChange} className='hidden' />
             </Card>
           </div>
 

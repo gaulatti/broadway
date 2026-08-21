@@ -1,0 +1,42 @@
+import * as React from 'react';
+import { cn } from '~/lib/utils';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card';
+
+interface ChartCardProps {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+  footer?: React.ReactNode;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export function ChartCard({
+  title,
+  description,
+  action,
+  footer,
+  className,
+  children,
+}: ChartCardProps) {
+  return (
+    <Card className={cn('flex flex-col', className)}>
+      <CardHeader className="flex flex-row items-start justify-between">
+        <div className="space-y-1">
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </div>
+        {action}
+      </CardHeader>
+      <CardContent className="flex-1">{children}</CardContent>
+      {footer && <CardFooter>{footer}</CardFooter>}
+    </Card>
+  );
+}

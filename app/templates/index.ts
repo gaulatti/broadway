@@ -13,6 +13,8 @@ import { templateDefinition as sanremoStoryDefinition } from './TemplateSanremoS
 import { templateDefinition as sanremoPostDefinition } from './TemplateSanremoPost';
 import { templateDefinition as sanremoPost16x9Definition } from './TemplateSanremoPost16x9';
 import { templateDefinition as sanremoStory16x9Definition } from './TemplateSanremoStory16x9';
+import { templateDefinition as sanremoPost16x9GiorgiaDefinition } from './TemplateSanremoPost16x9Giorgia';
+import { templateDefinition as sanremoStory16x9GiorgiaDefinition } from './TemplateSanremoStory16x9Giorgia';
 import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
 import { templateDefinition as modoitalianoPostDefinition } from './TemplateModoItalianoPost';
 import { templateDefinition as modoitalianoGiorgiaPostDefinition } from './TemplateModoItalianoGiorgiaPost';
@@ -32,7 +34,9 @@ export const templates: TemplateDefinition[] = [
   sanremoStoryDefinition,
   sanremoPostDefinition,
   sanremoPost16x9Definition,
-  sanremoStory16x9Definition
+  sanremoStory16x9Definition,
+  sanremoPost16x9GiorgiaDefinition,
+  sanremoStory16x9GiorgiaDefinition
   // Add more templates here as they are created
 ];
 

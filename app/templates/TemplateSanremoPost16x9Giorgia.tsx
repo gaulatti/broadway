@@ -2,13 +2,14 @@
  * Sanremo Post 16x9 (Giorgia) Template
  *
  * A 1080x1080 template for showcasing Sanremo artists with a 16:9 image,
- * redesigned in the Giorgia editorial language: deterministic red accent,
- * Barlow/Barlow Condensed typography, black glass panels, square corners,
- * and a quiet image-forward composition. It intentionally keeps the same
+ * redesigned in the ModoItaliano Giorgia radio language: full-bleed
+ * photography, navy depth, magenta signal furniture, and assertive
+ * Barlow/Barlow Condensed typography. It intentionally keeps the same
  * editable inputs as the original Sanremo Post 16x9 template.
  */
 
 import React from 'react';
+import { ModoItalianoGiorgiaSocials } from './ModoItalianoGiorgiaSocials';
 import type { FieldDef, TemplateDefinition } from './types';
 
 export interface SanremoPost16x9GiorgiaProps {
@@ -63,8 +64,7 @@ export const fields: Array<FieldDef<SanremoPost16x9GiorgiaProps>> = [
 
 const WIDTH = 1080;
 const HEIGHT = 1080;
-const GIORGIA_RED = '#b21100';
-const GIORGIA_SIGNAL = '#ff2e1a';
+const GIORGIA_MAGENTA = '#ed0076';
 
 const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({ artistName, artistImageUrl, bio, category, song }) => {
   return (
@@ -74,14 +74,12 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
         height: `${HEIGHT}px`,
         position: 'relative',
         overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
         backgroundColor: '#000000',
         color: '#ffffff',
         fontFamily: "'Barlow', system-ui, sans-serif"
       }}
     >
-      {/* Full-bleed hero, deliberately quiet. */}
+      {/* One dominant photograph. */}
       <img
         src={artistImageUrl}
         alt='Background'
@@ -92,7 +90,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          opacity: 0.9
+          opacity: 0.94
         }}
       />
       <div
@@ -100,168 +98,176 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
           position: 'absolute',
           inset: 0,
           background:
-            'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.92) 100%)'
+            'linear-gradient(180deg, rgba(10,18,52,0.5) 0%, rgba(10,18,52,0.05) 34%, rgba(10,18,52,0.22) 52%, rgba(5,8,24,0.98) 100%)'
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(circle at 86% 7%, rgba(237,0,118,0.28), rgba(237,0,118,0) 35%)'
         }}
       />
 
-      {/* Masthead strip: show mark and kicker. */}
+      {/* A proud dual masthead: Giorgia first, Sanremo in partnership. */}
       <header
         style={{
-          position: 'relative',
+          position: 'absolute',
+          top: '54px',
+          left: '66px',
+          right: '66px',
           zIndex: 2,
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '14px',
-          padding: '24px 40px 18px',
-          backgroundColor: 'rgba(0,0,0,0.55)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          borderBottom: '1px solid rgba(255,255,255,0.14)'
+          paddingBottom: '22px',
+          borderBottom: '2px solid rgba(255,255,255,0.3)'
         }}
       >
-        <img src='/logo-sanremo.svg' alt='Sanremo 24' style={{ height: '60px', width: 'auto' }} />
-        <p
-          style={{
-            margin: 0,
-            fontFamily: "'Outfit', system-ui, sans-serif",
-            fontSize: '19px',
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: GIORGIA_SIGNAL
-          }}
-        >
-          Artistas de la A a la Z
-        </p>
-      </header>
-
-      {/* The image is the hero. */}
-      <main
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: 0
-        }}
-      >
-        <div
-          style={{
-            padding: '8px',
-            backgroundColor: 'rgba(0,0,0,0.35)',
-            border: '1px solid rgba(255,255,255,0.28)'
-          }}
-        >
-          <img
-            src={artistImageUrl}
-            alt={artistName}
-            crossOrigin='anonymous'
-            style={{ display: 'block', width: '512px', height: '288px', objectFit: 'cover' }}
-          />
-        </div>
-      </main>
-
-      {/* Editorial card. */}
-      <footer
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          backgroundColor: 'rgba(0,0,0,0.72)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)'
-        }}
-      >
-        <div style={{ padding: '36px 88px 22px' }}>
-          <h3
-            style={{
-              margin: 0,
-              fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: (artistName?.length ?? 0) > 17 ? '62px' : '82px',
-              lineHeight: 1.04,
-              fontWeight: 700,
-              letterSpacing: '0.01em',
-              textTransform: 'uppercase',
-              color: '#ffffff',
-              whiteSpace: 'pre-wrap',
-              textWrap: 'balance',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
-            }}
-          >
-            {artistName}
-          </h3>
-          <div style={{ width: '64px', height: '6px', backgroundColor: GIORGIA_RED, margin: '20px 0 18px' }} />
+        <img
+          src='/mi.svg'
+          alt='ModoItaliano'
+          style={{ width: '190px', height: 'auto', filter: 'brightness(0) invert(1) drop-shadow(0 8px 24px rgba(0,0,0,0.55))' }}
+        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <p
             style={{
               margin: 0,
-              maxWidth: '880px',
-              fontSize: '25px',
-              lineHeight: 1.5,
-              fontWeight: 400,
-              color: 'rgba(255,255,255,0.88)',
-              whiteSpace: 'pre-wrap',
-              textWrap: 'balance',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
-            }}
-          >
-            {bio}
-          </p>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '0 0 18px' }}>
-          <img
-            src='/mi.svg'
-            alt='ModoItaliano'
-            style={{ height: '40px', width: 'auto', filter: 'brightness(0) invert(1)', opacity: 0.9 }}
-          />
-        </div>
-        {/* Red brand strip: category and song. */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '26px',
-            height: '84px',
-            padding: '0 40px',
-            backgroundColor: GIORGIA_RED
-          }}
-        >
-          <span
-            style={{
               fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: '32px',
+              fontSize: '22px',
+              lineHeight: 1.05,
               fontWeight: 600,
-              letterSpacing: '0.06em',
+              letterSpacing: '0.1em',
+              textAlign: 'right',
               textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              color: GIORGIA_MAGENTA
             }}
           >
-            {category}
-          </span>
-          <span style={{ width: '2px', height: '30px', backgroundColor: 'rgba(255,255,255,0.55)', flexShrink: 0 }} />
-          <span
-            style={{
-              fontSize: '32px',
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }}
-          >
-            {song}
-          </span>
+            Artistas
+            <br />
+            de la A a la Z
+          </p>
+          <img src='/logo-sanremo.svg' alt='Sanremo 24' style={{ height: '68px', width: 'auto', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.55))' }} />
         </div>
-      </footer>
+      </header>
+
+      {/* Editorial information sits directly on the photograph, not in a generic card. */}
+      <main
+        style={{
+          position: 'absolute',
+          left: '72px',
+          right: '72px',
+          bottom: '52px',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '34px' }}>
+          <section
+            style={{
+              minWidth: 0,
+              flex: 1,
+              paddingLeft: '34px',
+              borderLeft: `8px solid ${GIORGIA_MAGENTA}`
+            }}
+          >
+            <p
+              style={{
+                margin: '0 0 8px',
+                fontFamily: "'Barlow Condensed', system-ui, sans-serif",
+                fontSize: '24px',
+                lineHeight: 1,
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: GIORGIA_MAGENTA
+              }}
+            >
+              {category}
+            </p>
+            <h3
+              style={{
+                margin: 0,
+                fontFamily: "'Barlow Condensed', system-ui, sans-serif",
+                fontSize: (artistName?.length ?? 0) > 17 ? '78px' : '104px',
+                lineHeight: 0.92,
+                fontWeight: 700,
+                letterSpacing: '-0.015em',
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                whiteSpace: 'pre-wrap',
+                textWrap: 'balance',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}
+            >
+              {artistName}
+            </h3>
+            <p
+              style={{
+                margin: '18px 0 0',
+                maxWidth: '610px',
+                fontSize: '26px',
+                lineHeight: 1.32,
+                fontWeight: 400,
+                color: 'rgba(255,255,255,0.86)',
+                whiteSpace: 'pre-wrap',
+                textWrap: 'balance',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}
+            >
+              {bio}
+            </p>
+          </section>
+
+          <aside
+            style={{
+              width: '286px',
+              flex: '0 0 286px',
+              padding: '26px 28px 30px',
+              backgroundColor: GIORGIA_MAGENTA,
+              color: '#ffffff'
+            }}
+          >
+            <p
+              style={{
+                margin: '0 0 10px',
+                fontFamily: "'Barlow Condensed', system-ui, sans-serif",
+                fontSize: '20px',
+                lineHeight: 1,
+                fontWeight: 600,
+                letterSpacing: '0.11em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.78)'
+              }}
+            >
+              A Sanremo con
+            </p>
+            <p
+              style={{
+                margin: 0,
+                fontFamily: "'Barlow Condensed', system-ui, sans-serif",
+                fontSize: '52px',
+                lineHeight: 0.95,
+                fontWeight: 700,
+                letterSpacing: '-0.01em',
+                whiteSpace: 'pre-wrap',
+                overflowWrap: 'anywhere'
+              }}
+            >
+              {song}
+            </p>
+          </aside>
+        </div>
+
+        <ModoItalianoGiorgiaSocials />
+      </main>
     </div>
   );
 };

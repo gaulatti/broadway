@@ -18,6 +18,7 @@ import { templateDefinition as sanremoStory16x9GiorgiaDefinition } from './Templ
 import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanremoPromoPost';
 import { templateDefinition as modoitalianoPostDefinition } from './TemplateModoItalianoPost';
 import { templateDefinition as modoitalianoGiorgiaPostDefinition } from './TemplateModoItalianoGiorgiaPost';
+import { templateDefinition as modoitalianoGiorgiaStoryDefinition } from './TemplateModoItalianoGiorgiaStory';
 import { templateDefinition as instagramImageDefinition } from './TemplateInstagramImage';
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
@@ -26,6 +27,7 @@ import { templateDefinition as gaulattiLetterDefinition } from './TemplateGaulat
 export const templates: TemplateDefinition[] = [
   modoitalianoPostDefinition,
   modoitalianoGiorgiaPostDefinition,
+  modoitalianoGiorgiaStoryDefinition,
   instagramImageDefinition,
   resumeLetterDefinition,
   fifthbellLetterDefinition,

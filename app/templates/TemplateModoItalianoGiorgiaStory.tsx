@@ -1,47 +1,31 @@
 /**
- * ModoItaliano Giorgia Post Template
+ * ModoItaliano Giorgia Story Template
  *
- * A 1080x1350 Instagram post adapted from Giorgia's editorial image system.
- * It intentionally keeps the same two editable inputs as the original
- * ModoItaliano post template.
+ * A 1080x1920 Instagram Story adaptation of the Giorgia post template.
+ * It preserves the post's two editable inputs and visual hierarchy while
+ * moving its fixed furniture into the Story-safe vertical composition.
  */
 
 import React from 'react';
-import type { FieldDef, TemplateDefinition } from './types';
 import { ModoItalianoGiorgiaSocials } from './ModoItalianoGiorgiaSocials';
+import {
+  defaultProps as postDefaultProps,
+  fields as postFields,
+  type ModoItalianoGiorgiaPostProps
+} from './TemplateModoItalianoGiorgiaPost';
+import type { FieldDef, TemplateDefinition } from './types';
 
-export interface ModoItalianoGiorgiaPostProps {
-  bottomText: string;
-  backgroundImageUrl: string;
-}
+export type ModoItalianoGiorgiaStoryProps = ModoItalianoGiorgiaPostProps;
 
-export const defaultProps: ModoItalianoGiorgiaPostProps = {
-  bottomText: 'Elettra Lamborghini pide poner fin a las fiestas nocturnas cerca de los hoteles del festival de Sanremo',
-  backgroundImageUrl:
-    'https://cdn.fifthbell.com/media/2026/02/26/elettra-lamborghini-calls-for-end-to-late-night-parties-near-sanremo-festival-hotels-Hvsjli7JKP.avif'
-};
+export const defaultProps: ModoItalianoGiorgiaStoryProps = postDefaultProps;
 
-export const fields: Array<FieldDef<ModoItalianoGiorgiaPostProps>> = [
-  {
-    key: 'bottomText',
-    label: 'Bottom Text',
-    type: 'text',
-    placeholder: 'Elettra Lamborghini pide poner fin a las fiestas nocturnas cerca de los hoteles del festival de Sanremo'
-  },
-  {
-    key: 'backgroundImageUrl',
-    label: 'Background Image URL',
-    type: 'image',
-    placeholder: 'https://...'
-  }
-];
+export const fields: Array<FieldDef<ModoItalianoGiorgiaStoryProps>> = postFields;
 
 const WIDTH = 1080;
-const HEIGHT = 1350;
+const HEIGHT = 1920;
 const GIORGIA_MAGENTA = '#ed0076';
-const GIORGIA_NAVY = '#0a1234';
 
-const TemplateModoItalianoGiorgiaPost: React.FC<ModoItalianoGiorgiaPostProps> = ({ bottomText, backgroundImageUrl }) => {
+const TemplateModoItalianoGiorgiaStory: React.FC<ModoItalianoGiorgiaStoryProps> = ({ bottomText, backgroundImageUrl }) => {
   return (
     <div
       style={{
@@ -67,7 +51,7 @@ const TemplateModoItalianoGiorgiaPost: React.FC<ModoItalianoGiorgiaPostProps> = 
         }}
       />
 
-      {/* Giorgia's radio atmosphere, kept deliberately quiet. */}
+      {/* The post's radio atmosphere extended over the Story canvas. */}
       <div
         style={{
           position: 'absolute',
@@ -77,13 +61,12 @@ const TemplateModoItalianoGiorgiaPost: React.FC<ModoItalianoGiorgiaPostProps> = 
         }}
       />
 
-      {/* The centered mark is the only brand furniture. */}
       <img
         src='/mi.svg'
         alt='ModoItaliano'
         style={{
           position: 'absolute',
-          top: '74px',
+          top: '118px',
           left: '50%',
           width: '230px',
           height: 'auto',
@@ -92,13 +75,12 @@ const TemplateModoItalianoGiorgiaPost: React.FC<ModoItalianoGiorgiaPostProps> = 
         }}
       />
 
-      {/* One editorial field: signal line and headline. */}
       <main
         style={{
           position: 'absolute',
           left: '86px',
           right: '86px',
-          bottom: '84px',
+          bottom: '160px',
           paddingLeft: '38px',
           borderLeft: `8px solid ${GIORGIA_MAGENTA}`
         }}
@@ -124,23 +106,22 @@ const TemplateModoItalianoGiorgiaPost: React.FC<ModoItalianoGiorgiaPostProps> = 
           {bottomText}
         </p>
 
-        {/* Giorgia's compact footer language, adapted to the current ModoItaliano handles. */}
         <ModoItalianoGiorgiaSocials />
       </main>
     </div>
   );
 };
 
-export const templateDefinition: TemplateDefinition<ModoItalianoGiorgiaPostProps> = {
-  id: 'modoitaliano_giorgia_post',
-  name: 'ModoItaliano Giorgia Post',
-  Component: TemplateModoItalianoGiorgiaPost,
+export const templateDefinition: TemplateDefinition<ModoItalianoGiorgiaStoryProps> = {
+  id: 'modoitaliano_giorgia_story',
+  name: 'ModoItaliano Giorgia Story',
+  Component: TemplateModoItalianoGiorgiaStory,
   defaultProps,
   fields,
   width: WIDTH,
   height: HEIGHT,
-  galleryScale: 0.35,
-  previewScale: 0.55
+  galleryScale: 0.3,
+  previewScale: 0.5
 };
 
-export default TemplateModoItalianoGiorgiaPost;
+export default TemplateModoItalianoGiorgiaStory;

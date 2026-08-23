@@ -65,6 +65,16 @@ Broadway is a complete solution for generating customizable templates across mul
 - `npm run start` - Start production server
 - `npm run typecheck` - Run TypeScript type checking
 
+### Admin UI ownership
+
+Broadway's application and administration UI uses
+[`@gaulatti/bleecker`](https://github.com/gaulatti/bleecker) as its component
+and layout source of truth. Import admin controls from Bleecker's public
+`components/*` and `layout/*` entry points; do not create a parallel local
+dashboard or shadcn-style component library in Broadway. Broadway-local
+components are reserved for product-specific template authoring, preview, and
+export behavior.
+
 ## 📁 Project Structure
 
 Development Commands

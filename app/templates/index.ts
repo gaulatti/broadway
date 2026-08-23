@@ -19,6 +19,7 @@ import { templateDefinition as sanremoPromoPostDefinition } from './TemplateSanr
 import { templateDefinition as modoitalianoPostDefinition } from './TemplateModoItalianoPost';
 import { templateDefinition as modoitalianoGiorgiaPostDefinition } from './TemplateModoItalianoGiorgiaPost';
 import { templateDefinition as modoitalianoGiorgiaStoryDefinition } from './TemplateModoItalianoGiorgiaStory';
+import { templateDefinition as modoitalianoGiorgiaYouTubeThumbnailDefinition } from './TemplateModoItalianoGiorgiaYouTubeThumbnail';
 import { templateDefinition as instagramImageDefinition } from './TemplateInstagramImage';
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
@@ -28,6 +29,7 @@ export const templates: TemplateDefinition[] = [
   modoitalianoPostDefinition,
   modoitalianoGiorgiaPostDefinition,
   modoitalianoGiorgiaStoryDefinition,
+  modoitalianoGiorgiaYouTubeThumbnailDefinition,
   instagramImageDefinition,
   resumeLetterDefinition,
   fifthbellLetterDefinition,

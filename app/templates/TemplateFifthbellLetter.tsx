@@ -12,6 +12,7 @@ import {
   LogoMark
 } from './fifthbell-letter-shared';
 import { fifthbellLetterData } from './fifthbellLetterData';
+import { FONT_SETS } from './fontAssets';
 
 export interface FifthbellLetterProps {
   date: string;
@@ -255,7 +256,8 @@ export const templateDefinition: TemplateDefinition<FifthbellLetterProps> = {
   width: PAGE_WIDTH,
   height: PAGE_HEIGHT,
   galleryScale: 0.4,
-  previewScale: 0.6
+  previewScale: 0.6,
+  fonts: FONT_SETS.fifthbellLetter
 };
 
 export default TemplateFifthbellLetter;

@@ -6,6 +6,7 @@ import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
 import { Link } from 'react-router';
 import { templates } from '../templates';
 import { useT } from '../i18n/useT';
+import { TemplateFontBoundary } from '../templates/TemplateFontBoundary';
 
 export default function PreviewGallery() {
   const t = useT();
@@ -37,7 +38,7 @@ export default function PreviewGallery() {
                   <div className='preview-stage flex min-h-72 items-start justify-center overflow-hidden p-6'>
                     <div className='relative shadow-[var(--shadow-raised)]' style={{ width: `${template.width * template.galleryScale}px`, height: `${template.height * template.galleryScale}px`, overflow: 'hidden' }}>
                       <div style={{ transformOrigin: 'top left', transform: `scale(${template.galleryScale})`, width: `${template.width}px`, height: `${template.height}px` }}>
-                        <template.Component {...template.defaultProps} />
+                        <TemplateFontBoundary fonts={template.fonts}><template.Component {...template.defaultProps} /></TemplateFontBoundary>
                       </div>
                     </div>
                   </div>

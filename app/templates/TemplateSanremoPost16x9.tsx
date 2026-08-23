@@ -8,6 +8,7 @@
 import React, { useState } from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
 import { FastAverageColor } from 'fast-average-color';
+import { FONT_SETS } from './fontAssets';
 
 const fac = new FastAverageColor();
 
@@ -193,7 +194,8 @@ export const templateDefinition: TemplateDefinition<SanremoPost16x9Props> = {
   width: 1080,
   height: 1080,
   galleryScale: 0.4,
-  previewScale: 0.6
+  previewScale: 0.6,
+  fonts: FONT_SETS.sanremo
 };
 
 export default TemplateSanremoPost16x9;

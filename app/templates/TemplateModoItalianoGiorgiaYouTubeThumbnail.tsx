@@ -13,6 +13,7 @@ import {
   type ModoItalianoGiorgiaPostProps
 } from './TemplateModoItalianoGiorgiaPost';
 import type { FieldDef, TemplateDefinition } from './types';
+import { FONT_SETS } from './fontAssets';
 
 export interface ModoItalianoGiorgiaYouTubeThumbnailProps extends ModoItalianoGiorgiaPostProps {
   subheader?: string;
@@ -155,7 +156,8 @@ export const templateDefinition: TemplateDefinition<ModoItalianoGiorgiaYouTubeTh
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.36,
-  previewScale: 0.68
+  previewScale: 0.68,
+  fonts: FONT_SETS.giorgia
 };
 
 export default TemplateModoItalianoGiorgiaYouTubeThumbnail;

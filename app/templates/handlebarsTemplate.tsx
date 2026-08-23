@@ -12,6 +12,8 @@
 import Handlebars from 'handlebars';
 import qrcode from 'qrcode-generator';
 import React, { useEffect, useMemo, useRef } from 'react';
+import { fontFaceCss } from './fontContract';
+import { useTemplateFonts } from './TemplateFontBoundary';
 
 export interface HandlebarsTemplateComponentProps {
   source: string;
@@ -39,6 +41,7 @@ function registerHelpers(): void {
 
 export function HandlebarsTemplateComponent({ source, width, height, ...data }: HandlebarsTemplateComponentProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const fonts = useTemplateFonts();
   const html = useMemo(() => {
     registerHelpers();
     const template = Handlebars.compile(source);
@@ -53,7 +56,11 @@ export function HandlebarsTemplateComponent({ source, width, height, ...data }: 
     doc.open();
     doc.write(html);
     doc.close();
-  }, [html]);
+    const style = doc.createElement('style');
+    style.dataset.broadwayTemplateFonts = 'true';
+    style.textContent = fontFaceCss(fonts);
+    doc.head.appendChild(style);
+  }, [fonts, html]);
 
   return (
     <iframe

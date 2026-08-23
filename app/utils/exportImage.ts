@@ -12,6 +12,67 @@ import { toPng } from 'html-to-image';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
+import { fontFaceCss, type TemplateFontAsset } from '../templates/fontContract.ts';
+
+export type ImageExportFailureKind = 'font' | 'external-resource' | 'capture';
+
+export class ImageExportError extends Error {
+  readonly kind: ImageExportFailureKind;
+
+  constructor(kind: ImageExportFailureKind, message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.kind = kind;
+    this.name = 'ImageExportError';
+  }
+}
+
+export function imageExportErrorMessage(reason: unknown): string {
+  const error = reason instanceof ImageExportError ? reason : classifyCaptureError(reason);
+  if (error.kind === 'font') return `PNG export stopped because a declared font is missing or could not load. ${error.message}`;
+  if (error.kind === 'external-resource') return `PNG export stopped because an image or external resource cannot be embedded. Upload a local image or use a CORS-enabled source. ${error.message}`;
+  return `PNG export could not capture this template. ${error.message}`;
+}
+
+function classifyCaptureError(reason: unknown): ImageExportError {
+  const message = reason instanceof Error ? reason.message : String(reason || 'Unknown capture failure.');
+  if (/font|cssrules|stylesheet/i.test(message)) return new ImageExportError('font', message, { cause: reason });
+  if (/image|cors|fetch|resource|network/i.test(message)) return new ImageExportError('external-resource', message, { cause: reason });
+  return new ImageExportError('capture', message, { cause: reason });
+}
+
+function blobAsDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error('Could not read the font asset.'));
+    reader.onload = () => resolve(String(reader.result));
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function buildEmbeddedFontCss(fonts: readonly TemplateFontAsset[], ownerDocument: Document): Promise<string> {
+  if (!fonts.length) throw new ImageExportError('font', 'The selected template declares no packaged font faces.');
+  const dataUrls = new Map<string, string>();
+  for (const font of fonts) {
+    try {
+      const url = new URL(font.url, ownerDocument.baseURI);
+      if (url.origin !== window.location.origin) throw new Error(`Font ${font.id} points outside Broadway.`);
+      const response = await fetch(url, { credentials: 'same-origin' });
+      if (!response.ok) throw new Error(`Font ${font.id} returned HTTP ${response.status}.`);
+      dataUrls.set(font.id, await blobAsDataUrl(await response.blob()));
+    } catch (reason) {
+      throw new ImageExportError('font', reason instanceof Error ? reason.message : `Font ${font.id} could not load.`, { cause: reason });
+    }
+  }
+
+  if (ownerDocument.fonts) {
+    await ownerDocument.fonts.ready;
+    for (const font of fonts) {
+      const loaded = await ownerDocument.fonts.load(`${font.style} ${font.weight} 16px "${font.family}"`);
+      if (!loaded.length) throw new ImageExportError('font', `Font ${font.family} ${font.weight} ${font.style} is unavailable in the preview.`);
+    }
+  }
+  return fontFaceCss(fonts, dataUrls);
+}
 
 /**
  * Wait for all images within a node to complete loading
@@ -24,20 +85,41 @@ async function waitForImages(node: HTMLElement): Promise<void> {
       return Promise.resolve();
     }
 
-    return new Promise<void>((resolve) => {
-      const timeout = setTimeout(() => resolve(), 10000); // 10s timeout
-      img.onload = () => {
+    return new Promise<void>((resolve, reject) => {
+      const cleanup = () => {
+        img.removeEventListener('load', onLoad);
+        img.removeEventListener('error', onError);
+      };
+      const onLoad = () => {
         clearTimeout(timeout);
+        cleanup();
         resolve();
       };
-      img.onerror = () => {
+      const onError = () => {
         clearTimeout(timeout);
-        resolve();
+        cleanup();
+        reject(new ImageExportError('external-resource', `Image ${img.currentSrc || img.src || '(unknown)'} failed to load.`));
       };
+      const timeout = setTimeout(() => { cleanup(); reject(new ImageExportError('external-resource', `Image ${img.currentSrc || img.src || '(unknown)'} timed out.`)); }, 10000);
+      img.addEventListener('load', onLoad, { once: true });
+      img.addEventListener('error', onError, { once: true });
     });
   });
 
   await Promise.all(imagePromises);
+
+  for (const img of images) {
+    const source = img.currentSrc || img.src;
+    if (!source || source.startsWith('data:') || source.startsWith('blob:')) continue;
+    const url = new URL(source, node.ownerDocument.baseURI);
+    if (url.origin === window.location.origin) continue;
+    try {
+      const response = await fetch(url, { credentials: 'omit', mode: 'cors' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } catch (reason) {
+      throw new ImageExportError('external-resource', `External image ${url.hostname} is not embeddable.`, { cause: reason });
+    }
+  }
 }
 
 /**
@@ -65,10 +147,12 @@ export async function exportNodeToPng(
   node: HTMLElement,
   filename: string = 'template.png',
   width: number = node.offsetWidth,
-  height: number = node.offsetHeight
+  height: number = node.offsetHeight,
+  fonts: readonly TemplateFontAsset[]
 ): Promise<void> {
   try {
     const targetNode = resolveCaptureTarget(node);
+    const fontEmbedCSS = await buildEmbeddedFontCss(fonts, targetNode.ownerDocument);
 
     // Wait for fonts to load - CRITICAL for proper text rendering.
     // Handlebars templates render inside an iframe, so also wait for iframe fonts.
@@ -91,7 +175,8 @@ export async function exportNodeToPng(
       width,
       height,
       pixelRatio: 1,
-      cacheBust: false
+      cacheBust: false,
+      fontEmbedCSS
     });
 
     // Wait for React to flush all state updates
@@ -103,6 +188,7 @@ export async function exportNodeToPng(
       height,
       pixelRatio: 1,
       cacheBust: true,
+      fontEmbedCSS,
       // Include external fonts and resources
       includeQueryParams: true,
       // CRITICAL: Custom filter to handle CORS for external images
@@ -134,8 +220,7 @@ export async function exportNodeToPng(
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Export failed:', error);
-    alert('Failed to export image. Please check console for details.');
-    throw error;
+    throw error instanceof ImageExportError ? error : classifyCaptureError(error);
   }
 }
 

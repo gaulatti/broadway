@@ -9,6 +9,7 @@
 import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
 import { ModoItalianoGiorgiaSocials } from './ModoItalianoGiorgiaSocials';
+import { FONT_SETS } from './fontAssets';
 
 export interface ModoItalianoGiorgiaPostProps {
   bottomText: string;
@@ -140,7 +141,8 @@ export const templateDefinition: TemplateDefinition<ModoItalianoGiorgiaPostProps
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.35,
-  previewScale: 0.55
+  previewScale: 0.55,
+  fonts: FONT_SETS.giorgia
 };
 
 export default TemplateModoItalianoGiorgiaPost;

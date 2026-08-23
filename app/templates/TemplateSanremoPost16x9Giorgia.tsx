@@ -66,6 +66,14 @@ const WIDTH = 1080;
 const HEIGHT = 1080;
 const GIORGIA_MAGENTA = '#ed0076';
 
+const getSongFontSize = (song?: string): string => {
+  const length = song?.trim().length ?? 0;
+
+  if (length > 24) return '38px';
+  if (length > 10) return '46px';
+  return '58px';
+};
+
 const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({ artistName, artistImageUrl, bio, category, song }) => {
   return (
     <div
@@ -134,7 +142,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
             style={{
               margin: 0,
               fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: '22px',
+              fontSize: '25px',
               lineHeight: 1.05,
               fontWeight: 600,
               letterSpacing: '0.1em',
@@ -176,7 +184,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
               style={{
                 margin: '0 0 8px',
                 fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-                fontSize: '24px',
+                fontSize: '27px',
                 lineHeight: 1,
                 fontWeight: 600,
                 letterSpacing: '0.1em',
@@ -210,16 +218,13 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
               style={{
                 margin: '18px 0 0',
                 maxWidth: '610px',
-                fontSize: '26px',
+                fontSize: '29px',
                 lineHeight: 1.32,
                 fontWeight: 400,
                 color: 'rgba(255,255,255,0.86)',
                 whiteSpace: 'pre-wrap',
                 textWrap: 'balance',
-                display: '-webkit-box',
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden'
+                overflowWrap: 'break-word'
               }}
             >
               {bio}
@@ -239,7 +244,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
               style={{
                 margin: '0 0 10px',
                 fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-                fontSize: '20px',
+                fontSize: '23px',
                 lineHeight: 1,
                 fontWeight: 600,
                 letterSpacing: '0.11em',
@@ -253,7 +258,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
               style={{
                 margin: 0,
                 fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-                fontSize: '52px',
+                fontSize: getSongFontSize(song),
                 lineHeight: 0.95,
                 fontWeight: 700,
                 letterSpacing: '-0.01em',
@@ -266,7 +271,7 @@ const TemplateSanremoPost16x9Giorgia: React.FC<SanremoPost16x9GiorgiaProps> = ({
           </aside>
         </div>
 
-        <ModoItalianoGiorgiaSocials />
+        <ModoItalianoGiorgiaSocials fontSize='33px' />
       </main>
     </div>
   );

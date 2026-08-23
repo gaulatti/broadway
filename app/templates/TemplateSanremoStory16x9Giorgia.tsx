@@ -143,7 +143,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
             style={{
               margin: 0,
               fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: '25px',
+              fontSize: '28px',
               lineHeight: 1.05,
               fontWeight: 600,
               letterSpacing: '0.1em',
@@ -178,7 +178,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           style={{
             margin: '0 0 10px',
             fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-            fontSize: '29px',
+            fontSize: '33px',
             lineHeight: 1,
             fontWeight: 600,
             letterSpacing: '0.1em',
@@ -220,7 +220,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           <span
             style={{
               fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: '24px',
+              fontSize: '27px',
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -232,7 +232,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           <span
             style={{
               fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-              fontSize: '62px',
+              fontSize: '70px',
               lineHeight: 1,
               fontWeight: 700,
               color: '#ffffff',
@@ -248,7 +248,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           <p
             style={{
               margin: 0,
-              fontSize: '32px',
+              fontSize: '36px',
               lineHeight: 1.4,
               fontWeight: 400,
               color: 'rgba(255,255,255,0.92)',
@@ -265,7 +265,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           <p
             style={{
               margin: '18px 0 0',
-              fontSize: '28px',
+              fontSize: '32px',
               lineHeight: 1.4,
               fontWeight: 400,
               color: 'rgba(255,255,255,0.72)',
@@ -280,7 +280,7 @@ const TemplateSanremoStory16x9Giorgia: React.FC<SanremoStory16x9GiorgiaProps> = 
           </p>
         </div>
 
-        <ModoItalianoGiorgiaSocials />
+        <ModoItalianoGiorgiaSocials fontSize='33px' />
       </main>
     </div>
   );

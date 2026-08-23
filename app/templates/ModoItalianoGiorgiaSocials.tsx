@@ -33,7 +33,11 @@ const WebsiteIcon: React.FC = () => (
   </svg>
 );
 
-export const ModoItalianoGiorgiaSocials: React.FC = () => (
+interface ModoItalianoGiorgiaSocialsProps {
+  fontSize?: string;
+}
+
+export const ModoItalianoGiorgiaSocials: React.FC<ModoItalianoGiorgiaSocialsProps> = ({ fontSize = '29px' }) => (
   <div
     aria-label='ModoItaliano social media accounts and website'
     style={{
@@ -44,7 +48,7 @@ export const ModoItalianoGiorgiaSocials: React.FC = () => (
       alignItems: 'center',
       gap: '42px',
       fontFamily: "'Barlow Condensed', system-ui, sans-serif",
-      fontSize: '29px',
+      fontSize,
       lineHeight: 1,
       fontWeight: 500,
       letterSpacing: '0.025em',

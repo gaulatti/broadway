@@ -10,6 +10,7 @@ import type { FieldDef, TemplateDefinition } from './types';
 import { resumeData } from './resumeData';
 import TemplateResumeLetterP2 from './TemplateResumeLetterP2';
 import { buildResumePaginatedCards, buildResumeSecondaryPages } from './resumeSecondaryLayout';
+import { FONT_SETS } from './fontAssets';
 import {
   C,
   FONT_BODY,
@@ -552,7 +553,8 @@ export const templateDefinition: TemplateDefinition<ResumeLetterProps> = {
   previewScale: 0.6,
   renderAdditionalPages: (props) =>
     buildResumeSecondaryPages(props).map((_, index) => <TemplateResumeLetterP2 key={`resume-secondary-${index}`} {...props} secondaryPageIndex={index} />),
-  additionalPages: [TemplateResumeLetterP2]
+  additionalPages: [TemplateResumeLetterP2],
+  fonts: FONT_SETS.resumeLetter
 };
 
 export default TemplateResumeLetterP1;

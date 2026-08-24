@@ -63,6 +63,7 @@ Broadway is a complete solution for generating customizable templates across mul
 - `npm run dev` - Start development server with HMR
 - `npm run build` - Create production build
 - `npm run start` - Start production server
+- `npm test` - Run template/export contract tests
 - `npm run typecheck` - Run TypeScript type checking
 
 ### Admin UI ownership
@@ -135,6 +136,16 @@ export default TemplateHello;
 
 Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates) guide for details.\*React 19\*\* - UI framework
 Register it in `app/templates/index.ts` and you're done! See the [Creating Templates](https://github.com/gaulatti/broadway/wiki/Creating-Templates) guide for details.
+
+### Packaged font contract
+
+Every template registered for PNG export must declare its exact `fonts` in its `TemplateDefinition`. Each face records its family, style, weight, owning package, and locally bundled WOFF2 asset. Registration fails closed when the declaration is missing, duplicated, malformed, or points at a remote runtime URL.
+
+Broadway renders previews through `TemplateFontBoundary` and builds PNG font embedding from the same declaration. Handlebars/iframe templates receive the same generated faces inside their document. Do not add Google Fonts links, remote font stylesheets, or undeclared system-font fallbacks. Add a Fontsource package (or a future versioned template-package asset export), define the face in `fontAssets.ts`, and include only the faces the template uses.
+
+The future component-library path uses the same `TemplateFontAsset` shape: the component package can own and export its asset URLs and metadata without Broadway assuming every file lives in its repository. All resolved URLs must still be packaged with the application or supplied as font data URLs.
+
+PNG export preflights every declared font and image. Missing fonts, non-embeddable external images, and other capture failures are reported separately through Bleecker's error UI instead of browser alerts or console-only failures.
 
 ## 📄 License
 

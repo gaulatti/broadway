@@ -7,6 +7,7 @@
 
 import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
+import { FONT_SETS } from './fontAssets';
 
 export interface ModoItalianoPostProps {
   bottomText: string;
@@ -171,7 +172,8 @@ export const templateDefinition: TemplateDefinition<ModoItalianoPostProps> = {
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.35,
-  previewScale: 0.55
+  previewScale: 0.55,
+  fonts: FONT_SETS.modoItaliano
 };
 
 export default TemplateModoItalianoPost;

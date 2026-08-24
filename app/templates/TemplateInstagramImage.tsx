@@ -9,6 +9,7 @@ import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
 import { HandlebarsTemplateComponent } from './handlebarsTemplate';
 import instagramImageSource from './instagram-image.hbs?raw';
+import { FONT_SETS } from './fontAssets';
 
 export interface InstagramImageProps {
   imageUrl: string;
@@ -88,7 +89,8 @@ export const templateDefinition: TemplateDefinition<InstagramImageProps> = {
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.35,
-  previewScale: 0.55
+  previewScale: 0.55,
+  fonts: FONT_SETS.instagram
 };
 
 export default TemplateInstagramImage;

@@ -15,6 +15,7 @@ import { Empty } from '@gaulatti/bleecker/components/empty';
 import { Field } from '@gaulatti/bleecker/components/field';
 import { Input } from '@gaulatti/bleecker/components/input';
 import { LoadingSpinner } from '@gaulatti/bleecker/components/loading-spinner';
+import { showAlert } from '@gaulatti/bleecker/components/alert';
 import { Select } from '@gaulatti/bleecker/components/select';
 import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
 import { Textarea } from '@gaulatti/bleecker/components/textarea';
@@ -32,11 +33,12 @@ import {
   ResumeSkillGroupEditor,
   ResumeSpotlightEditor
 } from '../components/ResumeDataEditor';
-import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, imageExportErrorMessage } from '../utils/exportImage';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
 import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
+import { TemplateFontBoundary } from '../templates/TemplateFontBoundary';
 
 export default function Generate() {
   const t = useT();
@@ -137,9 +139,10 @@ export default function Generate() {
     if (!previewRef.current || !template) return;
     setIsExporting(true);
     try {
-      await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height);
+      await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height, template.fonts);
     } catch (error) {
       console.error('Export failed:', error);
+      showAlert(imageExportErrorMessage(error), 'error');
     } finally {
       setIsExporting(false);
     }
@@ -393,7 +396,7 @@ export default function Generate() {
                     }}
                   >
                     <div ref={previewRef} style={{ width: `${template.width}px`, height: `${template.height}px` }}>
-                      <template.Component key={JSON.stringify(values)} {...values} />
+                      <TemplateFontBoundary fonts={template.fonts}><template.Component key={JSON.stringify(values)} {...values} /></TemplateFontBoundary>
                     </div>
                   </div>
                 </div>
@@ -419,7 +422,7 @@ export default function Generate() {
                         }}
                         style={{ width: `${template.width}px`, height: `${template.height}px` }}
                       >
-                        {pageElement}
+                        <TemplateFontBoundary fonts={template.fonts}>{pageElement}</TemplateFontBoundary>
                       </div>
                     </div>
                   </div>

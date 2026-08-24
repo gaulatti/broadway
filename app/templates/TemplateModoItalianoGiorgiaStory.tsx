@@ -14,6 +14,7 @@ import {
   type ModoItalianoGiorgiaPostProps
 } from './TemplateModoItalianoGiorgiaPost';
 import type { FieldDef, TemplateDefinition } from './types';
+import { FONT_SETS } from './fontAssets';
 
 export type ModoItalianoGiorgiaStoryProps = ModoItalianoGiorgiaPostProps;
 
@@ -121,7 +122,8 @@ export const templateDefinition: TemplateDefinition<ModoItalianoGiorgiaStoryProp
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.3,
-  previewScale: 0.5
+  previewScale: 0.5,
+  fonts: FONT_SETS.giorgia
 };
 
 export default TemplateModoItalianoGiorgiaStory;

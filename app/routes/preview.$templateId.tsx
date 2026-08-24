@@ -4,15 +4,17 @@ import { Card } from '@gaulatti/bleecker/components/card';
 import { DataList } from '@gaulatti/bleecker/components/data-list';
 import { Empty } from '@gaulatti/bleecker/components/empty';
 import { LoadingSpinner } from '@gaulatti/bleecker/components/loading-spinner';
+import { showAlert } from '@gaulatti/bleecker/components/alert';
 import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { getTemplateById } from '../templates';
-import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, imageExportErrorMessage } from '../utils/exportImage';
 import { useT } from '../i18n/useT';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
+import { TemplateFontBoundary } from '../templates/TemplateFontBoundary';
 
 export default function PreviewTemplate() {
   const t = useT();
@@ -32,7 +34,7 @@ export default function PreviewTemplate() {
     setIsExporting(true);
     try {
       if (format === 'png') {
-        await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height);
+        await exportNodeToPng(previewRef.current, `${template.id}.png`, template.width, template.height, template.fonts);
       } else if (templateId === 'fifthbell_letter') {
         await generateFifthbellLetterPdf(template.defaultProps as FifthbellLetterProps, `${template.id}.pdf`);
       } else if (templateId === 'gaulatti_letter') {
@@ -42,6 +44,7 @@ export default function PreviewTemplate() {
       }
     } catch (error) {
       console.error(`${format.toUpperCase()} export failed:`, error);
+      showAlert(format === 'png' ? imageExportErrorMessage(error) : 'PDF export failed. Please retry or verify the document data.', 'error');
     } finally {
       setIsExporting(false);
     }
@@ -78,7 +81,7 @@ export default function PreviewTemplate() {
               {[<template.Component key='primary' {...template.defaultProps} />, ...additionalPageElements].map((pageElement, index) => (
                 <div key={index} className='relative mx-auto shrink-0 shadow-[var(--shadow-raised)]' style={{ width: `${template.width * template.previewScale}px`, height: `${template.height * template.previewScale}px`, overflow: 'hidden' }}>
                   <div style={{ transformOrigin: 'top left', transform: `scale(${template.previewScale})`, width: `${template.width}px`, height: `${template.height}px` }}>
-                    <div ref={(element) => { if (index === 0) previewRef.current = element; else additionalRefs.current[index - 1] = element; }} style={{ width: `${template.width}px`, height: `${template.height}px` }}>{pageElement}</div>
+                    <div ref={(element) => { if (index === 0) previewRef.current = element; else additionalRefs.current[index - 1] = element; }} style={{ width: `${template.width}px`, height: `${template.height}px` }}><TemplateFontBoundary fonts={template.fonts}>{pageElement}</TemplateFontBoundary></div>
                   </div>
                 </div>
               ))}

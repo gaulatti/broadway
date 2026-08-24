@@ -24,6 +24,7 @@ import { templateDefinition as instagramImageDefinition } from './TemplateInstag
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
 import { templateDefinition as gaulattiLetterDefinition } from './TemplateGaulattiLetter';
+import { validateTemplateFontContract } from './fontContract';
 
 export const templates: TemplateDefinition[] = [
   modoitalianoPostDefinition,
@@ -43,6 +44,8 @@ export const templates: TemplateDefinition[] = [
   sanremoStory16x9GiorgiaDefinition
   // Add more templates here as they are created
 ];
+
+validateTemplateFontContract(templates);
 
 /**
  * Get a template by its ID

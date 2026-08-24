@@ -6,6 +6,8 @@
  * and default values for preview/demo purposes.
  */
 
+import type { TemplateFontAsset } from './fontContract';
+
 export type FieldType =
   | 'text'
   | 'textarea'
@@ -69,4 +71,6 @@ export interface TemplateDefinition<TProps = any> {
   height: number; // Template height in pixels
   galleryScale: number; // Scale factor for gallery preview (e.g., 0.2, 0.5)
   previewScale: number; // Scale factor for gallery preview (e.g., 0.2, 0.5)
+  /** Exact locally packaged font faces used by preview and PNG export. */
+  fonts: readonly TemplateFontAsset[];
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import type { FieldDef, TemplateDefinition } from './types';
 import { C, FONT_BODY, FONT_DISPLAY, LogoMark, MARGIN_X, MARGIN_Y, PAGE_HEIGHT, PAGE_WIDTH } from './gaulatti-letter-shared';
 import { gaulattiLetterData } from './gaulattiLetterData';
+import { FONT_SETS } from './fontAssets';
 
 export interface GaulattiLetterProps {
   date: string; toWhom: string; subject: string; body: string; closing: string; name: string; title: string; email: string; phone: string; website: string;
@@ -38,5 +39,5 @@ export const fields: Array<FieldDef<GaulattiLetterProps>> = [
   { key: 'date', label: 'Date', type: 'text' }, { key: 'toWhom', label: 'Salutation', type: 'text' }, { key: 'subject', label: 'Subject Line', type: 'text' }, { key: 'body', label: 'Letter Body', type: 'textarea', rows: 10 }, { key: 'closing', label: 'Closing', type: 'text' }, { key: 'name', label: 'Signatory Name', type: 'text' }, { key: 'title', label: 'Signatory Title', type: 'text' }, { key: 'email', label: 'Email', type: 'text' }, { key: 'phone', label: 'Phone', type: 'text' }, { key: 'website', label: 'Website', type: 'text' }
 ];
 
-export const templateDefinition: TemplateDefinition<GaulattiLetterProps> = { id: 'gaulatti_letter', name: 'Gaulatti Letter', Component: TemplateGaulattiLetter, defaultProps: gaulattiLetterData, fields, width: PAGE_WIDTH, height: PAGE_HEIGHT, galleryScale: 0.4, previewScale: 0.6 };
+export const templateDefinition: TemplateDefinition<GaulattiLetterProps> = { id: 'gaulatti_letter', name: 'Gaulatti Letter', Component: TemplateGaulattiLetter, defaultProps: gaulattiLetterData, fields, width: PAGE_WIDTH, height: PAGE_HEIGHT, galleryScale: 0.4, previewScale: 0.6, fonts: FONT_SETS.gaulattiLetter };
 export default TemplateGaulattiLetter;

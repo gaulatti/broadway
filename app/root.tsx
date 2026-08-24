@@ -2,6 +2,7 @@ import { AppShell } from '@gaulatti/bleecker/layout/app-shell';
 import { Footer as BleeckerFooter } from '@gaulatti/bleecker/layout/footer';
 import { Header as BleeckerHeader } from '@gaulatti/bleecker/layout/header';
 import { HeaderSelect } from '@gaulatti/bleecker/components/header-select';
+import { AlertContainer } from '@gaulatti/bleecker/components/alert';
 import { IconButton } from '@gaulatti/bleecker/components/icon-button';
 import { ThemeToggle } from '@gaulatti/bleecker/components/theme-toggle';
 import { BleeckerThemeScript } from '@gaulatti/bleecker/theme/theme-script';
@@ -15,23 +16,15 @@ import type { Route } from './+types/root';
 import { LocaleProvider, useLocale } from './i18n/LocaleContext';
 import { getLocaleName, locales, type Locale } from './i18n';
 import { useT } from './i18n/useT';
+import { UI_FONTS } from './templates/fontAssets';
+import { fontFaceCss } from './templates/fontContract';
 import './app.css';
 
 const GITHUB_REPO_URL = 'https://github.com/gaulatti/broadway';
 const GITHUB_WIKI_URL = 'https://github.com/gaulatti/broadway/wiki/Home';
 
 export const links: Route.LinksFunction = () => [
-  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous'
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Funnel+Display:wght@300..800&family=MuseoModerno:wght@100..900&family=Outfit:wght@100..900&display=swap'
-  }
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
 ];
 
 function renderAppLink({ children, className, item, onClick }: RenderLinkProps<NavItem>) {
@@ -176,10 +169,12 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
+        <style data-broadway-ui-fonts dangerouslySetInnerHTML={{ __html: fontFaceCss(UI_FONTS) }} />
         <BleeckerThemeScript storageKey='theme' />
       </head>
       <body>
         {children}
+        <AlertContainer />
         <ScrollRestoration />
         <Scripts />
       </body>

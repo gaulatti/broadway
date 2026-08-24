@@ -11,6 +11,7 @@
 import React from 'react';
 import { ModoItalianoGiorgiaSocials } from './ModoItalianoGiorgiaSocials';
 import type { FieldDef, TemplateDefinition } from './types';
+import { FONT_SETS } from './fontAssets';
 
 export interface SanremoPost16x9GiorgiaProps {
   artistName: string;
@@ -286,7 +287,8 @@ export const templateDefinition: TemplateDefinition<SanremoPost16x9GiorgiaProps>
   width: WIDTH,
   height: HEIGHT,
   galleryScale: 0.4,
-  previewScale: 0.6
+  previewScale: 0.6,
+  fonts: FONT_SETS.giorgiaSanremo
 };
 
 export default TemplateSanremoPost16x9Giorgia;

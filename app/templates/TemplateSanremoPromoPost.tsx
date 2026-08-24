@@ -19,6 +19,7 @@
 
 import React from 'react';
 import type { FieldDef, OverlayItem, TemplateDefinition } from './types';
+import { FONT_SETS } from './fontAssets';
 
 // ─── Template props ───────────────────────────────────────────────────────────
 
@@ -381,7 +382,8 @@ export const templateDefinition: TemplateDefinition<SanremoPromoPostProps> = {
   width: TOTAL_WIDTH,
   height: TOTAL_HEIGHT,
   galleryScale: 0.35,
-  previewScale: 0.55
+  previewScale: 0.55,
+  fonts: FONT_SETS.sanremoPromo
 };
 
 export default TemplateSanremoPromoPost;

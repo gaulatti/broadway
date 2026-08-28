@@ -55,18 +55,16 @@ export const ModoItalianoGiorgiaSocials: React.FC<ModoItalianoGiorgiaSocialsProp
       color: 'rgba(255,255,255,0.9)'
     }}
   >
-    <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', whiteSpace: 'nowrap' }}>
-        <SocialIcon network='instagram' />
-        <span>@modoitaliano.fm</span>
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '13px', whiteSpace: 'nowrap' }}>
+      <SocialIcon network='instagram' />
+      <SocialIcon network='tiktok' />
+      <span style={{ marginLeft: '1px' }}>@modoitaliano.fm</span>
+    </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '13px', whiteSpace: 'nowrap' }}>
-        <SocialIcon network='tiktok' />
-        <SocialIcon network='twitter' />
-        <SocialIcon network='youtube' />
-        <span style={{ marginLeft: '1px' }}>@modoitaliano</span>
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '13px', whiteSpace: 'nowrap' }}>
+      <SocialIcon network='twitter' />
+      <SocialIcon network='youtube' />
+      <span style={{ marginLeft: '1px' }}>@modoitaliano</span>
     </div>
 
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', whiteSpace: 'nowrap' }}>

@@ -44,6 +44,7 @@ export const FONTS = {
 
 export const FONT_SETS = {
   giorgia: [FONTS.barlowCondensed500, FONTS.barlowCondensed600],
+  giorgiaPromo: [FONTS.barlowCondensed500, FONTS.barlowCondensed600, FONTS.barlowCondensed700],
   giorgiaSanremo: [FONTS.barlow400, FONTS.barlowCondensed600, FONTS.barlowCondensed700],
   instagram: [FONTS.encodeSans600, FONTS.encodeSans700],
   fifthbellLetter: [FONTS.encodeSans600, FONTS.encodeSans800, FONTS.libreFranklin400, FONTS.libreFranklin600],

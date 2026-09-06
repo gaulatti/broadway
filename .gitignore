@@ -6,3 +6,5 @@
 /.react-router/
 /build/
 /wiki
+/video/node_modules/
+/video/out/

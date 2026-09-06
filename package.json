@@ -7,7 +7,13 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "test": "node --test --experimental-strip-types \"app/**/*.test.ts\"",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "video:typecheck": "npm --prefix video run typecheck",
+    "video:test": "npm --prefix video test",
+    "video:compositions": "npm --prefix video run compositions",
+    "video:render": "npm --prefix video run render:fixture",
+    "video:verify": "npm --prefix video run verify:media",
+    "video:review": "npm --prefix video run render:review"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

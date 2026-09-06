@@ -65,6 +65,9 @@ Broadway is a complete solution for generating customizable templates across mul
 - `npm run start` - Start production server
 - `npm test` - Run template/export contract tests
 - `npm run typecheck` - Run TypeScript type checking
+- `npm run video:compositions` - Enumerate isolated programmatic-video compositions
+- `npm run video:render` - Render the committed 15-second Modo Italiano fixture
+- `npm run video:verify` - Inspect the rendered media contract with `ffprobe`
 
 ### Admin UI ownership
 
@@ -146,6 +149,10 @@ Broadway renders previews through `TemplateFontBoundary` and builds PNG font emb
 The future component-library path uses the same `TemplateFontAsset` shape: the component package can own and export its asset URLs and metadata without Broadway assuming every file lives in its repository. All resolved URLs must still be packaged with the application or supplied as font data URLs.
 
 PNG export preflights every declared font and image. Missing fonts, non-embeddable external images, and other capture failures are reported separately through Bleecker's error UI instead of browser alerts or console-only failures.
+
+### Programmatic-video contract
+
+Deterministic motion compositions live in the isolated [`video/`](video/) package so Remotion and renderer dependencies cannot affect Broadway's existing React application or its PNG/PDF export path. The package owns a versioned, typed `VideoTemplateDefinition`, JSON fixture validation, local font and logo assets, composition enumeration, H.264 rendering, `ffprobe` verification, deterministic representative-frame checks, and render-cost reporting. See [`video/README.md`](video/README.md) for commands, ownership boundaries, asset provenance, offline-render verification, and licensing constraints.
 
 ## 📄 License
 

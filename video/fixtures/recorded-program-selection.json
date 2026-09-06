@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "requestId": "fixture-review-001",
+  "startSeconds": 1,
+  "endSeconds": 5,
+  "editorial": {
+    "eyebrow": "MODO ITALIANO · EXCERPT",
+    "headline": "A human-selected program moment",
+    "summary": "Finalized source, verified provenance, and an explicit approval gate.",
+    "handle": "@modoitalianoradio"
+  },
+  "captionArtifact": {
+    "producer": "gaulatti/mistify",
+    "contractCommit": "f47aa6bb1fe5ef56f36621abba6d103908faf490",
+    "sha256": "e5af2f8c25ebe0842968bc89252557fb36f6a6955f2676c87a4d2f862de12fd7"
+  }
+}

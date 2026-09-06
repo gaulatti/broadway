@@ -1,0 +1,20 @@
+{
+  "operation_id": "fixture-transcription-001",
+  "state": "succeeded",
+  "result": {
+    "source_checksum_sha256": "fb1b746448dd934d3ffef38e6c026bc97b1b0063b97f3661790cfdc839175b7b",
+    "duration_ms": 6000,
+    "transcript": [
+      {
+        "start_ms": 900,
+        "end_ms": 2800,
+        "text": "Una historia conecta Italia y el mundo."
+      },
+      {
+        "start_ms": 3000,
+        "end_ms": 5100,
+        "text": "El contexto convierte un momento en una conversación."
+      }
+    ]
+  }
+}

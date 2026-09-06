@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {access, readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {modoItalianoGiorgiaDefinition, videoTemplates} from '../src/definitions';
+import {modoItalianoGiorgiaDefinition, recordedProgramDraftDefinition, videoTemplates} from '../src/definitions';
+import {assertRecordedProgramDraftInput, draftDurationInFrames} from '../src/recording-draft';
 import {assertModoItalianoGiorgiaInput, validateVideoTemplateDefinition} from '../src/types';
 import {assertInputAssets} from './input-assets';
 
@@ -13,7 +14,7 @@ const fixture = JSON.parse(await readFile(fixturePath, 'utf8')) as unknown;
 assertModoItalianoGiorgiaInput(fixture);
 await assertInputAssets(fixture, path.join(packageRoot, 'public'));
 validateVideoTemplateDefinition(modoItalianoGiorgiaDefinition);
-assert.equal(videoTemplates.length, 1);
+assert.equal(videoTemplates.length, 2);
 assert.equal(modoItalianoGiorgiaDefinition.width, 1080);
 assert.equal(modoItalianoGiorgiaDefinition.height, 1920);
 assert.equal(modoItalianoGiorgiaDefinition.fps, 30);
@@ -21,6 +22,15 @@ assert.equal(modoItalianoGiorgiaDefinition.durationInFrames, 450);
 assert.equal(modoItalianoGiorgiaDefinition.durationInFrames / modoItalianoGiorgiaDefinition.fps, 15);
 assert.deepEqual(JSON.parse(JSON.stringify(fixture)), fixture);
 await access(path.join(packageRoot, 'public', 'mi.svg'));
+validateVideoTemplateDefinition(recordedProgramDraftDefinition);
+assertRecordedProgramDraftInput(recordedProgramDraftDefinition.defaultInput);
+assert.equal(recordedProgramDraftDefinition.width, 1080);
+assert.equal(recordedProgramDraftDefinition.height, 1920);
+assert.equal(recordedProgramDraftDefinition.fps, 30);
+assert.equal(draftDurationInFrames(recordedProgramDraftDefinition.defaultInput), 120);
+assert.equal(recordedProgramDraftDefinition.defaultInput.approvalRequired, true);
+assert.equal(recordedProgramDraftDefinition.defaultInput.publicationState, 'not-published');
+await access(path.join(packageRoot, 'public', recordedProgramDraftDefinition.defaultInput.source.mediaAsset));
 
 assert.throws(
   () =>
@@ -45,4 +55,4 @@ await assert.rejects(
   /regular file inside video\/public/
 );
 
-console.log('Video template contract: 14 checks passed.');
+console.log('Video template contract: 23 checks passed.');

@@ -13,7 +13,12 @@
     "video:compositions": "npm --prefix video run compositions",
     "video:render": "npm --prefix video run render:fixture",
     "video:verify": "npm --prefix video run verify:media",
-    "video:review": "npm --prefix video run render:review"
+    "video:review": "npm --prefix video run render:review",
+    "video:draft:create": "npm --prefix video run --silent draft:create",
+    "video:draft:render": "npm --prefix video run draft:render --",
+    "video:draft:verify": "npm --prefix video run draft:verify --",
+    "video:draft:review": "npm --prefix video run draft:review --",
+    "video:draft:cancel": "npm --prefix video run draft:cancel --"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -1,0 +1,65 @@
+name: Programmatic video
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/video.yml'
+      - 'package.json'
+      - 'video/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/video.yml'
+      - 'package.json'
+      - 'video/**'
+
+jobs:
+  contract-and-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: video/package-lock.json
+
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install --yes ffmpeg
+
+      - name: Install isolated renderer dependencies
+        run: npm ci --prefix video
+
+      - name: Typecheck
+        run: npm run video:typecheck
+
+      - name: Verify contract
+        run: npm run video:test
+
+      - name: Enumerate compositions
+        run: npm run video:compositions
+
+      - name: Render fixture
+        run: npm run video:render
+
+      - name: Verify media
+        run: npm run video:verify
+
+      - name: Verify representative frames
+        run: npm run video:review
+
+      - name: Upload render evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: modo-italiano-giorgia-render-evidence
+          path: |
+            video/out/render-report.json
+            video/out/media-report.json
+            video/out/review/opening.png
+            video/out/review/midpoint.png
+            video/out/review/outro.png

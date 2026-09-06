@@ -1,0 +1,30 @@
+{
+  "name": "@gaulatti/broadway-video",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsx scripts/check-contract.ts",
+    "compositions": "remotion compositions src/index.ts --props=fixtures/modo-italiano-giorgia.json",
+    "render:fixture": "node --import=tsx scripts/render.ts fixtures/modo-italiano-giorgia.json out/modo-italiano-giorgia.mp4",
+    "verify:media": "node scripts/verify-media.mjs fixtures/modo-italiano-giorgia.json out/modo-italiano-giorgia.mp4",
+    "render:review": "tsx scripts/render-review.ts fixtures/modo-italiano-giorgia.json out/review"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "5.3.0",
+    "@remotion/bundler": "4.0.509",
+    "@remotion/cli": "4.0.509",
+    "@remotion/renderer": "4.0.509",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.509"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.3",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "tsx": "4.23.13",
+    "typescript": "5.9.2"
+  }
+}

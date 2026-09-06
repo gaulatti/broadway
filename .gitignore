@@ -8,3 +8,5 @@
 /wiki
 /video/node_modules/
 /video/out/
+/video/public/.recording-drafts/
+/video/fixtures/recorded-program-review/*.repeat.png

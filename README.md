@@ -68,6 +68,9 @@ Broadway is a complete solution for generating customizable templates across mul
 - `npm run video:compositions` - Enumerate isolated programmatic-video compositions
 - `npm run video:render` - Render the committed 15-second Modo Italiano fixture
 - `npm run video:verify` - Inspect the rendered media contract with `ffprobe`
+- `npm run video:draft:create` - Validate a finalized Alana fixture and create an unpublished excerpt draft
+- `npm run video:draft:render -- <draft-directory>` - Render a queued excerpt draft without publishing it
+- `npm run video:draft:verify -- <draft-directory>` - Verify the rendered draft and selected duration
 
 ### Admin UI ownership
 
@@ -152,7 +155,7 @@ PNG export preflights every declared font and image. Missing fonts, non-embeddab
 
 ### Programmatic-video contract
 
-Deterministic motion compositions live in the isolated [`video/`](video/) package so Remotion and renderer dependencies cannot affect Broadway's existing React application or its PNG/PDF export path. The package owns a versioned, typed `VideoTemplateDefinition`, JSON fixture validation, local font and logo assets, composition enumeration, H.264 rendering, `ffprobe` verification, deterministic representative-frame checks, and render-cost reporting. See [`video/README.md`](video/README.md) for commands, ownership boundaries, asset provenance, offline-render verification, and licensing constraints.
+Deterministic motion compositions live in the isolated [`video/`](video/) package so Remotion and renderer dependencies cannot affect Broadway's existing React application or its PNG/PDF export path. The package owns a versioned, typed `VideoTemplateDefinition`, JSON fixture validation, local font and logo assets, composition enumeration, H.264 rendering, `ffprobe` verification, deterministic representative-frame checks, and render-cost reporting. It also turns an explicitly human-selected window from a finalized, checksummed Alana recording into a deterministic, approval-required recording excerpt draft. Draft lifecycle state covers queued, rendering, rendered, failed, and canceled outcomes; no automatic publication path exists. See [`video/README.md`](video/README.md) for commands, landed contract pins, ownership boundaries, asset provenance, offline-render verification, and licensing constraints.
 
 ## 📄 License
 

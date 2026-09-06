@@ -5,11 +5,16 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "tsx scripts/check-contract.ts",
-    "compositions": "remotion compositions src/index.ts --props=fixtures/modo-italiano-giorgia.json",
+    "test": "tsx scripts/check-contract.ts && tsx --test scripts/recording-draft-workflow.test.ts",
+    "compositions": "remotion compositions src/index.ts",
     "render:fixture": "node --import=tsx scripts/render.ts fixtures/modo-italiano-giorgia.json out/modo-italiano-giorgia.mp4",
     "verify:media": "node scripts/verify-media.mjs fixtures/modo-italiano-giorgia.json out/modo-italiano-giorgia.mp4",
-    "render:review": "tsx scripts/render-review.ts fixtures/modo-italiano-giorgia.json out/review"
+    "render:review": "tsx scripts/render-review.ts fixtures/modo-italiano-giorgia.json out/review",
+    "draft:create": "tsx scripts/create-recording-draft.ts",
+    "draft:render": "tsx scripts/render-recording-draft.ts",
+    "draft:verify": "tsx scripts/verify-recording-draft.ts",
+    "draft:review": "tsx scripts/review-recording-draft.ts",
+    "draft:cancel": "tsx scripts/cancel-recording-draft.ts"
   },
   "dependencies": {
     "@fontsource/barlow-condensed": "5.3.0",

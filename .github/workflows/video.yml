@@ -53,6 +53,18 @@ jobs:
       - name: Verify representative frames
         run: npm run video:review
 
+      - name: Exercise finalized-recording draft workflow
+        shell: bash
+        run: |
+          result="$(npm run --silent video:draft:create)"
+          draft_id="$(node -e 'const chunks=[]; process.stdin.on("data", c => chunks.push(c)); process.stdin.on("end", () => process.stdout.write(JSON.parse(Buffer.concat(chunks).toString()).draftId));' <<< "$result")"
+          test -n "$draft_id"
+          draft_directory="out/recording-drafts/$draft_id"
+          npm run video:draft:render -- "$draft_directory"
+          npm run video:draft:verify -- "$draft_directory"
+          npm run video:draft:review -- "$draft_directory" "$draft_directory/review"
+          echo "DRAFT_ID=$draft_id" >> "$GITHUB_ENV"
+
       - name: Upload render evidence
         uses: actions/upload-artifact@v4
         with:
@@ -63,3 +75,9 @@ jobs:
             video/out/review/opening.png
             video/out/review/midpoint.png
             video/out/review/outro.png
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/input.json
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/job.json
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/result.json
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/review/opening.png
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/review/midpoint.png
+            video/out/recording-drafts/${{ env.DRAFT_ID }}/review/closing.png

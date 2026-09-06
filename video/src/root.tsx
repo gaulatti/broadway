@@ -1,20 +1,27 @@
 import React from 'react';
 import {Composition} from 'remotion';
-import {videoTemplates} from './definitions';
+import {modoItalianoGiorgiaDefinition, recordedProgramDraftDefinition} from './definitions';
 
 export const BroadwayVideoRoot: React.FC = () => (
   <>
-    {videoTemplates.map((template) => (
-      <Composition
-        key={template.id}
-        id={template.id}
-        component={template.Component}
-        width={template.width}
-        height={template.height}
-        fps={template.fps}
-        durationInFrames={template.durationInFrames}
-        defaultProps={template.defaultInput}
-      />
-    ))}
+    <Composition
+      id={modoItalianoGiorgiaDefinition.id}
+      component={modoItalianoGiorgiaDefinition.Component}
+      width={modoItalianoGiorgiaDefinition.width}
+      height={modoItalianoGiorgiaDefinition.height}
+      fps={modoItalianoGiorgiaDefinition.fps}
+      durationInFrames={modoItalianoGiorgiaDefinition.durationInFrames}
+      defaultProps={modoItalianoGiorgiaDefinition.defaultInput}
+    />
+    <Composition
+      id={recordedProgramDraftDefinition.id}
+      component={recordedProgramDraftDefinition.Component}
+      width={recordedProgramDraftDefinition.width}
+      height={recordedProgramDraftDefinition.height}
+      fps={recordedProgramDraftDefinition.fps}
+      durationInFrames={recordedProgramDraftDefinition.durationInFrames}
+      calculateMetadata={recordedProgramDraftDefinition.calculateMetadata}
+      defaultProps={recordedProgramDraftDefinition.defaultInput}
+    />
   </>
 );

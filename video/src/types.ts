@@ -1,4 +1,5 @@
 import type {ComponentType} from 'react';
+import type {CalculateMetadataFunction} from 'remotion';
 
 export const VIDEO_TEMPLATE_SCHEMA_VERSION = 1 as const;
 
@@ -22,6 +23,7 @@ export interface VideoTemplateDefinition<TInput extends Record<string, unknown>>
   height: number;
   fps: number;
   durationInFrames: number;
+  calculateMetadata?: CalculateMetadataFunction<TInput>;
   entryPoint: string;
   Component: ComponentType<TInput>;
   defaultInput: TInput;
@@ -114,6 +116,8 @@ export function validateVideoTemplateDefinition<TInput extends Record<string, un
     throw new TypeError('Video fps must be a positive integer.');
   if (!Number.isInteger(definition.durationInFrames) || definition.durationInFrames <= 0)
     throw new TypeError('Video duration must be a positive integer.');
+  if (definition.calculateMetadata !== undefined && typeof definition.calculateMetadata !== 'function')
+    throw new TypeError('Video calculateMetadata must be a function when supplied.');
   if (!definition.entryPoint.endsWith('/index.ts'))
     throw new TypeError('Video entryPoint must identify the package registration module.');
   if (definition.fonts.length === 0) throw new TypeError('A video template must declare at least one local font.');

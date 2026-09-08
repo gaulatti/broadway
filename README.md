@@ -97,6 +97,11 @@ npm run typecheck  # Run TypeScript type checking
 
 **Comprehensive documentation is available in the [Wiki](https://github.com/gaulatti/broadway/wiki/Home):**
 
+Broadway's wiki is a separate Git repository, not an application directory or
+deployment target. For the canonical worktree-local checkout, the retained
+historical `docs/stronzi.wiki` mapping, and a read-only identity check, see
+[WIKI_CHECKOUT.md](WIKI_CHECKOUT.md).
+
 ### Getting Started
 
 - **[Installation Guide](https://github.com/gaulatti/broadway/wiki/Installation-Guide)** - Complete setup instructions

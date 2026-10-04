@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1080, initial-scale=1.0" />
+  <style>
+    :root {
+      --ink: #101117;
+      --paper: #faf6f1;
+      --muted: #ddd9d3;
+      --rule: rgba(250, 246, 241, .55);
+      --accent: #b21100;
+      --display: 'Encode Sans';
+      --masthead: 'Aboro';
+      --masthead-line-height: 96px;
+      --body: 'Libre Franklin';
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { width: 1080px; height: 1350px; position: relative; background: var(--ink); color: var(--paper); font-family: var(--body); }
+    .page-photo, .photo-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .page-photo { object-fit: cover; }
+    .photo-shade { background: linear-gradient(180deg, rgba(0, 0, 0, .76) 0%, rgba(0, 0, 0, .25) 24%, rgba(0, 0, 0, .04) 40%, rgba(0, 0, 0, .25) 52%, rgba(0, 0, 0, .82) 77%, rgba(0, 0, 0, .95) 100%); }
+    .front-page { position: relative; z-index: 1; height: 100%; padding: 40px 54px 32px; display: flex; flex-direction: column; }
+    .eyebrow, .kicker { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; }
+    .eyebrow { display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 30px; line-height: 1.4; text-transform: none; letter-spacing: 0; }
+    .edition { background: var(--accent); padding: 8px 14px; font-family: var(--display); font-size: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+    .masthead { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 36px 0 32px; }
+    .publication { font-family: var(--masthead); font-weight: 400; font-size: var(--masthead-line-height); line-height: var(--masthead-line-height); letter-spacing: -.02em; overflow-wrap: anywhere; }
+    .brand { display: block; width: auto; height: var(--masthead-line-height); flex-shrink: 0; filter: brightness(0) invert(1); }
+    .edition-line { border-top: 4px solid var(--paper); padding-top: 16px; display: flex; justify-content: flex-end; }
+    .lead-story { margin-top: auto; padding: 40px 0 32px; }
+    .kicker { font-size: 22px; line-height: 1.4; }
+    .lead-kicker { display: flex; align-items: center; gap: 16px; }
+    .lead-kicker::before { content: ''; width: 64px; height: 6px; background: var(--accent); }
+    .headline { font-family: var(--display); font-weight: 700; font-size: 118px; line-height: 1; letter-spacing: -.055em; white-space: pre-line; overflow-wrap: anywhere; margin: 20px 0 18px; }
+    .standfirst { font-size: 30px; line-height: 1.4; color: var(--muted); max-width: 920px; overflow-wrap: anywhere; }
+    .teasers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--rule); padding: 22px 0; gap: 28px; }
+    .teaser + .teaser { border-left: 1px solid var(--rule); padding-left: 28px; }
+    .teaser-headline { font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1.25; letter-spacing: -.025em; overflow-wrap: anywhere; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  {{#if imageUrl}}<img class="page-photo" src="{{imageUrl}}" alt="{{imageAlt}}" crossorigin="anonymous" />{{/if}}
+  <div class="photo-shade" aria-hidden="true"></div>
+  <main class="front-page" aria-label="Newspaper front page">
+    <header>
+      <div class="eyebrow"><span>{{date}}</span><span>{{issue}}</span></div>
+      <div class="masthead"><p class="publication">{{publication}}</p><img class="brand" src="/logo.svg" alt="gaulatti" /></div>
+      <div class="edition-line"><span class="edition">{{edition}}</span></div>
+    </header>
+    <article class="lead-story" aria-label="Lead story">
+      <p class="kicker lead-kicker">{{leadSection}}</p>
+      <h1 class="headline">{{headline}}</h1>
+      {{#if standfirst}}<p class="standfirst">{{standfirst}}</p>{{/if}}
+    </article>
+    <footer>
+      {{#if storyOneHeadline}}<nav class="teasers" aria-label="Inside this issue">
+        <article class="teaser">
+          <p class="kicker">{{storyOneSection}}</p>
+          <h2 class="teaser-headline">{{storyOneHeadline}}</h2>
+        </article>
+        {{#if storyTwoHeadline}}<article class="teaser">
+          <p class="kicker">{{storyTwoSection}}</p>
+          <h2 class="teaser-headline">{{storyTwoHeadline}}</h2>
+        </article>{{/if}}
+      </nav>{{else}}{{#if storyTwoHeadline}}<nav class="teasers" aria-label="Inside this issue">
+        <article class="teaser">
+          <p class="kicker">{{storyTwoSection}}</p>
+          <h2 class="teaser-headline">{{storyTwoHeadline}}</h2>
+        </article>
+      </nav>{{/if}}{{/if}}
+    </footer>
+  </main>
+</body>
+</html>

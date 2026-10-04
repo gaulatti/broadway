@@ -22,6 +22,7 @@ import type { TemplateFontAsset } from './fontContract';
 const face = (id: string, family: string, weight: number, url: string): TemplateFontAsset => ({ id, family, style: 'normal', weight, url, owner: 'broadway' });
 
 export const FONTS = {
+  aboro400: face('aboro-400', 'Aboro', 400, '/fonts/aboro-regular.woff2'),
   barlow400: face('barlow-400', 'Barlow', 400, barlow400Url),
   barlowCondensed500: face('barlow-condensed-500', 'Barlow Condensed', 500, barlowCondensed500Url),
   barlowCondensed600: face('barlow-condensed-600', 'Barlow Condensed', 600, barlowCondensed600Url),
@@ -47,6 +48,7 @@ export const FONT_SETS = {
   giorgiaPromo: [FONTS.barlowCondensed500, FONTS.barlowCondensed600, FONTS.barlowCondensed700],
   giorgiaSanremo: [FONTS.barlow400, FONTS.barlowCondensed600, FONTS.barlowCondensed700],
   instagram: [FONTS.encodeSans600, FONTS.encodeSans700],
+  newspaper: [FONTS.aboro400, FONTS.encodeSans600, FONTS.encodeSans700, FONTS.libreFranklin400],
   fifthbellLetter: [FONTS.encodeSans600, FONTS.encodeSans800, FONTS.libreFranklin400, FONTS.libreFranklin600],
   gaulattiLetter: [FONTS.encodeSans600, FONTS.encodeSans700, FONTS.libreFranklin400, FONTS.libreFranklin600],
   modoItaliano: [FONTS.outfit400, FONTS.outfit600],

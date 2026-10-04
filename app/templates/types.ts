@@ -10,6 +10,7 @@ import type { TemplateFontAsset } from './fontContract';
 
 export type FieldType =
   | 'text'
+  | 'date'
   | 'textarea'
   | 'number'
   | 'image'

@@ -297,6 +297,13 @@ export default function Generate() {
                         placeholder={field.placeholder}
                         rows={field.rows || 3}
                       /></Field>
+                    ) : field.type === 'date' ? (
+                      <Field label={field.label}><Input
+                        type='date'
+                        aria-label={field.label}
+                        value={values[field.key] || ''}
+                        onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                      /></Field>
                     ) : field.type === 'number' ? (
                       <Field label={field.label}><Input
                         type='number'

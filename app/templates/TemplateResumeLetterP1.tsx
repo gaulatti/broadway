@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { RESUME_PAGE, RESUME_TYPE } from './resumeGeometry';
 import type { FieldDef, TemplateDefinition } from './types';
 import { resumeData } from './resumeData';
 import TemplateResumeLetterP2 from './TemplateResumeLetterP2';
@@ -113,8 +114,8 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
   return (
     <div
       style={{
-        width: '612px',
-        height: '792px',
+        width: RESUME_PAGE.width,
+        height: RESUME_PAGE.height,
         backgroundColor: '#ffffff',
         position: 'relative',
         overflow: 'hidden',
@@ -128,7 +129,7 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
     >
       <div
         style={{
-          width: '190px',
+          width: RESUME_PAGE.primarySidebarWidth,
           background: `linear-gradient(180deg, ${C.DESERT}15 0%, ${C.TERRACOTTA}08 50%, ${C.SEA}12 100%)`,
           paddingTop: `${28 + CONTENT_SAFE_INSET}px`,
           paddingRight: `${18 + CONTENT_SAFE_INSET}px`,
@@ -328,8 +329,8 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
         style={{
           flex: 1,
           paddingTop: `${28 + CONTENT_SAFE_INSET}px`,
-          paddingRight: `${24 + CONTENT_SAFE_INSET}px`,
-          paddingBottom: `${20 + CONTENT_SAFE_INSET}px`,
+          paddingRight: RESUME_PAGE.primaryRight,
+          paddingBottom: RESUME_PAGE.primaryBottom,
           paddingLeft: '20px',
           display: 'flex',
           flexDirection: 'column',
@@ -349,12 +350,8 @@ const TemplateResumeLetterP1: React.FC<ResumeLetterProps> = (props) => {
             <div
               style={{
                 fontFamily: FONT_DISPLAY,
-                fontSize: '24px',
-                fontWeight: 600,
                 color: C.DEEP_SEA,
-                letterSpacing: '-0.6px',
-                lineHeight: '0.98',
-                marginBottom: '6px'
+                ...RESUME_TYPE.name
               }}
             >
               {name}

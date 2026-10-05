@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { RESUME_CARD, RESUME_TYPE } from './resumeGeometry';
 
 // ─── Desert & Sea Palette ───────────────────────────────────────────────────
 
@@ -27,8 +28,8 @@ export const FONT_BODY = "'Libre Franklin', -apple-system, system-ui, sans-serif
 // ─── Layout Constants ───────────────────────────────────────────────────────
 
 export const CONTENT_SAFE_INSET = 18;
-export const CARD_VERTICAL_PADDING = 6;
-export const CARD_GAP = 6;
+export const CARD_VERTICAL_PADDING = RESUME_CARD.verticalPadding;
+export const CARD_GAP = RESUME_CARD.gap;
 
 // ─── Shared Components ──────────────────────────────────────────────────────
 
@@ -49,9 +50,8 @@ export const Bullet = ({ text }: { text: string }) => (
     <span
       style={{
         fontFamily: FONT_BODY,
-        fontSize: '8.5px',
         color: C.TEXT,
-        lineHeight: '1.45'
+        ...RESUME_TYPE.bullet
       }}
     >
       {text}
@@ -83,11 +83,9 @@ export const SectionHeading = ({ label }: { label: string }) => (
     <span
       style={{
         fontFamily: FONT_DISPLAY,
-        fontWeight: 500,
-        fontSize: '9px',
         color: C.SEA,
-        letterSpacing: '2px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        ...RESUME_TYPE.section
       }}
     >
       {label}
@@ -181,7 +179,7 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
       style={{
         backgroundColor: 'transparent',
         borderRadius: 0,
-        padding: `${CARD_VERTICAL_PADDING}px 4px`,
+        padding: `${CARD_VERTICAL_PADDING}px ${RESUME_CARD.horizontalPadding}px`,
         position: 'relative',
         marginBottom: `${CARD_GAP}px`
       }}
@@ -200,12 +198,9 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
             <div
               style={{
                 fontFamily: FONT_DISPLAY,
-                fontSize: '10px',
-                fontWeight: 500,
                 color: C.DEEP_SEA,
                 marginBottom: company ? '3px' : 0,
-                letterSpacing: '-0.2px',
-                lineHeight: '1.2'
+                ...RESUME_TYPE.role
               }}
             >
               {role}
@@ -215,10 +210,8 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
               <div
                 style={{
                   fontFamily: FONT_BODY,
-                  fontSize: '8px',
                   color: C.TERRACOTTA,
-                  fontWeight: 500,
-                  letterSpacing: '0.2px'
+                  ...RESUME_TYPE.company
                 }}
               >
                 {company}
@@ -263,11 +256,8 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
               <div
                 style={{
                   fontFamily: FONT_DISPLAY,
-                  fontSize: '8.6px',
                   color: C.DEEP_SEA,
-                  fontWeight: 500,
-                  lineHeight: '1.2',
-                  marginBottom: subSpotlight.metric?.trim() || subSpotlight.impact?.trim() ? '2px' : 0
+                  ...RESUME_TYPE.spotlightTitle
                 }}
               >
                 {subSpotlight.title}
@@ -277,11 +267,8 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
               <div
                 style={{
                   fontFamily: FONT_DISPLAY,
-                  fontSize: '9.2px',
                   color: C.SEA,
-                  fontWeight: 500,
-                  lineHeight: '1.2',
-                  marginBottom: subSpotlight.impact?.trim() ? '2px' : 0
+                  ...RESUME_TYPE.spotlightMetric
                 }}
               >
                 {subSpotlight.metric}
@@ -291,9 +278,8 @@ export const ExpEntry = ({ role, company, date, highlights, subSpotlight }: ExpE
               <div
                 style={{
                   fontFamily: FONT_BODY,
-                  fontSize: '8px',
                   color: C.TEXT,
-                  lineHeight: '1.4'
+                  ...RESUME_TYPE.spotlightImpact
                 }}
               >
                 {subSpotlight.impact}

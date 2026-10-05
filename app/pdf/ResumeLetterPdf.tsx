@@ -21,59 +21,30 @@ import React from 'react';
 import { Document, Page, View, Text, Link, StyleSheet, Font, Svg, Rect, Defs, LinearGradient, Stop, Path } from '@react-pdf/renderer';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import { buildResumePaginatedCards } from '../templates/resumeSecondaryLayout';
+import { RESUME_PAGE, RESUME_TYPE, RESUME_CARD } from '../templates/resumeGeometry';
+import { assertResumePdfLayoutFits } from './resumePdfLayout';
+import encodeSans500 from '@fontsource/encode-sans/files/encode-sans-latin-500-normal.woff?url';
+import encodeSans600 from '@fontsource/encode-sans/files/encode-sans-latin-600-normal.woff?url';
+import libreFranklin400 from '@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff?url';
+import libreFranklin500 from '@fontsource/libre-franklin/files/libre-franklin-latin-500-normal.woff?url';
 
 // ─── Font Registration ──────────────────────────────────────────────────────
 
-// Register fonts using ttf format (downloaded from Google Fonts)
-// Fonts must use full URLs with protocol + host for proper fetching
-const getFontUrl = (filename: string) => {
-  if (typeof window !== 'undefined') {
-    return `${window.location.origin}/fonts/${filename}`;
-  }
-  return `/fonts/${filename}`;
-};
-
-// Libre Franklin for body text
+// The PDF uses the same packaged static font faces as the browser preview.
+// WOFF (rather than WOFF2) is supported by react-pdf's font loader.
+const fontSource = (asset: string) => (typeof window === 'undefined' ? asset : new URL(asset, window.location.origin).href);
 Font.register({
   family: 'Libre Franklin',
   fonts: [
-    {
-      src: getFontUrl('libre-franklin-300.ttf'),
-      fontWeight: 300,
-      fontStyle: 'normal'
-    },
-    {
-      src: getFontUrl('libre-franklin-400.ttf'),
-      fontWeight: 400,
-      fontStyle: 'normal'
-    },
-    {
-      src: getFontUrl('libre-franklin-400-italic.ttf'),
-      fontWeight: 400,
-      fontStyle: 'italic'
-    }
+    { src: fontSource(libreFranklin400), fontWeight: 400 },
+    { src: fontSource(libreFranklin500), fontWeight: 500 }
   ]
 });
-
-// Encode Sans for display/titles
 Font.register({
   family: 'Encode Sans',
   fonts: [
-    {
-      src: getFontUrl('encode-sans-400.ttf'),
-      fontWeight: 400,
-      fontStyle: 'normal'
-    },
-    {
-      src: getFontUrl('encode-sans-600.ttf'),
-      fontWeight: 600,
-      fontStyle: 'normal'
-    },
-    {
-      src: getFontUrl('encode-sans-700.ttf'),
-      fontWeight: 700,
-      fontStyle: 'normal'
-    }
+    { src: fontSource(encodeSans500), fontWeight: 500 },
+    { src: fontSource(encodeSans600), fontWeight: 600 }
   ]
 });
 
@@ -94,8 +65,8 @@ const C = {
   SECONDARY: '#595959'
 } as const;
 const CONTENT_SAFE_INSET = 18;
-const SIDEBAR_WIDTH = 190;
-const SECONDARY_SIDEBAR_WIDTH = 185;
+const SIDEBAR_WIDTH = RESUME_PAGE.primarySidebarWidth;
+const SECONDARY_SIDEBAR_WIDTH = RESUME_PAGE.secondarySidebarWidth;
 
 // ─── Refined Stylesheet ─────────────────────────────────────────────────────
 
@@ -110,6 +81,7 @@ const S = StyleSheet.create({
 
   // ── Left sidebar — desert gradient feel ──────────────────────────────────
   sidebar: {
+    height: RESUME_PAGE.height,
     width: SIDEBAR_WIDTH,
     paddingTop: 28 + CONTENT_SAFE_INSET,
     paddingBottom: 28 + CONTENT_SAFE_INSET,
@@ -123,7 +95,7 @@ const S = StyleSheet.create({
   },
   sidebarName: {
     fontFamily: 'Encode Sans',
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 22,
     color: C.DEEP_SEA,
     letterSpacing: -0.6,
@@ -169,32 +141,29 @@ const S = StyleSheet.create({
     marginBottom: 2
   },
   sidebarMetaBlock: {
-    marginBottom: 14
+    flexShrink: 0,
+    marginBottom: 16
   },
   sidebarMetaLabel: {
     fontFamily: 'Encode Sans',
-    fontWeight: 600,
-    fontSize: 7,
     color: C.TERRACOTTA,
-    letterSpacing: 1.4,
     textTransform: 'uppercase',
-    marginBottom: 5
+    ...RESUME_TYPE.sidebarHeading
   },
   sidebarMetaText: {
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7,
+    fontSize: 8,
     color: C.TEXT,
-    lineHeight: 1.4,
-    marginBottom: 2
+    lineHeight: 1.35,
+    marginBottom: 3
   },
   sidebarIntro: {
+    flexShrink: 0,
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7.8,
     color: C.TEXT,
-    lineHeight: 1.4,
-    marginBottom: 14
+    ...RESUME_TYPE.intro
   },
   sidebarBottom: {
     marginTop: 'auto',
@@ -214,20 +183,22 @@ const S = StyleSheet.create({
 
   // ── Main content area ─────────────────────────────────────────────────────
   mainContent: {
+    height: RESUME_PAGE.height,
     flex: 1,
     backgroundColor: '#ffffff',
     paddingTop: 28 + CONTENT_SAFE_INSET,
-    paddingRight: 28 + CONTENT_SAFE_INSET,
-    paddingBottom: 28 + CONTENT_SAFE_INSET,
+    paddingRight: RESUME_PAGE.primaryRight,
+    paddingBottom: RESUME_PAGE.primaryBottom,
     paddingLeft: 20,
     flexDirection: 'column'
   },
   mainHeaderRow: {
+    flexShrink: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 12,
-    columnGap: 8
+    columnGap: 10
   },
   mainHeaderIdentity: {
     flex: 1,
@@ -235,47 +206,44 @@ const S = StyleSheet.create({
   },
   mainName: {
     fontFamily: 'Encode Sans',
-    fontWeight: 700,
-    fontSize: 22,
     color: C.DEEP_SEA,
-    letterSpacing: -0.5,
-    lineHeight: 1,
-    marginBottom: 5
+    ...RESUME_TYPE.name
   },
   mainTitle: {
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 8.5,
+    fontSize: 9,
     color: C.DESERT,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
-    lineHeight: 1.35
+    lineHeight: 1.4
   },
   mainIdentityContact: {
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7.3,
+    fontSize: 8,
     color: C.TEXT,
     lineHeight: 1.35,
-    marginTop: 2
+    marginTop: 0
   },
   mainContactColumn: {
-    maxWidth: 178,
+    maxWidth: 190,
     alignItems: 'flex-end'
   },
   mainContactText: {
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7.3,
+    fontSize: 8,
     color: C.TEXT,
     lineHeight: 1.35,
     textAlign: 'right',
     marginBottom: 2
   },
   mainContactLink: {
+    textDecoration: 'none',
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7.3,
+    fontSize: 8,
     color: C.SEA,
     lineHeight: 1.35,
     textAlign: 'right',
@@ -288,10 +256,11 @@ const S = StyleSheet.create({
     marginBottom: 8
   },
   sectionHeader: {
+    flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 16,
-    marginBottom: 12
+    marginBottom: 9
   },
   sectionMarker: {
     width: 6,
@@ -316,28 +285,28 @@ const S = StyleSheet.create({
   },
   sectionLabel: {
     fontFamily: 'Encode Sans',
-    fontWeight: 700,
-    fontSize: 9,
     color: C.SEA,
-    letterSpacing: 2,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    ...RESUME_TYPE.section
   },
 
   // ── Experience card with elevation ────────────────────────────────────────
   expCard: {
+    flexShrink: 0,
     backgroundColor: 'transparent',
-    marginBottom: 0,
-    padding: 8,
+    marginBottom: RESUME_CARD.gap,
+    paddingVertical: RESUME_CARD.verticalPadding,
+    paddingHorizontal: RESUME_CARD.horizontalPadding,
     flexDirection: 'column'
   },
   expDateBadge: {
-    backgroundColor: C.SAND,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+    backgroundColor: '#f7f3ed',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 5,
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
-    fontSize: 6.5,
+    fontWeight: 400,
+    fontSize: 7,
     color: C.SECONDARY,
     letterSpacing: 0.4
   },
@@ -353,20 +322,15 @@ const S = StyleSheet.create({
   },
   expRole: {
     fontFamily: 'Encode Sans',
-    fontWeight: 600,
-    fontSize: 9.5,
     color: C.DEEP_SEA,
     marginBottom: 2,
-    letterSpacing: -0.2,
-    lineHeight: 1.2
+    ...RESUME_TYPE.role
   },
   expCompany: {
-    fontFamily: 'Encode Sans',
-    fontWeight: 600,
-    fontSize: 7.5,
+    fontFamily: 'Libre Franklin',
     color: C.TERRACOTTA,
     marginBottom: 0,
-    letterSpacing: 0.2
+    ...RESUME_TYPE.company
   },
   bulletRow: {
     flexDirection: 'row',
@@ -374,11 +338,11 @@ const S = StyleSheet.create({
     alignItems: 'flex-start'
   },
   bulletMark: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
     backgroundColor: C.DESERT,
-    marginRight: 5,
+    marginRight: 6,
     marginTop: 4,
     flexShrink: 0
   },
@@ -386,9 +350,8 @@ const S = StyleSheet.create({
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
     flex: 1,
-    fontSize: 8,
-    lineHeight: 1.45,
-    color: C.TEXT
+    color: C.TEXT,
+    ...RESUME_TYPE.bullet
   },
   expSubSpotlight: {
     marginTop: 7,
@@ -406,36 +369,27 @@ const S = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: C.SAND,
     borderBottomStyle: 'solid',
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
-    paddingTop: 5,
-    paddingRight: 6,
-    paddingBottom: 5,
-    paddingLeft: 6,
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
+    paddingVertical: RESUME_CARD.spotlightVerticalPadding,
+    paddingHorizontal: RESUME_CARD.spotlightHorizontalPadding,
     backgroundColor: '#f6f8fb'
   },
   expSubSpotlightTitle: {
     fontFamily: 'Encode Sans',
-    fontWeight: 600,
-    fontSize: 8.4,
     color: C.DEEP_SEA,
-    lineHeight: 1.2,
-    marginBottom: 2
+    ...RESUME_TYPE.spotlightTitle
   },
   expSubSpotlightMetric: {
     fontFamily: 'Encode Sans',
-    fontWeight: 600,
-    fontSize: 9,
     color: C.SEA,
-    lineHeight: 1.2,
-    marginBottom: 2
+    ...RESUME_TYPE.spotlightMetric
   },
   expSubSpotlightImpact: {
     fontFamily: 'Libre Franklin',
     fontWeight: 400,
-    fontSize: 7.8,
     color: C.TEXT,
-    lineHeight: 1.4
+    ...RESUME_TYPE.spotlightImpact
   },
 
   // ── Page 2 specific styles ───────────────────────────────────────────────
@@ -447,9 +401,10 @@ const S = StyleSheet.create({
     color: C.TEXT
   },
   page2Sidebar: {
+    height: RESUME_PAGE.height,
     width: SECONDARY_SIDEBAR_WIDTH,
     paddingTop: 28 + CONTENT_SAFE_INSET,
-    paddingBottom: 24 + CONTENT_SAFE_INSET,
+    paddingBottom: RESUME_PAGE.secondaryBottom,
     paddingLeft: 16,
     paddingRight: 16 + CONTENT_SAFE_INSET,
     borderLeftWidth: 1,
@@ -460,7 +415,7 @@ const S = StyleSheet.create({
   },
   page2Name: {
     fontFamily: 'Encode Sans',
-    fontWeight: 700,
+    fontWeight: 500,
     fontSize: 18,
     color: C.DEEP_SEA,
     letterSpacing: -0.3,
@@ -469,7 +424,7 @@ const S = StyleSheet.create({
   },
   page2Continued: {
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 8,
     color: C.SECONDARY,
     letterSpacing: 0.8,
@@ -498,7 +453,7 @@ const S = StyleSheet.create({
   },
   page2AsideFooter: {
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 7,
     color: C.DEEP_SEA,
     letterSpacing: 1,
@@ -506,7 +461,7 @@ const S = StyleSheet.create({
   },
   sidebarPageNumber: {
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 7,
     color: C.DEEP_SEA,
     letterSpacing: 1,
@@ -514,18 +469,21 @@ const S = StyleSheet.create({
     marginTop: 6
   },
   page2Main: {
+    height: RESUME_PAGE.height,
     flex: 1,
     paddingTop: 28 + CONTENT_SAFE_INSET,
-    paddingBottom: 24 + CONTENT_SAFE_INSET,
+    paddingBottom: RESUME_PAGE.secondaryBottom,
     paddingLeft: 22,
     paddingRight: 24 + CONTENT_SAFE_INSET,
     flexDirection: 'column'
   },
   snapshotCard: {
+    flexShrink: 0,
     backgroundColor: '#ffffff',
-    borderRadius: 6,
-    marginBottom: 0,
-    padding: 8,
+    borderRadius: 8,
+    marginBottom: RESUME_CARD.gap,
+    paddingVertical: RESUME_CARD.verticalPadding,
+    paddingHorizontal: 12,
     flexDirection: 'column'
   },
   snapshotHighlightCard: {
@@ -540,7 +498,7 @@ const S = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 6.5,
     color: C.SECONDARY,
     letterSpacing: 0.4
@@ -557,7 +515,7 @@ const S = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 2,
     fontFamily: 'Encode Sans',
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 6.3,
     color: C.SAND,
     textAlign: 'center',
@@ -605,15 +563,15 @@ const S = StyleSheet.create({
   snapshotSkillRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 3
+    marginBottom: 4
   },
   snapshotSkillDot: {
-    width: 3.5,
-    height: 3.5,
+    width: 4,
+    height: 4,
     borderRadius: 2,
     backgroundColor: C.DESERT,
-    marginRight: 4,
-    marginTop: 3,
+    marginRight: 5,
+    marginTop: 4,
     flexShrink: 0
   },
   snapshotSkillText: {
@@ -640,7 +598,7 @@ const S = StyleSheet.create({
   },
   footerText: {
     fontFamily: 'Libre Franklin',
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 7,
     color: C.SECONDARY,
     textAlign: 'left',
@@ -801,13 +759,27 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
   const { primary: primaryCards, secondary: secondaryPages } = buildResumePaginatedCards(props);
 
   return (
-    <Document>
+    <Document
+      onRender={(result) => {
+        // Renderer 4.3 exposes layout at runtime but omits it from OnRenderProps.
+        const { _INTERNAL__LAYOUT__DATA_ } = result as unknown as { _INTERNAL__LAYOUT__DATA_: Parameters<typeof assertResumePdfLayoutFits>[0] };
+        assertResumePdfLayoutFits(_INTERNAL__LAYOUT__DATA_, secondaryPages.length + 1);
+      }}
+    >
       {/* ══════════════════════════════════════ PAGE 1 ══════════════════════════════════════ */}
       <Page size='LETTER' style={S.page}>
         {/* Sidebar */}
         <View style={S.sidebar}>
           {/* Subtle vertical gradient background */}
-          <Svg style={{ position: 'absolute', top: 0, left: 0, width: SIDEBAR_WIDTH, height: 792 }}>
+          <Svg
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: SIDEBAR_WIDTH,
+              height: 792
+            }}
+          >
             <Defs>
               <LinearGradient id='desertGradient' x1='0' y1='0' x2='0' y2='1'>
                 <Stop offset='0%' stopColor={C.DESERT} stopOpacity='0.08' />
@@ -822,20 +794,28 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
             <View style={S.sidebarMetaBlock}>
               <Text style={S.sidebarMetaLabel}>Education</Text>
               {educationItems.map((item) => (
-                <View key={`sidebar-education-${item.id}`} style={{ marginBottom: 6 }}>
+                <View key={`sidebar-education-${item.id}`} style={{ marginBottom: 7 }}>
                   <Text
                     style={{
                       fontFamily: 'Encode Sans',
-                      fontWeight: 600,
-                      fontSize: 6.7,
+                      fontWeight: 500,
+                      fontSize: 7.5,
                       color: C.DEEP_SEA,
-                      letterSpacing: 0.25,
-                      marginBottom: 2
+                      letterSpacing: 0.2,
+                      marginBottom: 3
                     }}
                   >
                     {item.degree || 'Education'}
                   </Text>
-                  <Text style={{ fontFamily: 'Libre Franklin', fontWeight: 400, fontSize: 6.7, color: C.TEXT, lineHeight: 1.35 }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Libre Franklin',
+                      fontWeight: 400,
+                      fontSize: 7,
+                      color: C.TEXT,
+                      lineHeight: 1.35
+                    }}
+                  >
                     {item.school}
                     {clean(item.date) ? ` · ${item.date}` : ''}
                   </Text>
@@ -848,20 +828,30 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
             <View style={S.sidebarMetaBlock}>
               <Text style={S.sidebarMetaLabel}>Expertise</Text>
               {expertiseGroups.map((group) => (
-                <View key={`sidebar-expertise-${group.id}`} style={{ marginBottom: 6 }}>
+                <View key={`sidebar-expertise-${group.id}`} style={{ marginBottom: 7 }}>
                   <Text
                     style={{
                       fontFamily: 'Encode Sans',
-                      fontWeight: 600,
-                      fontSize: 6.7,
+                      fontWeight: 500,
+                      fontSize: 7.5,
                       color: C.DEEP_SEA,
-                      letterSpacing: 0.25,
-                      marginBottom: 2
+                      letterSpacing: 0.2,
+                      marginBottom: 3
                     }}
                   >
                     {group.title}
                   </Text>
-                  <Text style={{ fontFamily: 'Libre Franklin', fontWeight: 400, fontSize: 6.7, color: C.TEXT, lineHeight: 1.35 }}>{group.text}</Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Libre Franklin',
+                      fontWeight: 400,
+                      fontSize: 7,
+                      color: C.TEXT,
+                      lineHeight: 1.35
+                    }}
+                  >
+                    {group.text}
+                  </Text>
                 </View>
               ))}
             </View>
@@ -894,7 +884,7 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
             <View style={S.mainHeaderIdentity}>
               <Text style={S.mainName}>{name}</Text>
               <Text style={S.mainTitle}>{title}</Text>
-              <Text style={S.mainIdentityContact}>{email}</Text>
+              <Text style={[S.mainIdentityContact, { marginTop: 3 }]}>{email}</Text>
               <Text style={S.mainIdentityContact}>{location}</Text>
             </View>
             <View style={S.mainContactColumn}>
@@ -952,7 +942,15 @@ export const ResumeLetterPdf: React.FC<ResumeLetterPdfProps> = (props) => {
       {secondaryPages.map((cards, pageIndex) => (
         <Page key={`secondary-${pageIndex}`} size='LETTER' style={S.page2}>
           <View style={S.page2Sidebar}>
-            <Svg style={{ position: 'absolute', top: 0, left: 0, width: SECONDARY_SIDEBAR_WIDTH, height: 792 }}>
+            <Svg
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: SECONDARY_SIDEBAR_WIDTH,
+                height: 792
+              }}
+            >
               <Defs>
                 <LinearGradient id={`desertGradientP2-${pageIndex}`} x1='0' y1='0' x2='0' y2='1'>
                   <Stop offset='0%' stopColor={C.DESERT} stopOpacity='0.12' />

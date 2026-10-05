@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "2.0.0",
+  "templateId": "resume_letter",
+  "profile": {
+    "name": "Morgan Example",
+    "title": "Staff Software Engineer",
+    "email": "morgan@example.invalid",
+    "phone": "+1 (202) 555-0100",
+    "location": "Example City",
+    "links": [
+      "github.com/example",
+      "example.invalid/profile",
+      "example.invalid",
+      "example.invalid/blog"
+    ],
+    "introStatement": "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved deliver."
+  },
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Fluent"
+    },
+    {
+      "language": "Italian",
+      "proficiency": "Intermediate"
+    },
+    {
+      "language": "Spanish",
+      "proficiency": "Native"
+    }
+  ],
+  "spotlights": [],
+  "experience": [
+    {
+      "title": "Staff Software Engineer",
+      "company": "ExampleCo",
+      "date": "2020 \u2013 Present",
+      "highlights": [
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved.",
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable se."
+      ],
+      "subSpotlight": {
+        "title": "Designed reliable services, improve.",
+        "metric": "Designed reliable services, improved delivery workf. Coordinated the engineering team.",
+        "impact": "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery wor."
+      }
+    },
+    {
+      "title": "Senior Software Engineer II",
+      "company": "Acorn",
+      "date": "2017 \u2013 2020",
+      "highlights": [
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved deli.",
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved deli."
+      ],
+      "subSpotlight": {
+        "title": "Designed reliable servi.",
+        "metric": "Designed reliable services, improved delivery workflows, and helped engin.",
+        "impact": "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, impr."
+      }
+    },
+    {
+      "title": "Staff Software Engineer",
+      "company": "Example Broadcasting Company",
+      "date": "2017 \u2013 2020",
+      "highlights": [
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate prod.",
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable."
+      ],
+      "subSpotlight": {
+        "title": "Designed reliable services, improved delivery work.",
+        "metric": "Designed reliable services, improved delivery workflows, and helped engineers opera.",
+        "impact": "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable s."
+      }
+    },
+    {
+      "title": "Software Development Engineer",
+      "company": "Sample",
+      "date": "2017 \u2013 2020",
+      "highlights": [
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate.",
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflo.",
+        "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production system."
+      ],
+      "subSpotlight": {
+        "title": "Designed reliable services, improved.",
+        "metric": "Designed reliable services, improved delivery wor.",
+        "impact": "Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, improved delivery workflows, and helped engineers operate production systems. Designed reliable services, impro."
+      }
+    }
+  ],
+  "earlierExperiences": [
+    {
+      "text": "Web Developer at Example Company 1, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 2, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 3, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 4, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 5, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 6, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 7, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 8, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 9, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 10, Example City \u00b7 2010 \u2013 2016"
+    },
+    {
+      "text": "Web Developer at Example Company 11, Example City \u00b7 2010 \u2013 2016"
+    }
+  ],
+  "education": [],
+  "skillGroups": [
+    {
+      "title": "Core",
+      "items": [
+        "System Architecture",
+        "Distributed Systems",
+        "Performance Optimization",
+        "Observability",
+        "AI Integration",
+        "Real-Time Systems",
+        "Platform Engineering",
+        "Event-Driven Architecture"
+      ]
+    },
+    {
+      "title": "Frontend",
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Redux",
+        "Tailwind CSS",
+        "GraphQL",
+        "WebRTC",
+        "Webpack",
+        "Vite"
+      ]
+    },
+    {
+      "title": "Backend",
+      "items": [
+        "NestJS",
+        "Express",
+        "Django",
+        "Java",
+        "Kotlin",
+        "Python",
+        "Ruby",
+        "PHP",
+        "PostgreSQL",
+        "MySQL",
+        "DynamoDB",
+        "Redis",
+        "Docker",
+        "Nginx"
+      ]
+    },
+    {
+      "title": "Cloud & Infrastructure",
+      "items": [
+        "AWS CDK",
+        "Lambda",
+        "Lambda@Edge",
+        "CloudFront",
+        "CloudFront Functions",
+        "API Gateway",
+        "S3",
+        "SQS",
+        "SNS",
+        "Cognito",
+        "AppSync",
+        "IoT Core",
+        "ECS",
+        "ECR",
+        "Fargate",
+        "GitHub Actions",
+        "Grafana",
+        "Prometheus"
+      ]
+    },
+    {
+      "title": "AI Engineering",
+      "items": [
+        "Claude Code",
+        "Codex",
+        "OpenCode",
+        "GitHub Copilot",
+        "Google Vertex AI",
+        "AWS Bedrock"
+      ]
+    },
+    {
+      "title": "AI & Data",
+      "items": [
+        "Transformers.js",
+        "n8n",
+        "Qdrant",
+        "Embeddings",
+        "Vector Search",
+        "Semantic Clustering"
+      ]
+    },
+    {
+      "title": "Tools & Practices",
+      "items": [
+        "Figma API",
+        "Style Dictionary",
+        "Design Tokens",
+        "Lighthouse CI",
+        "Datadog RUM",
+        "CI/CD",
+        "Agile",
+        "Scrum"
+      ]
+    }
+  ]
+}

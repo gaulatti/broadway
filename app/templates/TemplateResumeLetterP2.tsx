@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { RESUME_PAGE } from './resumeGeometry';
 import type { ResumeLetterProps } from './TemplateResumeLetterP1';
 import { buildResumeSecondaryPages } from './resumeSecondaryLayout';
 import {
@@ -30,8 +31,8 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
   return (
     <div
       style={{
-        width: '612px',
-        height: '792px',
+        width: RESUME_PAGE.width,
+        height: RESUME_PAGE.height,
         backgroundColor: '#ffffff',
         fontFamily: FONT_BODY,
         fontSize: '9px',
@@ -46,12 +47,12 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
     >
       <div
         style={{
-          width: '185px',
+          width: RESUME_PAGE.secondarySidebarWidth,
           borderLeft: `1px solid ${C.SAND}`,
           background: `linear-gradient(180deg, ${C.DESERT}14 0%, ${C.TERRACOTTA}08 50%, ${C.SEA}14 100%)`,
           paddingTop: `${28 + CONTENT_SAFE_INSET}px`,
           paddingRight: `${16 + CONTENT_SAFE_INSET}px`,
-          paddingBottom: `${22 + CONTENT_SAFE_INSET}px`,
+          paddingBottom: RESUME_PAGE.secondaryBottom,
           paddingLeft: '16px',
           display: 'flex',
           flexDirection: 'column'
@@ -111,8 +112,8 @@ const TemplateResumeLetterP2: React.FC<ResumeLetterProps> = (props) => {
         style={{
           flex: 1,
           paddingTop: `${28 + CONTENT_SAFE_INSET}px`,
-          paddingRight: `${24 + CONTENT_SAFE_INSET}px`,
-          paddingBottom: `${22 + CONTENT_SAFE_INSET}px`,
+          paddingRight: RESUME_PAGE.secondaryRight,
+          paddingBottom: RESUME_PAGE.secondaryBottom,
           paddingLeft: '22px',
           display: 'flex',
           flexDirection: 'column'

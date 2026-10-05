@@ -228,7 +228,7 @@ export async function exportNodeToPng(
 /**
  * Generate a true vector PDF using @react-pdf/renderer.
  *
- * Produces a two-page US Letter PDF with selectable text and embedded fonts.
+ * Produces paginated US Letter output with selectable text and embedded fonts.
  * Data comes from the props argument passed by the caller.
  *
  * Uses dynamic imports so @react-pdf/renderer is only loaded in the browser,

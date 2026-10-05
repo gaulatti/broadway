@@ -9,11 +9,12 @@ import { StatusBadge } from '@gaulatti/bleecker/components/status-badge';
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { getTemplateById } from '../templates';
-import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, imageExportErrorMessage } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, generateCdCoverPdf, imageExportErrorMessage } from '../utils/exportImage';
 import { useT } from '../i18n/useT';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
+import type { CdCoverProps } from '../templates/TemplateCdCover';
 import { TemplateFontBoundary } from '../templates/TemplateFontBoundary';
 
 export default function PreviewTemplate() {
@@ -24,7 +25,7 @@ export default function PreviewTemplate() {
   const additionalRefs = useRef<Array<HTMLDivElement | null>>([]);
   const template = templateId ? getTemplateById(templateId) : undefined;
   const isResume = templateId?.startsWith('resume_') ?? false;
-  const hasPdf = isResume || templateId === 'fifthbell_letter' || templateId === 'gaulatti_letter';
+  const hasPdf = isResume || templateId === 'fifthbell_letter' || templateId === 'gaulatti_letter' || templateId === 'cd_cover';
   const additionalPageElements = template
     ? template.renderAdditionalPages?.(template.defaultProps) ?? template.additionalPages?.map((PageComponent, index) => <PageComponent key={`additional-${index}`} {...template.defaultProps} />) ?? []
     : [];
@@ -39,6 +40,8 @@ export default function PreviewTemplate() {
         await generateFifthbellLetterPdf(template.defaultProps as FifthbellLetterProps, `${template.id}.pdf`);
       } else if (templateId === 'gaulatti_letter') {
         await generateGaulattiLetterPdf(template.defaultProps as GaulattiLetterProps, `${template.id}.pdf`);
+      } else if (templateId === 'cd_cover') {
+        await generateCdCoverPdf(previewRef.current, template.defaultProps as CdCoverProps, `${template.id}-print-120mm.pdf`);
       } else {
         await generateResumePdf(template.defaultProps as ResumeLetterProps, `${template.id}.pdf`);
       }
@@ -69,7 +72,7 @@ export default function PreviewTemplate() {
             <p className='font-secondary mt-3 text-sm text-text-secondary'>{t('preview.template.templateId', { id: template.id })}</p>
           </div>
           <div className='flex flex-wrap gap-3'>
-            {hasPdf ? <Button variant='secondary' onClick={() => runExport('pdf')} disabled={isExporting}><FileText size={15} /> {isExporting ? t('generate.exporting') : t('preview.template.exportPdf')}</Button> : null}
+            {hasPdf ? <Button variant='secondary' onClick={() => runExport('pdf')} disabled={isExporting}><FileText size={15} /> {isExporting ? t('generate.exporting') : templateId === 'cd_cover' ? 'Print PDF (120 × 120 mm)' : t('preview.template.exportPdf')}</Button> : null}
             <Button onClick={() => runExport('png')} disabled={isExporting}>{isExporting ? <LoadingSpinner size='sm' /> : <Download size={15} />} {isExporting ? t('generate.exporting') : t('preview.template.exportPng', { width: template.width, height: template.height })}</Button>
           </div>
         </header>

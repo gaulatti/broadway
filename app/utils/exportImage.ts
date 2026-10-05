@@ -12,6 +12,7 @@ import { toPng } from 'html-to-image';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
+import type { CdCoverProps } from '../templates/TemplateCdCover';
 import { fontFaceCss, type TemplateFontAsset } from '../templates/fontContract.ts';
 
 export type ImageExportFailureKind = 'font' | 'external-resource' | 'capture';
@@ -277,6 +278,49 @@ export async function generateFifthbellLetterPdf(props: FifthbellLetterProps, fi
 export async function generateGaulattiLetterPdf(props: GaulattiLetterProps, filename: string = 'gaulatti-letter.pdf'): Promise<void> {
   const [{ pdf }, { GaulattiLetterPdf }] = await Promise.all([import('@react-pdf/renderer'), import('../pdf/GaulattiLetterPdf')]);
   const blob = await pdf(React.createElement(GaulattiLetterPdf, props) as Parameters<typeof pdf>[0]).toBlob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/** Print-size PDF with vector text and the editable background image. */
+export async function generateCdCoverPdf(node: HTMLElement, props: CdCoverProps, filename: string = 'cd-cover.pdf'): Promise<void> {
+  const target = resolveCaptureTarget(node);
+  await waitForImages(target);
+  const image = target.querySelector<HTMLImageElement>('img.cover-image');
+  if (!image || !image.naturalWidth || !image.naturalHeight) throw new ImageExportError('external-resource', 'The CD cover image did not load.');
+
+  // Bake the preview's image shade into the background. React-PDF's SVG gradient
+  // renders darker than the browser's CSS gradient, while typography stays vector.
+  const canvas = document.createElement('canvas');
+  canvas.width = 1500;
+  canvas.height = 1500;
+  const context = canvas.getContext('2d');
+  if (!context) throw new ImageExportError('capture', 'The browser could not prepare the cover image.');
+  const crop = Math.min(image.naturalWidth, image.naturalHeight);
+  context.drawImage(image, (image.naturalWidth - crop) / 2, (image.naturalHeight - crop) / 2, crop, crop, 0, 0, 1500, 1500);
+  const shade = context.createLinearGradient(0, 0, 0, 1500);
+  shade.addColorStop(0, 'rgba(0, 0, 0, 0.62)');
+  shade.addColorStop(0.3, 'rgba(0, 0, 0, 0)');
+  shade.addColorStop(0.48, 'rgba(0, 0, 0, 0)');
+  shade.addColorStop(1, 'rgba(0, 0, 0, 0.88)');
+  context.fillStyle = shade;
+  context.fillRect(0, 0, 1500, 1500);
+  let backgroundDataUrl: string;
+  try {
+    backgroundDataUrl = canvas.toDataURL('image/png');
+  } catch (reason) {
+    throw new ImageExportError('external-resource', 'The cover image cannot be embedded in a print PDF. Upload a local image or use a CORS-enabled source.', { cause: reason });
+  }
+
+  const [{ pdf }, { CdCoverPdf }] = await Promise.all([import('@react-pdf/renderer'), import('../pdf/CdCoverPdf')]);
+  const element = React.createElement(CdCoverPdf, { ...props, backgroundDataUrl });
+  const blob = await pdf(element as Parameters<typeof pdf>[0]).toBlob();
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;

@@ -23,6 +23,7 @@ import { templateDefinition as modoitalianoGiorgiaYouTubeThumbnailDefinition } f
 import { templateDefinition as modoitalianoGiorgiaYouTubePromoPostDefinition } from './TemplateModoItalianoGiorgiaYouTubePromoPost';
 import { templateDefinition as modoitalianoGiorgiaYouTubePromoStoryDefinition } from './TemplateModoItalianoGiorgiaYouTubePromoStory';
 import { templateDefinition as instagramImageDefinition } from './TemplateInstagramImage';
+import { templateDefinition as cdCoverDefinition } from './TemplateCdCover';
 import { templateDefinition as newspaperFrontPageDefinition } from './TemplateNewspaperFrontPage';
 import { templateDefinition as resumeLetterDefinition } from './TemplateResumeLetterP1';
 import { templateDefinition as fifthbellLetterDefinition } from './TemplateFifthbellLetter';
@@ -37,6 +38,7 @@ export const templates: TemplateDefinition[] = [
   modoitalianoGiorgiaYouTubePromoPostDefinition,
   modoitalianoGiorgiaYouTubePromoStoryDefinition,
   instagramImageDefinition,
+  cdCoverDefinition,
   newspaperFrontPageDefinition,
   resumeLetterDefinition,
   fifthbellLetterDefinition,

@@ -33,10 +33,11 @@ import {
   ResumeSkillGroupEditor,
   ResumeSpotlightEditor
 } from '../components/ResumeDataEditor';
-import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, imageExportErrorMessage } from '../utils/exportImage';
+import { exportNodeToPng, generateResumePdf, generateFifthbellLetterPdf, generateGaulattiLetterPdf, generateCdCoverPdf, imageExportErrorMessage } from '../utils/exportImage';
 import type { ResumeLetterProps } from '../templates/TemplateResumeLetterP1';
 import type { FifthbellLetterProps } from '../templates/TemplateFifthbellLetter';
 import type { GaulattiLetterProps } from '../templates/TemplateGaulattiLetter';
+import type { CdCoverProps } from '../templates/TemplateCdCover';
 import { buildResumeSchemaExample, parseResumeSchema } from '../templates/resumeSchema';
 import { TemplateFontBoundary } from '../templates/TemplateFontBoundary';
 
@@ -56,7 +57,7 @@ export default function Generate() {
   // Get current template
   const template = templates.find((t) => t.id === selectedTemplateId);
   const isResume = selectedTemplateId.startsWith('resume_');
-  const hasPdf = isResume || selectedTemplateId === 'fifthbell_letter' || selectedTemplateId === 'gaulatti_letter';
+  const hasPdf = isResume || selectedTemplateId === 'fifthbell_letter' || selectedTemplateId === 'gaulatti_letter' || selectedTemplateId === 'cd_cover';
   const previewScale = template?.previewScale ?? template?.galleryScale ?? 1;
   const previewViewportHeight = 'calc(100vh - var(--bleecker-header-height, 88px) - 72px)';
   const fittedPreviewScale = React.useMemo(() => {
@@ -156,6 +157,8 @@ export default function Generate() {
         await generateFifthbellLetterPdf(values as FifthbellLetterProps, `${template.id}.pdf`);
       } else if (selectedTemplateId === 'gaulatti_letter') {
         await generateGaulattiLetterPdf(values as GaulattiLetterProps, `${template.id}.pdf`);
+      } else if (selectedTemplateId === 'cd_cover') {
+        await generateCdCoverPdf(previewRef.current, values as CdCoverProps, `${template.id}-print-120mm.pdf`);
       } else {
         await generateResumePdf(values as ResumeLetterProps, `${template.id}.pdf`);
       }
@@ -358,7 +361,7 @@ export default function Generate() {
                   onClick={handleExportPdf}
                   disabled={isExporting}
                 >
-                  <FileText size={15} />{isExporting ? t('generate.exporting') : t('generate.exportPdf')}
+                  <FileText size={15} />{isExporting ? t('generate.exporting') : selectedTemplateId === 'cd_cover' ? 'Print PDF (120 × 120 mm)' : t('generate.exportPdf')}
                 </Button>
               )}
               {isResume && (

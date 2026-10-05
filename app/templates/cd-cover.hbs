@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1500, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1500px;
+      height: 1500px;
+      overflow: hidden;
+      position: relative;
+      background: #101117;
+      color: #fff;
+      font-family: 'Encode Sans', sans-serif;
+    }
+    .cover-image, .image-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .cover-image { object-fit: cover; }
+    .image-shade {
+      background: linear-gradient(180deg, rgba(0, 0, 0, .62) 0%, transparent 30%, transparent 48%, rgba(0, 0, 0, .88) 100%);
+    }
+    .cover-content {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 104px 110px 112px;
+    }
+    .top-line {
+      max-width: 1280px;
+      font-size: 62px;
+      line-height: 1.15;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, .5);
+    }
+    .brand-mark { display: block; width: 90px; height: 115px; margin-bottom: 30px; filter: brightness(0) invert(1); }
+    .accent { width: 92px; height: 9px; margin-bottom: 30px; background: #b21100; }
+    .title {
+      max-width: 1280px;
+      font-size: 146px;
+      line-height: 1.03;
+      font-weight: 700;
+      letter-spacing: -.045em;
+      overflow-wrap: anywhere;
+      text-shadow: 0 3px 28px rgba(0, 0, 0, .55);
+    }
+    .subtitle {
+      margin-top: 32px;
+      font-size: 35px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <img class="cover-image" src="{{imageUrl}}" alt="" crossorigin="anonymous" />
+  <div class="image-shade"></div>
+  <main class="cover-content">
+    <p class="top-line">{{topLine}}</p>
+    <div>
+      <img class="brand-mark" src="/logo.svg" alt="gaulatti" />
+      <div class="accent"></div>
+      <h1 class="title">{{title}}</h1>
+      {{#if subtitle}}<p class="subtitle">{{subtitle}}</p>{{/if}}
+    </div>
+  </main>
+</body>
+</html>

@@ -2,6 +2,9 @@ import type { FieldDef } from './types';
 
 export const NEWSPAPER_WIDTH = 1080;
 export const NEWSPAPER_HEIGHT = 1350;
+/** 3:2 landscape canvas matching a 7008×4672 photograph. */
+export const NEWSPAPER_LANDSCAPE_WIDTH = 7008;
+export const NEWSPAPER_LANDSCAPE_HEIGHT = 4672;
 
 export interface NewspaperFrontPageProps {
   publication: string;
